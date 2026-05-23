@@ -501,14 +501,14 @@ const CURRENT_PATTERN = {
       "name": "Subarray Product Less Than K",
       "difficulty": "Medium",
       "subpattern": "Product-bounded variable window",
-      "question": "Solve the LeetCode-style problem \"Subarray Product Less Than K\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given an array of positive integers nums and integer k, return the number of contiguous subarrays where the product of all elements is strictly less than k.",
+      "trigger": "All values are positive, so when product becomes too large, moving left only decreases the product.",
+      "intuition": "Expand product by right. Shrink while product >= k. Every valid window ending at right contributes right - left + 1 subarrays.",
+      "edgeCases": "k <= 1, all ones, single element, product exactly k, large product risk, and every subarray valid.",
       "constraints": "1 <= nums.length <= 3 * 10^4; 1 <= nums[i] <= 1000; 0 <= k <= 10^6.",
       "source": {
         "label": "LeetCode 713 - Subarray Product Less Than K",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/subarray-product-less-than-k/"
       },
       "examples": [
         {
@@ -527,79 +527,79 @@ const CURRENT_PATTERN = {
           "explanation": "Every subarray product is 1."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int numSubarrayProductLessThanK(int[] nums,int k){ int count=0; for(int i=0;i<nums.length;i++){ long product=1; for(int j=i;j<nums.length;j++){ product*=nums[j]; if(product<k) count++; } } return count; } }",
-      "iterativeCode": "class Solution { public int numSubarrayProductLessThanK(int[] nums,int k){ if(k<=1)return 0; int left=0,count=0; long product=1; for(int right=0;right<nums.length;right++){ product*=nums[right]; while(product>=k) product/=nums[left++]; count+=right-left+1; } return count; } }",
-      "optimizedCode": "class Solution { public int numSubarrayProductLessThanK(int[] nums,int k){ if(k<=1)return 0; int left=0,count=0; long product=1; for(int right=0;right<nums.length;right++){ product*=nums[right]; while(product>=k) product/=nums[left++]; count+=right-left+1; } return count; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "class Solution { public int numSubarrayProductLessThanK(int[] nums,int k){ if(k<=1)return 0; int left=0,count=0; long product=1; for(int right=0;right<nums.length;right++){ product*=nums[right]; while(product>=k) product/=nums[left++]; count+=right-left+1; } return count; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    int count = 0;\n    for (int start = 0; start < nums.length; start++) {\n      long product = 1;\n      for (int end = start; end < nums.length; end++) {\n        product *= nums[end];\n        if (product < k) count++;\n      }\n    }\n    return count;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    int left = 0;\n    int count = 0;\n    long product = 1;\n    for (int right = 0; right < nums.length; right++) {\n      product *= nums[right];\n      while (product >= k) {\n        product /= nums[left++];\n      }\n      count += right - left + 1;\n    }\n    return count;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    int left = 0;\n    int count = 0;\n    long product = 1;\n    for (int right = 0; right < nums.length; right++) {\n      product *= nums[right];\n      while (product >= k) {\n        product /= nums[left++];\n      }\n      count += right - left + 1;\n    }\n    return count;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    return scan(nums, k, 0, 0, 1L, 0);\n  }\n\n  private int scan(int[] nums, int k, int right, int left, long product, int count) {\n    if (right == nums.length) return count;\n    return shrink(nums, k, right, left, product * nums[right], count);\n  }\n\n  private int shrink(int[] nums, int k, int right, int left, long product, int count) {\n    if (product >= k) return shrink(nums, k, right, left + 1, product / nums[left], count);\n    return scan(nums, k, right + 1, left, product, count + right - left + 1);\n  }\n}",
+      "code": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    int left = 0;\n    int count = 0;\n    long product = 1;\n    for (int right = 0; right < nums.length; right++) {\n      product *= nums[right];\n      while (product >= k) {\n        product /= nums[left++];\n      }\n      count += right - left + 1;\n    }\n    return count;\n  }\n}"
     },
     {
       "group": "advanced",
       "name": "Longest Subarray of 1s After Deleting One Element",
       "difficulty": "Medium",
       "subpattern": "At most one zero window",
-      "question": "Solve the LeetCode-style problem \"Longest Subarray of 1s After Deleting One Element\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given a binary array nums, delete exactly one element and return the longest non-empty subarray containing only 1s.",
+      "trigger": "A valid kept window can contain at most one zero because that one zero is the deleted element.",
+      "intuition": "Keep a window with at most one zero. Since one element must be deleted, candidate length is right - left.",
+      "edgeCases": "All ones must return n - 1, all zeros, one element, zero at boundary, and multiple zeros forcing shrink.",
       "constraints": "1 <= nums.length <= 10^5; nums[i] is 0 or 1.",
       "source": {
         "label": "LeetCode 1493 - Longest Subarray of 1s After Deleting One Element",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/"
       },
       "examples": [
         {
           "input": "nums = [1,1,0,1]",
           "output": "3",
-          "explanation": "Delete the zero."
+          "explanation": "Delete the zero to join three ones."
         },
         {
           "input": "nums = [0,1,1,1,0,1,1,0,1]",
           "output": "5",
-          "explanation": "Delete one zero in the best window."
+          "explanation": "The best window has one zero and length 6, then delete it."
         },
         {
           "input": "nums = [1,1,1]",
           "output": "2",
-          "explanation": "Must delete one element."
+          "explanation": "One element must be deleted."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int longestSubarray(int[] nums){ int best=0; for(int i=0;i<nums.length;i++){ int zero=0; for(int j=i;j<nums.length;j++){ if(nums[j]==0)zero++; if(zero<=1)best=Math.max(best,j-i); } } return best; } }",
-      "iterativeCode": "class Solution { public int longestSubarray(int[] nums){ int left=0,zero=0,best=0; for(int right=0;right<nums.length;right++){ if(nums[right]==0)zero++; while(zero>1) if(nums[left++]==0)zero--; best=Math.max(best,right-left); } return best; } }",
-      "optimizedCode": "class Solution { public int longestSubarray(int[] nums){ int left=0,zero=0,best=0; for(int right=0;right<nums.length;right++){ if(nums[right]==0)zero++; while(zero>1) if(nums[left++]==0)zero--; best=Math.max(best,right-left); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "class Solution { public int longestSubarray(int[] nums){ int left=0,zero=0,best=0; for(int right=0;right<nums.length;right++){ if(nums[right]==0)zero++; while(zero>1) if(nums[left++]==0)zero--; best=Math.max(best,right-left); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int longestSubarray(int[] nums) {\n    int best = 0;\n    for (int start = 0; start < nums.length; start++) {\n      int zeros = 0;\n      for (int end = start; end < nums.length; end++) {\n        if (nums[end] == 0) zeros++;\n        if (zeros <= 1) best = Math.max(best, end - start);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int longestSubarray(int[] nums) {\n    int left = 0;\n    int zeros = 0;\n    int best = 0;\n    for (int right = 0; right < nums.length; right++) {\n      if (nums[right] == 0) zeros++;\n      while (zeros > 1) {\n        if (nums[left++] == 0) zeros--;\n      }\n      best = Math.max(best, right - left);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int longestSubarray(int[] nums) {\n    int left = 0;\n    int zeros = 0;\n    int best = 0;\n    for (int right = 0; right < nums.length; right++) {\n      if (nums[right] == 0) zeros++;\n      while (zeros > 1) {\n        if (nums[left++] == 0) zeros--;\n      }\n      best = Math.max(best, right - left);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int longestSubarray(int[] nums) {\n    return scan(nums, 0, 0, 0, 0);\n  }\n\n  private int scan(int[] nums, int right, int left, int zeros, int best) {\n    if (right == nums.length) return best;\n    int nextZeros = zeros + (nums[right] == 0 ? 1 : 0);\n    return shrink(nums, right, left, nextZeros, best);\n  }\n\n  private int shrink(int[] nums, int right, int left, int zeros, int best) {\n    if (zeros > 1) return shrink(nums, right, left + 1, zeros - (nums[left] == 0 ? 1 : 0), best);\n    return scan(nums, right + 1, left, zeros, Math.max(best, right - left));\n  }\n}",
+      "code": "class Solution {\n  public int longestSubarray(int[] nums) {\n    int left = 0;\n    int zeros = 0;\n    int best = 0;\n    for (int right = 0; right < nums.length; right++) {\n      if (nums[right] == 0) zeros++;\n      while (zeros > 1) {\n        if (nums[left++] == 0) zeros--;\n      }\n      best = Math.max(best, right - left);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
       "name": "Number of Substrings Containing All Three Characters",
       "difficulty": "Medium",
       "subpattern": "At least all required chars window",
-      "question": "Solve the LeetCode-style problem \"Number of Substrings Containing All Three Characters\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given a string s containing only a, b, and c, return the number of substrings containing at least one occurrence of all three characters.",
+      "trigger": "Once a window contains a, b, and c, every extension to the right is also valid.",
+      "intuition": "Expand until all three exist, then repeatedly count s.length - right valid substrings while shrinking left.",
+      "edgeCases": "String length 3, missing one character, repeated same character, valid window at the end, and many overlapping valid substrings.",
       "constraints": "3 <= s.length <= 5 * 10^4; s consists only of a, b, and c.",
       "source": {
         "label": "LeetCode 1358 - Number of Substrings Containing All Three Characters",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/"
       },
       "examples": [
         {
           "input": "s = \"abcabc\"",
           "output": "10",
-          "explanation": "Every substring containing a,b,c is counted."
+          "explanation": "Every substring containing a, b, and c is counted."
         },
         {
           "input": "s = \"aaacb\"",
           "output": "3",
-          "explanation": "Valid substrings start before c and include b."
+          "explanation": "The valid substrings are aaacb, aacb, and acb."
         },
         {
           "input": "s = \"abc\"",
@@ -607,119 +607,119 @@ const CURRENT_PATTERN = {
           "explanation": "Only the full string works."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int numberOfSubstrings(String s){ int ans=0; for(int i=0;i<s.length();i++){ int[] c=new int[3]; for(int j=i;j<s.length();j++){ c[s.charAt(j)-'a']++; if(c[0]>0&&c[1]>0&&c[2]>0)ans++; } } return ans; } }",
-      "iterativeCode": "class Solution { public int numberOfSubstrings(String s){ int[] count=new int[3]; int left=0,ans=0; for(int right=0;right<s.length();right++){ count[s.charAt(right)-'a']++; while(count[0]>0&&count[1]>0&&count[2]>0){ ans+=s.length()-right; count[s.charAt(left++)-'a']--; } } return ans; } }",
-      "optimizedCode": "class Solution { public int numberOfSubstrings(String s){ int[] count=new int[3]; int left=0,ans=0; for(int right=0;right<s.length();right++){ count[s.charAt(right)-'a']++; while(count[0]>0&&count[1]>0&&count[2]>0){ ans+=s.length()-right; count[s.charAt(left++)-'a']--; } } return ans; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "class Solution { public int numberOfSubstrings(String s){ int[] count=new int[3]; int left=0,ans=0; for(int right=0;right<s.length();right++){ count[s.charAt(right)-'a']++; while(count[0]>0&&count[1]>0&&count[2]>0){ ans+=s.length()-right; count[s.charAt(left++)-'a']--; } } return ans; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int numberOfSubstrings(String s) {\n    int answer = 0;\n    for (int start = 0; start < s.length(); start++) {\n      int[] count = new int[3];\n      for (int end = start; end < s.length(); end++) {\n        count[s.charAt(end) - 'a']++;\n        if (count[0] > 0 && count[1] > 0 && count[2] > 0) answer++;\n      }\n    }\n    return answer;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int numberOfSubstrings(String s) {\n    int[] count = new int[3];\n    int left = 0;\n    int answer = 0;\n    for (int right = 0; right < s.length(); right++) {\n      count[s.charAt(right) - 'a']++;\n      while (count[0] > 0 && count[1] > 0 && count[2] > 0) {\n        answer += s.length() - right;\n        count[s.charAt(left++) - 'a']--;\n      }\n    }\n    return answer;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int numberOfSubstrings(String s) {\n    int[] count = new int[3];\n    int left = 0;\n    int answer = 0;\n    for (int right = 0; right < s.length(); right++) {\n      count[s.charAt(right) - 'a']++;\n      while (count[0] > 0 && count[1] > 0 && count[2] > 0) {\n        answer += s.length() - right;\n        count[s.charAt(left++) - 'a']--;\n      }\n    }\n    return answer;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int numberOfSubstrings(String s) {\n    return scan(s, 0, 0, 0, new int[3]);\n  }\n\n  private int scan(String s, int right, int left, int answer, int[] count) {\n    if (right == s.length()) return answer;\n    count[s.charAt(right) - 'a']++;\n    return shrink(s, right, left, answer, count);\n  }\n\n  private int shrink(String s, int right, int left, int answer, int[] count) {\n    if (count[0] > 0 && count[1] > 0 && count[2] > 0) {\n      count[s.charAt(left) - 'a']--;\n      return shrink(s, right, left + 1, answer + s.length() - right, count);\n    }\n    return scan(s, right + 1, left, answer, count);\n  }\n}",
+      "code": "class Solution {\n  public int numberOfSubstrings(String s) {\n    int[] count = new int[3];\n    int left = 0;\n    int answer = 0;\n    for (int right = 0; right < s.length(); right++) {\n      count[s.charAt(right) - 'a']++;\n      while (count[0] > 0 && count[1] > 0 && count[2] > 0) {\n        answer += s.length() - right;\n        count[s.charAt(left++) - 'a']--;\n      }\n    }\n    return answer;\n  }\n}"
     },
     {
       "group": "advanced",
       "name": "Count Number of Nice Subarrays",
       "difficulty": "Medium",
       "subpattern": "Exactly k odd numbers window",
-      "question": "Solve the LeetCode-style problem \"Count Number of Nice Subarrays\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given nums and k, return the number of continuous subarrays containing exactly k odd numbers.",
+      "trigger": "Exactly k can be counted as atMost(k) - atMost(k - 1), where atMost is a shrinkable window over odd-count budget.",
+      "intuition": "Use each odd number as one unit of budget. Count all windows with at most k odds, then subtract at most k - 1 odds.",
+      "edgeCases": "No odd numbers, k larger than odd count, all odd values, long even runs, k = 1, and subarray starting at index 0.",
       "constraints": "1 <= nums.length <= 5 * 10^4; 1 <= nums[i] <= 10^5; 1 <= k <= nums.length.",
       "source": {
         "label": "LeetCode 1248 - Count Number of Nice Subarrays",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/count-number-of-nice-subarrays/"
       },
       "examples": [
         {
           "input": "nums = [1,1,2,1,1], k = 3",
           "output": "2",
-          "explanation": "Two subarrays contain exactly 3 odd numbers."
+          "explanation": "Two subarrays contain exactly three odd numbers."
         },
         {
           "input": "nums = [2,4,6], k = 1",
           "output": "0",
-          "explanation": "No odd numbers."
+          "explanation": "No odd numbers exist."
         },
         {
           "input": "nums = [2,2,2,1,2,2,1,2,2,2], k = 2",
           "output": "16",
-          "explanation": "Count windows with exactly 2 odds."
+          "explanation": "Even runs around the two odds create sixteen subarrays."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int numberOfSubarrays(int[] nums,int k){ int ans=0; for(int i=0;i<nums.length;i++){ int odd=0; for(int j=i;j<nums.length;j++){ if(nums[j]%2==1)odd++; if(odd==k)ans++; } } return ans; } }",
-      "iterativeCode": "class Solution { public int numberOfSubarrays(int[] nums,int k){ return atMost(nums,k)-atMost(nums,k-1); } private int atMost(int[] nums,int k){ int left=0,ans=0; for(int right=0;right<nums.length;right++){ if(nums[right]%2==1)k--; while(k<0) if(nums[left++]%2==1)k++; ans+=right-left+1; } return ans; } }",
-      "optimizedCode": "class Solution { public int numberOfSubarrays(int[] nums,int k){ return atMost(nums,k)-atMost(nums,k-1); } private int atMost(int[] nums,int k){ int left=0,ans=0; for(int right=0;right<nums.length;right++){ if(nums[right]%2==1)k--; while(k<0) if(nums[left++]%2==1)k++; ans+=right-left+1; } return ans; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "class Solution { public int numberOfSubarrays(int[] nums,int k){ return atMost(nums,k)-atMost(nums,k-1); } private int atMost(int[] nums,int k){ int left=0,ans=0; for(int right=0;right<nums.length;right++){ if(nums[right]%2==1)k--; while(k<0) if(nums[left++]%2==1)k++; ans+=right-left+1; } return ans; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int numberOfSubarrays(int[] nums, int k) {\n    int answer = 0;\n    for (int start = 0; start < nums.length; start++) {\n      int odds = 0;\n      for (int end = start; end < nums.length; end++) {\n        odds += nums[end] % 2;\n        if (odds == k) answer++;\n      }\n    }\n    return answer;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int numberOfSubarrays(int[] nums, int k) {\n    return atMost(nums, k) - atMost(nums, k - 1);\n  }\n\n  private int atMost(int[] nums, int k) {\n    int left = 0;\n    int answer = 0;\n    for (int right = 0; right < nums.length; right++) {\n      if (nums[right] % 2 == 1) k--;\n      while (k < 0) {\n        if (nums[left++] % 2 == 1) k++;\n      }\n      answer += right - left + 1;\n    }\n    return answer;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int numberOfSubarrays(int[] nums, int k) {\n    return atMost(nums, k) - atMost(nums, k - 1);\n  }\n\n  private int atMost(int[] nums, int k) {\n    int left = 0;\n    int answer = 0;\n    for (int right = 0; right < nums.length; right++) {\n      if (nums[right] % 2 == 1) k--;\n      while (k < 0) {\n        if (nums[left++] % 2 == 1) k++;\n      }\n      answer += right - left + 1;\n    }\n    return answer;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int numberOfSubarrays(int[] nums, int k) {\n    return atMost(nums, k, 0, 0, 0) - atMost(nums, k - 1, 0, 0, 0);\n  }\n\n  private int atMost(int[] nums, int k, int right, int left, int answer) {\n    if (right == nums.length) return answer;\n    int nextK = k - (nums[right] % 2);\n    return shrink(nums, nextK, right, left, answer);\n  }\n\n  private int shrink(int[] nums, int k, int right, int left, int answer) {\n    if (k < 0) return shrink(nums, k + (nums[left] % 2), right, left + 1, answer);\n    return atMost(nums, k, right + 1, left, answer + right - left + 1);\n  }\n}",
+      "code": "class Solution {\n  public int numberOfSubarrays(int[] nums, int k) {\n    return atMost(nums, k) - atMost(nums, k - 1);\n  }\n\n  private int atMost(int[] nums, int k) {\n    int left = 0;\n    int answer = 0;\n    for (int right = 0; right < nums.length; right++) {\n      if (nums[right] % 2 == 1) k--;\n      while (k < 0) {\n        if (nums[left++] % 2 == 1) k++;\n      }\n      answer += right - left + 1;\n    }\n    return answer;\n  }\n}"
     },
     {
       "group": "advanced",
       "name": "Max Consecutive Ones",
       "difficulty": "Easy",
       "subpattern": "Fixed violation-free window",
-      "question": "Solve the LeetCode-style problem \"Max Consecutive Ones\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given a binary array nums, return the maximum number of consecutive 1s in the array.",
+      "trigger": "The valid window has zero violations: it can contain only 1s.",
+      "intuition": "Count the current run of 1s. Reset to 0 whenever a zero appears.",
+      "edgeCases": "All ones, all zeros, one element, longest run at the start, longest run at the end, and multiple equal runs.",
       "constraints": "1 <= nums.length <= 10^5; nums[i] is 0 or 1.",
       "source": {
         "label": "LeetCode 485 - Max Consecutive Ones",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/max-consecutive-ones/"
       },
       "examples": [
         {
           "input": "nums = [1,1,0,1,1,1]",
           "output": "3",
-          "explanation": "Three consecutive ones at the end."
+          "explanation": "The longest run of ones is at the end."
         },
         {
           "input": "nums = [1,0,1,1,0,1]",
           "output": "2",
-          "explanation": "Longest run length is 2."
+          "explanation": "The longest run length is 2."
         },
         {
           "input": "nums = [0,0]",
           "output": "0",
-          "explanation": "No ones."
+          "explanation": "There are no ones."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int findMaxConsecutiveOnes(int[] nums){ int best=0; for(int i=0;i<nums.length;i++){ int len=0; for(int j=i;j<nums.length&&nums[j]==1;j++)len++; best=Math.max(best,len); } return best; } }",
-      "iterativeCode": "class Solution { public int findMaxConsecutiveOnes(int[] nums){ int cur=0,best=0; for(int n:nums){ cur=n==1?cur+1:0; best=Math.max(best,cur); } return best; } }",
-      "optimizedCode": "class Solution { public int findMaxConsecutiveOnes(int[] nums){ int cur=0,best=0; for(int n:nums){ cur=n==1?cur+1:0; best=Math.max(best,cur); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "class Solution { public int findMaxConsecutiveOnes(int[] nums){ int cur=0,best=0; for(int n:nums){ cur=n==1?cur+1:0; best=Math.max(best,cur); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int findMaxConsecutiveOnes(int[] nums) {\n    int best = 0;\n    for (int start = 0; start < nums.length; start++) {\n      int length = 0;\n      for (int end = start; end < nums.length && nums[end] == 1; end++) {\n        length++;\n      }\n      best = Math.max(best, length);\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int findMaxConsecutiveOnes(int[] nums) {\n    int current = 0;\n    int best = 0;\n    for (int num : nums) {\n      current = num == 1 ? current + 1 : 0;\n      best = Math.max(best, current);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int findMaxConsecutiveOnes(int[] nums) {\n    int current = 0;\n    int best = 0;\n    for (int num : nums) {\n      current = num == 1 ? current + 1 : 0;\n      best = Math.max(best, current);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int findMaxConsecutiveOnes(int[] nums) {\n    return scan(nums, 0, 0, 0);\n  }\n\n  private int scan(int[] nums, int index, int current, int best) {\n    if (index == nums.length) return best;\n    int nextCurrent = nums[index] == 1 ? current + 1 : 0;\n    return scan(nums, index + 1, nextCurrent, Math.max(best, nextCurrent));\n  }\n}",
+      "code": "class Solution {\n  public int findMaxConsecutiveOnes(int[] nums) {\n    int current = 0;\n    int best = 0;\n    for (int num : nums) {\n      current = num == 1 ? current + 1 : 0;\n      best = Math.max(best, current);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
       "name": "Maximum Points You Can Obtain from Cards",
       "difficulty": "Medium",
       "subpattern": "Complement fixed window",
-      "question": "Solve the LeetCode-style problem \"Maximum Points You Can Obtain from Cards\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given cardPoints and k, take exactly k cards from either end of the row and return the maximum score.",
+      "trigger": "Taking k from the ends is equivalent to leaving one middle window of length n - k with minimum sum.",
+      "intuition": "Compute total score, find the minimum fixed-size middle window to leave, and subtract it from total.",
+      "edgeCases": "k equals n, k equals 1, all same values, best takes both ends, minimum middle window at boundary, and large n.",
       "constraints": "1 <= cardPoints.length <= 10^5; 1 <= cardPoints[i] <= 10^4; 1 <= k <= cardPoints.length.",
       "source": {
         "label": "LeetCode 1423 - Maximum Points You Can Obtain from Cards",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/"
       },
       "examples": [
         {
           "input": "cardPoints = [1,2,3,4,5,6,1], k = 3",
           "output": "12",
-          "explanation": "Take 1 from left and 6,5 from right."
+          "explanation": "Leave [1,2,3,4], take [5,6,1]."
         },
         {
           "input": "cardPoints = [2,2,2], k = 2",
           "output": "4",
-          "explanation": "Any two cards."
+          "explanation": "Any two cards score 4."
         },
         {
           "input": "cardPoints = [9,7,7,9,7,7,9], k = 7",
@@ -727,34 +727,34 @@ const CURRENT_PATTERN = {
           "explanation": "Take all cards."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int maxScore(int[] cardPoints,int k){ int best=0; for(int left=0;left<=k;left++){ int sum=0; for(int i=0;i<left;i++)sum+=cardPoints[i]; for(int i=0;i<k-left;i++)sum+=cardPoints[cardPoints.length-1-i]; best=Math.max(best,sum);} return best; } }",
-      "iterativeCode": "class Solution { public int maxScore(int[] cardPoints,int k){ int total=0; for(int x:cardPoints)total+=x; int keep=cardPoints.length-k; if(keep==0)return total; int sum=0; for(int i=0;i<keep;i++)sum+=cardPoints[i]; int min=sum; for(int r=keep;r<cardPoints.length;r++){ sum+=cardPoints[r]-cardPoints[r-keep]; min=Math.min(min,sum);} return total-min; } }",
-      "optimizedCode": "class Solution { public int maxScore(int[] cardPoints,int k){ int total=0; for(int x:cardPoints)total+=x; int keep=cardPoints.length-k; if(keep==0)return total; int sum=0; for(int i=0;i<keep;i++)sum+=cardPoints[i]; int min=sum; for(int r=keep;r<cardPoints.length;r++){ sum+=cardPoints[r]-cardPoints[r-keep]; min=Math.min(min,sum);} return total-min; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "class Solution { public int maxScore(int[] cardPoints,int k){ int total=0; for(int x:cardPoints)total+=x; int keep=cardPoints.length-k; if(keep==0)return total; int sum=0; for(int i=0;i<keep;i++)sum+=cardPoints[i]; int min=sum; for(int r=keep;r<cardPoints.length;r++){ sum+=cardPoints[r]-cardPoints[r-keep]; min=Math.min(min,sum);} return total-min; } }"
+      "bruteForceComplexity": "Time O(k^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int maxScore(int[] cardPoints, int k) {\n    int best = 0;\n    for (int leftCards = 0; leftCards <= k; leftCards++) {\n      int sum = 0;\n      for (int i = 0; i < leftCards; i++) sum += cardPoints[i];\n      for (int i = 0; i < k - leftCards; i++) sum += cardPoints[cardPoints.length - 1 - i];\n      best = Math.max(best, sum);\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int maxScore(int[] cardPoints, int k) {\n    int total = 0;\n    for (int point : cardPoints) total += point;\n\n    int keep = cardPoints.length - k;\n    if (keep == 0) return total;\n\n    int window = 0;\n    for (int i = 0; i < keep; i++) window += cardPoints[i];\n    int minWindow = window;\n    for (int right = keep; right < cardPoints.length; right++) {\n      window += cardPoints[right] - cardPoints[right - keep];\n      minWindow = Math.min(minWindow, window);\n    }\n    return total - minWindow;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int maxScore(int[] cardPoints, int k) {\n    int total = 0;\n    for (int point : cardPoints) total += point;\n\n    int keep = cardPoints.length - k;\n    if (keep == 0) return total;\n\n    int window = 0;\n    for (int i = 0; i < keep; i++) window += cardPoints[i];\n    int minWindow = window;\n    for (int right = keep; right < cardPoints.length; right++) {\n      window += cardPoints[right] - cardPoints[right - keep];\n      minWindow = Math.min(minWindow, window);\n    }\n    return total - minWindow;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int maxScore(int[] cardPoints, int k) {\n    int total = sum(cardPoints, 0);\n    int keep = cardPoints.length - k;\n    if (keep == 0) return total;\n    int firstWindow = sumRange(cardPoints, 0, keep);\n    int minWindow = slide(cardPoints, keep, keep, firstWindow, firstWindow);\n    return total - minWindow;\n  }\n\n  private int sum(int[] nums, int index) {\n    if (index == nums.length) return 0;\n    return nums[index] + sum(nums, index + 1);\n  }\n\n  private int sumRange(int[] nums, int index, int end) {\n    if (index == end) return 0;\n    return nums[index] + sumRange(nums, index + 1, end);\n  }\n\n  private int slide(int[] nums, int keep, int right, int window, int minWindow) {\n    if (right == nums.length) return minWindow;\n    int nextWindow = window + nums[right] - nums[right - keep];\n    return slide(nums, keep, right + 1, nextWindow, Math.min(minWindow, nextWindow));\n  }\n}",
+      "code": "class Solution {\n  public int maxScore(int[] cardPoints, int k) {\n    int total = 0;\n    for (int point : cardPoints) total += point;\n\n    int keep = cardPoints.length - k;\n    if (keep == 0) return total;\n\n    int window = 0;\n    for (int i = 0; i < keep; i++) window += cardPoints[i];\n    int minWindow = window;\n    for (int right = keep; right < cardPoints.length; right++) {\n      window += cardPoints[right] - cardPoints[right - keep];\n      minWindow = Math.min(minWindow, window);\n    }\n    return total - minWindow;\n  }\n}"
     },
     {
       "group": "advanced",
       "name": "Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit",
       "difficulty": "Medium",
       "subpattern": "Monotonic deque bounded window",
-      "question": "Solve the LeetCode-style problem \"Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given nums and limit, return the length of the longest continuous subarray where the absolute difference between any two elements is at most limit.",
+      "trigger": "A window is valid when max(window) - min(window) <= limit; max and min must update as the window slides.",
+      "intuition": "Use a decreasing deque for max and increasing deque for min. Shrink left until max - min fits.",
+      "edgeCases": "limit = 0, all equal values, strictly increasing values, duplicate max/min values, single element, and large values.",
       "constraints": "1 <= nums.length <= 10^5; 1 <= nums[i] <= 10^9; 0 <= limit <= 10^9.",
       "source": {
         "label": "LeetCode 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/"
       },
       "examples": [
         {
           "input": "nums = [8,2,4,7], limit = 4",
           "output": "2",
-          "explanation": "[2,4] is valid."
+          "explanation": "[2,4] is valid, length 2."
         },
         {
           "input": "nums = [10,1,2,4,7,2], limit = 5",
@@ -764,457 +764,457 @@ const CURRENT_PATTERN = {
         {
           "input": "nums = [4,2,2,2,4,4,2,2], limit = 0",
           "output": "3",
-          "explanation": "Longest equal-value run length 3."
+          "explanation": "The longest equal-value run has length 3."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int longestSubarray(int[] nums,int limit){ int best=0; for(int i=0;i<nums.length;i++){ int mn=nums[i],mx=nums[i]; for(int j=i;j<nums.length;j++){ mn=Math.min(mn,nums[j]); mx=Math.max(mx,nums[j]); if(mx-mn<=limit)best=Math.max(best,j-i+1); } } return best; } }",
-      "iterativeCode": "import java.util.*; class Solution { public int longestSubarray(int[] nums,int limit){ Deque<Integer> max=new ArrayDeque<>(), min=new ArrayDeque<>(); int left=0,best=0; for(int r=0;r<nums.length;r++){ while(!max.isEmpty()&&nums[max.peekLast()]<nums[r])max.pollLast(); while(!min.isEmpty()&&nums[min.peekLast()]>nums[r])min.pollLast(); max.add(r); min.add(r); while(nums[max.peekFirst()]-nums[min.peekFirst()]>limit){ if(max.peekFirst()==left)max.pollFirst(); if(min.peekFirst()==left)min.pollFirst(); left++; } best=Math.max(best,r-left+1); } return best; } }",
-      "optimizedCode": "import java.util.*; class Solution { public int longestSubarray(int[] nums,int limit){ Deque<Integer> max=new ArrayDeque<>(), min=new ArrayDeque<>(); int left=0,best=0; for(int r=0;r<nums.length;r++){ while(!max.isEmpty()&&nums[max.peekLast()]<nums[r])max.pollLast(); while(!min.isEmpty()&&nums[min.peekLast()]>nums[r])min.pollLast(); max.add(r); min.add(r); while(nums[max.peekFirst()]-nums[min.peekFirst()]>limit){ if(max.peekFirst()==left)max.pollFirst(); if(min.peekFirst()==left)min.pollFirst(); left++; } best=Math.max(best,r-left+1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "import java.util.*; class Solution { public int longestSubarray(int[] nums,int limit){ Deque<Integer> max=new ArrayDeque<>(), min=new ArrayDeque<>(); int left=0,best=0; for(int r=0;r<nums.length;r++){ while(!max.isEmpty()&&nums[max.peekLast()]<nums[r])max.pollLast(); while(!min.isEmpty()&&nums[min.peekLast()]>nums[r])min.pollLast(); max.add(r); min.add(r); while(nums[max.peekFirst()]-nums[min.peekFirst()]>limit){ if(max.peekFirst()==left)max.pollFirst(); if(min.peekFirst()==left)min.pollFirst(); left++; } best=Math.max(best,r-left+1); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(n) for deques.",
+      "recursiveComplexity": "Time O(n), Space O(n) deques plus O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int longestSubarray(int[] nums, int limit) {\n    int best = 0;\n    for (int start = 0; start < nums.length; start++) {\n      int min = nums[start];\n      int max = nums[start];\n      for (int end = start; end < nums.length; end++) {\n        min = Math.min(min, nums[end]);\n        max = Math.max(max, nums[end]);\n        if (max - min <= limit) best = Math.max(best, end - start + 1);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int longestSubarray(int[] nums, int limit) {\n    Deque<Integer> maxDeque = new ArrayDeque<>();\n    Deque<Integer> minDeque = new ArrayDeque<>();\n    int left = 0;\n    int best = 0;\n\n    for (int right = 0; right < nums.length; right++) {\n      while (!maxDeque.isEmpty() && nums[maxDeque.peekLast()] < nums[right]) maxDeque.pollLast();\n      while (!minDeque.isEmpty() && nums[minDeque.peekLast()] > nums[right]) minDeque.pollLast();\n      maxDeque.offerLast(right);\n      minDeque.offerLast(right);\n\n      while (nums[maxDeque.peekFirst()] - nums[minDeque.peekFirst()] > limit) {\n        if (maxDeque.peekFirst() == left) maxDeque.pollFirst();\n        if (minDeque.peekFirst() == left) minDeque.pollFirst();\n        left++;\n      }\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int longestSubarray(int[] nums, int limit) {\n    Deque<Integer> maxDeque = new ArrayDeque<>();\n    Deque<Integer> minDeque = new ArrayDeque<>();\n    int left = 0;\n    int best = 0;\n\n    for (int right = 0; right < nums.length; right++) {\n      while (!maxDeque.isEmpty() && nums[maxDeque.peekLast()] < nums[right]) maxDeque.pollLast();\n      while (!minDeque.isEmpty() && nums[minDeque.peekLast()] > nums[right]) minDeque.pollLast();\n      maxDeque.offerLast(right);\n      minDeque.offerLast(right);\n\n      while (nums[maxDeque.peekFirst()] - nums[minDeque.peekFirst()] > limit) {\n        if (maxDeque.peekFirst() == left) maxDeque.pollFirst();\n        if (minDeque.peekFirst() == left) minDeque.pollFirst();\n        left++;\n      }\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int longestSubarray(int[] nums, int limit) {\n    return scan(nums, limit, 0, 0, 0, new ArrayDeque<>(), new ArrayDeque<>());\n  }\n\n  private int scan(int[] nums, int limit, int right, int left, int best, Deque<Integer> maxDeque, Deque<Integer> minDeque) {\n    if (right == nums.length) return best;\n    push(nums, right, maxDeque, minDeque);\n    return shrink(nums, limit, right, left, best, maxDeque, minDeque);\n  }\n\n  private void push(int[] nums, int right, Deque<Integer> maxDeque, Deque<Integer> minDeque) {\n    while (!maxDeque.isEmpty() && nums[maxDeque.peekLast()] < nums[right]) maxDeque.pollLast();\n    while (!minDeque.isEmpty() && nums[minDeque.peekLast()] > nums[right]) minDeque.pollLast();\n    maxDeque.offerLast(right);\n    minDeque.offerLast(right);\n  }\n\n  private int shrink(int[] nums, int limit, int right, int left, int best, Deque<Integer> maxDeque, Deque<Integer> minDeque) {\n    if (nums[maxDeque.peekFirst()] - nums[minDeque.peekFirst()] > limit) {\n      if (maxDeque.peekFirst() == left) maxDeque.pollFirst();\n      if (minDeque.peekFirst() == left) minDeque.pollFirst();\n      return shrink(nums, limit, right, left + 1, best, maxDeque, minDeque);\n    }\n    return scan(nums, limit, right + 1, left, Math.max(best, right - left + 1), maxDeque, minDeque);\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int longestSubarray(int[] nums, int limit) {\n    Deque<Integer> maxDeque = new ArrayDeque<>();\n    Deque<Integer> minDeque = new ArrayDeque<>();\n    int left = 0;\n    int best = 0;\n\n    for (int right = 0; right < nums.length; right++) {\n      while (!maxDeque.isEmpty() && nums[maxDeque.peekLast()] < nums[right]) maxDeque.pollLast();\n      while (!minDeque.isEmpty() && nums[minDeque.peekLast()] > nums[right]) minDeque.pollLast();\n      maxDeque.offerLast(right);\n      minDeque.offerLast(right);\n\n      while (nums[maxDeque.peekFirst()] - nums[minDeque.peekFirst()] > limit) {\n        if (maxDeque.peekFirst() == left) maxDeque.pollFirst();\n        if (minDeque.peekFirst() == left) minDeque.pollFirst();\n        left++;\n      }\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
       "name": "Minimum Operations to Reduce X to Zero",
       "difficulty": "Medium",
       "subpattern": "Longest complement sum window",
-      "question": "Solve the LeetCode-style problem \"Minimum Operations to Reduce X to Zero\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
+      "question": "Given nums and x, remove elements only from the left or right end so the removed sum is exactly x. Return the minimum number of removals, or -1 if impossible.",
+      "trigger": "Removing ends with sum x is equivalent to keeping the longest middle window whose sum is total - x.",
+      "intuition": "Because nums are positive, expand the middle window and shrink while its sum exceeds target. Maximize kept length.",
+      "edgeCases": "x greater than total, x equals total, no target window, target window is whole array, single element, and all positive values.",
       "constraints": "1 <= nums.length <= 10^5; 1 <= nums[i] <= 10^4; 1 <= x <= 10^9.",
       "source": {
         "label": "LeetCode 1658 - Minimum Operations to Reduce X to Zero",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/"
       },
       "examples": [
         {
           "input": "nums = [1,1,4,2,3], x = 5",
           "output": "2",
-          "explanation": "Remove 2 and 3 from right."
+          "explanation": "Keep [1,1,4] with sum 6, so remove 2 and 3."
         },
         {
           "input": "nums = [5,6,7,8,9], x = 4",
           "output": "-1",
-          "explanation": "Cannot reduce exactly."
+          "explanation": "No removed-end sum can equal 4."
         },
         {
           "input": "nums = [3,2,20,1,1,3], x = 10",
           "output": "5",
-          "explanation": "Keep longest middle sum total-x."
+          "explanation": "Keep [20], so remove five elements."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int minOperations(int[] nums,int x){ int n=nums.length,best=Integer.MAX_VALUE; for(int l=0;l<=n;l++){ int left=0; for(int i=0;i<l;i++)left+=nums[i]; for(int r=0;r+l<=n;r++){ int sum=left; for(int j=0;j<r;j++)sum+=nums[n-1-j]; if(sum==x)best=Math.min(best,l+r); } } return best==Integer.MAX_VALUE?-1:best; } }",
-      "iterativeCode": "class Solution { public int minOperations(int[] nums,int x){ int total=0; for(int n:nums)total+=n; int target=total-x; if(target<0)return -1; int left=0,sum=0,best=-1; for(int r=0;r<nums.length;r++){ sum+=nums[r]; while(sum>target)sum-=nums[left++]; if(sum==target)best=Math.max(best,r-left+1); } return best==-1?-1:nums.length-best; } }",
-      "optimizedCode": "class Solution { public int minOperations(int[] nums,int x){ int total=0; for(int n:nums)total+=n; int target=total-x; if(target<0)return -1; int left=0,sum=0,best=-1; for(int r=0;r<nums.length;r++){ sum+=nums[r]; while(sum>target)sum-=nums[left++]; if(sum==target)best=Math.max(best,r-left+1); } return best==-1?-1:nums.length-best; } }",
-      "recursiveCode": "class Solution { public int recursiveScan(int[] nums) { return scan(nums, 0, 0); } private int scan(int[] nums, int index, int best) { if (index == nums.length) return best; return scan(nums, index + 1, Math.max(best, nums[index])); } }",
-      "code": "class Solution { public int minOperations(int[] nums,int x){ int total=0; for(int n:nums)total+=n; int target=total-x; if(target<0)return -1; int left=0,sum=0,best=-1; for(int r=0;r<nums.length;r++){ sum+=nums[r]; while(sum>target)sum-=nums[left++]; if(sum==target)best=Math.max(best,r-left+1); } return best==-1?-1:nums.length-best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int minOperations(int[] nums, int x) {\n    int total = 0;\n    for (int num : nums) total += num;\n    int target = total - x;\n    int longest = -1;\n\n    for (int start = 0; start < nums.length; start++) {\n      int sum = 0;\n      for (int end = start; end < nums.length; end++) {\n        sum += nums[end];\n        if (sum == target) longest = Math.max(longest, end - start + 1);\n      }\n    }\n    return longest == -1 ? -1 : nums.length - longest;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int minOperations(int[] nums, int x) {\n    int total = 0;\n    for (int num : nums) total += num;\n    int target = total - x;\n    if (target < 0) return -1;\n\n    int left = 0;\n    int sum = 0;\n    int longest = -1;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum > target && left <= right) {\n        sum -= nums[left++];\n      }\n      if (sum == target) longest = Math.max(longest, right - left + 1);\n    }\n    return longest == -1 ? -1 : nums.length - longest;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int minOperations(int[] nums, int x) {\n    int total = 0;\n    for (int num : nums) total += num;\n    int target = total - x;\n    if (target < 0) return -1;\n\n    int left = 0;\n    int sum = 0;\n    int longest = -1;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum > target && left <= right) {\n        sum -= nums[left++];\n      }\n      if (sum == target) longest = Math.max(longest, right - left + 1);\n    }\n    return longest == -1 ? -1 : nums.length - longest;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int minOperations(int[] nums, int x) {\n    int total = sum(nums, 0);\n    int target = total - x;\n    if (target < 0) return -1;\n    int longest = scan(nums, target, 0, 0, 0, -1);\n    return longest == -1 ? -1 : nums.length - longest;\n  }\n\n  private int sum(int[] nums, int index) {\n    if (index == nums.length) return 0;\n    return nums[index] + sum(nums, index + 1);\n  }\n\n  private int scan(int[] nums, int target, int right, int left, int windowSum, int longest) {\n    if (right == nums.length) return longest;\n    return shrink(nums, target, right, left, windowSum + nums[right], longest);\n  }\n\n  private int shrink(int[] nums, int target, int right, int left, int windowSum, int longest) {\n    if (windowSum > target && left <= right) {\n      return shrink(nums, target, right, left + 1, windowSum - nums[left], longest);\n    }\n    int nextLongest = windowSum == target ? Math.max(longest, right - left + 1) : longest;\n    return scan(nums, target, right + 1, left, windowSum, nextLongest);\n  }\n}",
+      "code": "class Solution {\n  public int minOperations(int[] nums, int x) {\n    int total = 0;\n    for (int num : nums) total += num;\n    int target = total - x;\n    if (target < 0) return -1;\n\n    int left = 0;\n    int sum = 0;\n    int longest = -1;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum > target && left <= right) {\n        sum -= nums[left++];\n      }\n      if (sum == target) longest = Math.max(longest, right - left + 1);\n    }\n    return longest == -1 ? -1 : nums.length - longest;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Binary Subarrays With Sum",
       "difficulty": "Medium",
       "subpattern": "At most sum counting window",
-      "question": "Solve the LeetCode-style problem \"Binary Subarrays With Sum\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given a binary array nums and an integer goal, return the number of non-empty subarrays with sum equal to goal.",
+      "trigger": "For binary arrays, number with exact sum goal equals atMost(goal) - atMost(goal - 1), and atMost can be maintained by a shrinking window.",
+      "intuition": "Count all windows ending at right with sum at most k. Subtract the count with sum at most goal - 1.",
+      "edgeCases": "goal = 0, all zeros, all ones, long zero stretches, single element, and goal larger than number of ones.",
+      "constraints": "1 <= nums.length <= 3 * 10^4; nums[i] is 0 or 1; 0 <= goal <= nums.length.",
       "source": {
         "label": "LeetCode 930 - Binary Subarrays With Sum",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/binary-subarrays-with-sum/"
       },
       "examples": [
         {
           "input": "nums = [1,0,1,0,1], goal = 2",
           "output": "4",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "Four subarrays contain exactly two ones."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "nums = [0,0,0,0,0], goal = 0",
+          "output": "15",
+          "explanation": "Every subarray has sum 0."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "nums = [1,1,1], goal = 2",
+          "output": "2",
+          "explanation": "The valid subarrays are [1,1] at positions 0..1 and 1..2."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int numSubarraysWithSum(int[] nums, int goal) {\n    int count = 0;\n    for (int start = 0; start < nums.length; start++) {\n      int sum = 0;\n      for (int end = start; end < nums.length; end++) {\n        sum += nums[end];\n        if (sum == goal) count++;\n      }\n    }\n    return count;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int numSubarraysWithSum(int[] nums, int goal) {\n    return atMost(nums, goal) - atMost(nums, goal - 1);\n  }\n\n  private int atMost(int[] nums, int goal) {\n    if (goal < 0) return 0;\n    int left = 0;\n    int sum = 0;\n    int count = 0;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum > goal) {\n        sum -= nums[left++];\n      }\n      count += right - left + 1;\n    }\n    return count;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int numSubarraysWithSum(int[] nums, int goal) {\n    return atMost(nums, goal) - atMost(nums, goal - 1);\n  }\n\n  private int atMost(int[] nums, int goal) {\n    if (goal < 0) return 0;\n    int left = 0;\n    int sum = 0;\n    int count = 0;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum > goal) {\n        sum -= nums[left++];\n      }\n      count += right - left + 1;\n    }\n    return count;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int numSubarraysWithSum(int[] nums, int goal) {\n    return atMost(nums, goal, 0, 0, 0, 0) - atMost(nums, goal - 1, 0, 0, 0, 0);\n  }\n\n  private int atMost(int[] nums, int goal, int right, int left, int sum, int count) {\n    if (goal < 0) return 0;\n    if (right == nums.length) return count;\n    return shrink(nums, goal, right, left, sum + nums[right], count);\n  }\n\n  private int shrink(int[] nums, int goal, int right, int left, int sum, int count) {\n    if (sum > goal) return shrink(nums, goal, right, left + 1, sum - nums[left], count);\n    return atMost(nums, goal, right + 1, left, sum, count + right - left + 1);\n  }\n}",
+      "code": "class Solution {\n  public int numSubarraysWithSum(int[] nums, int goal) {\n    return atMost(nums, goal) - atMost(nums, goal - 1);\n  }\n\n  private int atMost(int[] nums, int goal) {\n    if (goal < 0) return 0;\n    int left = 0;\n    int sum = 0;\n    int count = 0;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum > goal) {\n        sum -= nums[left++];\n      }\n      count += right - left + 1;\n    }\n    return count;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Get Equal Substrings Within Budget",
       "difficulty": "Medium",
       "subpattern": "Cost-bounded variable window",
-      "question": "Solve the LeetCode-style problem \"Get Equal Substrings Within Budget\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given strings s and t of equal length and maxCost, return the maximum length substring of s that can be changed to the corresponding substring of t with total cost at most maxCost.",
+      "trigger": "Each index has a conversion cost, and the longest contiguous range must have total cost within a budget.",
+      "intuition": "Expand by adding current cost. While budget is exceeded, remove costs from the left.",
+      "edgeCases": "maxCost = 0, all costs fit, no positive-length costly window fits, identical strings, single character, and large budget.",
+      "constraints": "1 <= s.length == t.length <= 10^5; 0 <= maxCost <= 10^6; s and t contain lowercase English letters.",
       "source": {
         "label": "LeetCode 1208 - Get Equal Substrings Within Budget",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/get-equal-substrings-within-budget/"
       },
       "examples": [
         {
           "input": "s = \"abcd\", t = \"bcdf\", maxCost = 3",
           "output": "3",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "The substring \"abc\" costs 1 + 1 + 1 = 3."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "s = \"abcd\", t = \"cdef\", maxCost = 3",
+          "output": "1",
+          "explanation": "Any two-character substring costs more than 3."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "s = \"abcd\", t = \"acde\", maxCost = 0",
+          "output": "1",
+          "explanation": "Only unchanged characters can be included."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int equalSubstring(String s, String t, int maxCost) {\n    int best = 0;\n    for (int start = 0; start < s.length(); start++) {\n      int cost = 0;\n      for (int end = start; end < s.length(); end++) {\n        cost += Math.abs(s.charAt(end) - t.charAt(end));\n        if (cost <= maxCost) best = Math.max(best, end - start + 1);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int equalSubstring(String s, String t, int maxCost) {\n    int left = 0;\n    int cost = 0;\n    int best = 0;\n    for (int right = 0; right < s.length(); right++) {\n      cost += Math.abs(s.charAt(right) - t.charAt(right));\n      while (cost > maxCost) {\n        cost -= Math.abs(s.charAt(left) - t.charAt(left));\n        left++;\n      }\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int equalSubstring(String s, String t, int maxCost) {\n    int left = 0;\n    int cost = 0;\n    int best = 0;\n    for (int right = 0; right < s.length(); right++) {\n      cost += Math.abs(s.charAt(right) - t.charAt(right));\n      while (cost > maxCost) {\n        cost -= Math.abs(s.charAt(left) - t.charAt(left));\n        left++;\n      }\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int equalSubstring(String s, String t, int maxCost) {\n    return scan(s, t, maxCost, 0, 0, 0, 0);\n  }\n\n  private int scan(String s, String t, int maxCost, int right, int left, int cost, int best) {\n    if (right == s.length()) return best;\n    int nextCost = cost + Math.abs(s.charAt(right) - t.charAt(right));\n    return shrink(s, t, maxCost, right, left, nextCost, best);\n  }\n\n  private int shrink(String s, String t, int maxCost, int right, int left, int cost, int best) {\n    if (cost > maxCost) {\n      int removed = Math.abs(s.charAt(left) - t.charAt(left));\n      return shrink(s, t, maxCost, right, left + 1, cost - removed, best);\n    }\n    return scan(s, t, maxCost, right + 1, left, cost, Math.max(best, right - left + 1));\n  }\n}",
+      "code": "class Solution {\n  public int equalSubstring(String s, String t, int maxCost) {\n    int left = 0;\n    int cost = 0;\n    int best = 0;\n    for (int right = 0; right < s.length(); right++) {\n      cost += Math.abs(s.charAt(right) - t.charAt(right));\n      while (cost > maxCost) {\n        cost -= Math.abs(s.charAt(left) - t.charAt(left));\n        left++;\n      }\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Replace the Substring for Balanced String",
       "difficulty": "Medium",
       "subpattern": "Outside-count satisfying window",
-      "question": "Solve the LeetCode-style problem \"Replace the Substring for Balanced String\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given a string s containing only Q, W, E, R, replace one substring with any string of the same length so each character appears n / 4 times. Return the minimum substring length.",
+      "trigger": "A window is replaceable when the counts outside that window are already no more than the required quota.",
+      "intuition": "Track outside counts. Expand right by moving chars into the replace window, then shrink while outside counts are valid.",
+      "edgeCases": "Already balanced string, one overrepresented character, whole string replacement, repeated valid windows, and n divisible by 4.",
+      "constraints": "4 <= s.length <= 10^5; s.length is divisible by 4; s contains only Q, W, E, R.",
       "source": {
         "label": "LeetCode 1234 - Replace the Substring for Balanced String",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/replace-the-substring-for-balanced-string/"
       },
       "examples": [
         {
           "input": "s = \"QWER\"",
           "output": "0",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "The string is already balanced."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "s = \"QQWE\"",
+          "output": "1",
+          "explanation": "Replacing one Q is enough."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "s = \"QQQW\"",
+          "output": "2",
+          "explanation": "A length-2 substring can be replaced to balance all counts."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1) because alphabet size is constant.",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack; character counts use O(1).",
+      "bruteForceCode": "class Solution {\n  public int balancedString(String s) {\n    int n = s.length();\n    int answer = n;\n    for (int left = 0; left < n; left++) {\n      for (int right = left; right < n; right++) {\n        if (canReplace(s, left, right)) {\n          answer = Math.min(answer, right - left + 1);\n        }\n      }\n    }\n    return canReplace(s, 0, -1) ? 0 : answer;\n  }\n\n  private boolean canReplace(String s, int left, int right) {\n    int[] count = new int[128];\n    for (int i = 0; i < s.length(); i++) {\n      if (i < left || i > right) count[s.charAt(i)]++;\n    }\n    int quota = s.length() / 4;\n    return count['Q'] <= quota && count['W'] <= quota && count['E'] <= quota && count['R'] <= quota;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int balancedString(String s) {\n    int n = s.length();\n    int quota = n / 4;\n    int[] outside = new int[128];\n    for (char c : s.toCharArray()) outside[c]++;\n    if (valid(outside, quota)) return 0;\n\n    int answer = n;\n    int left = 0;\n    for (int right = 0; right < n; right++) {\n      outside[s.charAt(right)]--;\n      while (left <= right && valid(outside, quota)) {\n        answer = Math.min(answer, right - left + 1);\n        outside[s.charAt(left)]++;\n        left++;\n      }\n    }\n    return answer;\n  }\n\n  private boolean valid(int[] count, int quota) {\n    return count['Q'] <= quota && count['W'] <= quota && count['E'] <= quota && count['R'] <= quota;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int balancedString(String s) {\n    int n = s.length();\n    int quota = n / 4;\n    int[] outside = new int[128];\n    for (char c : s.toCharArray()) outside[c]++;\n    if (valid(outside, quota)) return 0;\n\n    int answer = n;\n    int left = 0;\n    for (int right = 0; right < n; right++) {\n      outside[s.charAt(right)]--;\n      while (left <= right && valid(outside, quota)) {\n        answer = Math.min(answer, right - left + 1);\n        outside[s.charAt(left)]++;\n        left++;\n      }\n    }\n    return answer;\n  }\n\n  private boolean valid(int[] count, int quota) {\n    return count['Q'] <= quota && count['W'] <= quota && count['E'] <= quota && count['R'] <= quota;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int balancedString(String s) {\n    int[] outside = new int[128];\n    fill(s, outside, 0);\n    int quota = s.length() / 4;\n    if (valid(outside, quota)) return 0;\n    return scan(s, quota, outside, 0, 0, s.length());\n  }\n\n  private void fill(String s, int[] outside, int index) {\n    if (index == s.length()) return;\n    outside[s.charAt(index)]++;\n    fill(s, outside, index + 1);\n  }\n\n  private int scan(String s, int quota, int[] outside, int right, int left, int answer) {\n    if (right == s.length()) return answer;\n    outside[s.charAt(right)]--;\n    return shrink(s, quota, outside, right, left, answer);\n  }\n\n  private int shrink(String s, int quota, int[] outside, int right, int left, int answer) {\n    if (left <= right && valid(outside, quota)) {\n      int nextAnswer = Math.min(answer, right - left + 1);\n      outside[s.charAt(left)]++;\n      return shrink(s, quota, outside, right, left + 1, nextAnswer);\n    }\n    return scan(s, quota, outside, right + 1, left, answer);\n  }\n\n  private boolean valid(int[] count, int quota) {\n    return count['Q'] <= quota && count['W'] <= quota && count['E'] <= quota && count['R'] <= quota;\n  }\n}",
+      "code": "class Solution {\n  public int balancedString(String s) {\n    int n = s.length();\n    int quota = n / 4;\n    int[] outside = new int[128];\n    for (char c : s.toCharArray()) outside[c]++;\n    if (valid(outside, quota)) return 0;\n\n    int answer = n;\n    int left = 0;\n    for (int right = 0; right < n; right++) {\n      outside[s.charAt(right)]--;\n      while (left <= right && valid(outside, quota)) {\n        answer = Math.min(answer, right - left + 1);\n        outside[s.charAt(left)]++;\n        left++;\n      }\n    }\n    return answer;\n  }\n\n  private boolean valid(int[] count, int quota) {\n    return count['Q'] <= quota && count['W'] <= quota && count['E'] <= quota && count['R'] <= quota;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "K Radius Subarray Averages",
       "difficulty": "Medium",
       "subpattern": "Fixed radius sum window",
-      "question": "Solve the LeetCode-style problem \"K Radius Subarray Averages\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given nums and k, return an array where answer[i] is the average of the subarray centered at i with radius k, or -1 if the full radius does not fit.",
+      "trigger": "Every valid center needs a fixed-size window of length 2k + 1.",
+      "intuition": "Maintain one fixed-length sum. When the window reaches length 2k + 1, write the average at its center and slide by one.",
+      "edgeCases": "k = 0, window longer than nums, large sums requiring long, boundary centers, and integer division.",
+      "constraints": "1 <= nums.length <= 10^5; 0 <= nums[i], k <= 10^5.",
       "source": {
         "label": "LeetCode 2090 - K Radius Subarray Averages",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/k-radius-subarray-averages/"
       },
       "examples": [
         {
           "input": "nums = [7,4,3,9,1,8,5,2,6], k = 3",
           "output": "[-1,-1,-1,5,4,4,-1,-1,-1]",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "Only centers 3, 4, and 5 have full radius-3 windows."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "nums = [100000], k = 0",
+          "output": "[100000]",
+          "explanation": "Radius 0 averages the element itself."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "nums = [8], k = 100000",
+          "output": "[-1]",
+          "explanation": "The required window does not fit."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n*k) in the worst case, Space O(n) for output.",
+      "optimizedComplexity": "Time O(n), Space O(n) for output; O(1) extra window state.",
+      "recursiveComplexity": "Time O(n), Space O(n) output plus O(n) recursion stack.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int[] getAverages(int[] nums, int k) {\n    int[] ans = new int[nums.length];\n    Arrays.fill(ans, -1);\n    int length = 2 * k + 1;\n    for (int center = k; center + k < nums.length; center++) {\n      long sum = 0;\n      for (int i = center - k; i <= center + k; i++) {\n        sum += nums[i];\n      }\n      ans[center] = (int) (sum / length);\n    }\n    return ans;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int[] getAverages(int[] nums, int k) {\n    int n = nums.length;\n    int[] ans = new int[n];\n    Arrays.fill(ans, -1);\n    int length = 2 * k + 1;\n    if (length > n) return ans;\n\n    long sum = 0;\n    for (int right = 0; right < n; right++) {\n      sum += nums[right];\n      if (right >= length) sum -= nums[right - length];\n      if (right >= length - 1) {\n        int center = right - k;\n        ans[center] = (int) (sum / length);\n      }\n    }\n    return ans;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int[] getAverages(int[] nums, int k) {\n    int n = nums.length;\n    int[] ans = new int[n];\n    Arrays.fill(ans, -1);\n    int length = 2 * k + 1;\n    if (length > n) return ans;\n\n    long sum = 0;\n    for (int right = 0; right < n; right++) {\n      sum += nums[right];\n      if (right >= length) sum -= nums[right - length];\n      if (right >= length - 1) {\n        int center = right - k;\n        ans[center] = (int) (sum / length);\n      }\n    }\n    return ans;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int[] getAverages(int[] nums, int k) {\n    int[] ans = new int[nums.length];\n    Arrays.fill(ans, -1);\n    int length = 2 * k + 1;\n    if (length > nums.length) return ans;\n    fill(nums, ans, k, length, 0, 0L);\n    return ans;\n  }\n\n  private void fill(int[] nums, int[] ans, int k, int length, int right, long sum) {\n    if (right == nums.length) return;\n    long nextSum = sum + nums[right];\n    if (right >= length) nextSum -= nums[right - length];\n    if (right >= length - 1) {\n      ans[right - k] = (int) (nextSum / length);\n    }\n    fill(nums, ans, k, length, right + 1, nextSum);\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int[] getAverages(int[] nums, int k) {\n    int n = nums.length;\n    int[] ans = new int[n];\n    Arrays.fill(ans, -1);\n    int length = 2 * k + 1;\n    if (length > n) return ans;\n\n    long sum = 0;\n    for (int right = 0; right < n; right++) {\n      sum += nums[right];\n      if (right >= length) sum -= nums[right - length];\n      if (right >= length - 1) {\n        int center = right - k;\n        ans[center] = (int) (sum / length);\n      }\n    }\n    return ans;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Defuse the Bomb",
       "difficulty": "Easy",
       "subpattern": "Circular fixed window",
-      "question": "Solve the LeetCode-style problem \"Defuse the Bomb\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given a circular array code and integer k, replace each element by the sum of the next k elements if k > 0, previous k elements if k < 0, or 0 if k = 0.",
+      "trigger": "Each answer is a fixed-size circular neighbor window.",
+      "intuition": "Duplicate traversal with modulo and maintain the next or previous k-sum instead of recomputing for every index.",
+      "edgeCases": "k = 0, k positive, k negative, wraparound at both ends, n = 1 is not allowed by constraints but small n still wraps.",
+      "constraints": "2 <= code.length <= 100; 1 <= code[i] <= 100; -(code.length - 1) <= k <= code.length - 1.",
       "source": {
         "label": "LeetCode 1652 - Defuse the Bomb",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/defuse-the-bomb/"
       },
       "examples": [
         {
           "input": "code = [5,7,1,4], k = 3",
           "output": "[12,10,16,13]",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "Each element becomes the sum of the next three circular elements."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "code = [1,2,3,4], k = 0",
+          "output": "[0,0,0,0]",
+          "explanation": "k = 0 forces every answer to 0."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "code = [2,4,9,3], k = -2",
+          "output": "[12,5,6,13]",
+          "explanation": "Each element uses the previous two circular elements."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n*|k|), Space O(n) for output.",
+      "optimizedComplexity": "Time O(n), Space O(n) for output.",
+      "recursiveComplexity": "Time O(n), Space O(n) output plus O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int[] decrypt(int[] code, int k) {\n    int n = code.length;\n    int[] ans = new int[n];\n    if (k == 0) return ans;\n\n    for (int i = 0; i < n; i++) {\n      int sum = 0;\n      for (int step = 1; step <= Math.abs(k); step++) {\n        int index = k > 0 ? (i + step) % n : (i - step + n) % n;\n        sum += code[index];\n      }\n      ans[i] = sum;\n    }\n    return ans;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int[] decrypt(int[] code, int k) {\n    int n = code.length;\n    int[] ans = new int[n];\n    if (k == 0) return ans;\n\n    int start = k > 0 ? 1 : n + k;\n    int end = k > 0 ? k : n - 1;\n    int sum = 0;\n    for (int i = start; i <= end; i++) {\n      sum += code[i % n];\n    }\n\n    for (int i = 0; i < n; i++) {\n      ans[i] = sum;\n      sum -= code[start % n];\n      start++;\n      end++;\n      sum += code[end % n];\n    }\n    return ans;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int[] decrypt(int[] code, int k) {\n    int n = code.length;\n    int[] ans = new int[n];\n    if (k == 0) return ans;\n\n    int start = k > 0 ? 1 : n + k;\n    int end = k > 0 ? k : n - 1;\n    int sum = 0;\n    for (int i = start; i <= end; i++) {\n      sum += code[i % n];\n    }\n\n    for (int i = 0; i < n; i++) {\n      ans[i] = sum;\n      sum -= code[start % n];\n      start++;\n      end++;\n      sum += code[end % n];\n    }\n    return ans;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int[] decrypt(int[] code, int k) {\n    int[] ans = new int[code.length];\n    if (k == 0) return ans;\n    int n = code.length;\n    int start = k > 0 ? 1 : n + k;\n    int end = k > 0 ? k : n - 1;\n    int sum = initial(code, start, end, 0);\n    fill(code, ans, 0, start, end, sum);\n    return ans;\n  }\n\n  private int initial(int[] code, int index, int end, int sum) {\n    if (index > end) return sum;\n    return initial(code, index + 1, end, sum + code[index % code.length]);\n  }\n\n  private void fill(int[] code, int[] ans, int index, int start, int end, int sum) {\n    if (index == code.length) return;\n    ans[index] = sum;\n    int nextSum = sum - code[start % code.length] + code[(end + 1) % code.length];\n    fill(code, ans, index + 1, start + 1, end + 1, nextSum);\n  }\n}",
+      "code": "class Solution {\n  public int[] decrypt(int[] code, int k) {\n    int n = code.length;\n    int[] ans = new int[n];\n    if (k == 0) return ans;\n\n    int start = k > 0 ? 1 : n + k;\n    int end = k > 0 ? k : n - 1;\n    int sum = 0;\n    for (int i = start; i <= end; i++) {\n      sum += code[i % n];\n    }\n\n    for (int i = 0; i < n; i++) {\n      ans[i] = sum;\n      sum -= code[start % n];\n      start++;\n      end++;\n      sum += code[end % n];\n    }\n    return ans;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Maximum Number of Vowels in a Substring of Given Length",
       "difficulty": "Medium",
       "subpattern": "Fixed-size count window",
-      "question": "Solve the LeetCode-style problem \"Maximum Number of Vowels in a Substring of Given Length\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given a string s and integer k, return the maximum number of vowels in any substring of length k.",
+      "trigger": "Every candidate substring has the same fixed length k, so slide one count window across the string.",
+      "intuition": "Add the entering character, remove the character that falls out after k positions, and track the maximum vowel count.",
+      "edgeCases": "k = 1, k = s.length, no vowels, all vowels, vowels entering/leaving at the same step, and uppercase not present.",
+      "constraints": "1 <= s.length <= 10^5; s contains lowercase English letters; 1 <= k <= s.length.",
       "source": {
         "label": "LeetCode 1456 - Maximum Number of Vowels in a Substring of Given Length",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/"
       },
       "examples": [
         {
           "input": "s = \"abciiidef\", k = 3",
           "output": "3",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "The substring \"iii\" has three vowels."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "s = \"aeiou\", k = 2",
+          "output": "2",
+          "explanation": "Every length-2 substring has two vowels."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "s = \"leetcode\", k = 3",
+          "output": "2",
+          "explanation": "The substring \"lee\" has two vowels."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n*k), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int maxVowels(String s, int k) {\n    int best = 0;\n    for (int start = 0; start + k <= s.length(); start++) {\n      int count = 0;\n      for (int i = start; i < start + k; i++) {\n        if (isVowel(s.charAt(i))) count++;\n      }\n      best = Math.max(best, count);\n    }\n    return best;\n  }\n\n  private boolean isVowel(char ch) {\n    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int maxVowels(String s, int k) {\n    int count = 0;\n    int best = 0;\n    for (int right = 0; right < s.length(); right++) {\n      if (isVowel(s.charAt(right))) count++;\n      if (right >= k && isVowel(s.charAt(right - k))) count--;\n      if (right >= k - 1) best = Math.max(best, count);\n    }\n    return best;\n  }\n\n  private boolean isVowel(char ch) {\n    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int maxVowels(String s, int k) {\n    int count = 0;\n    int best = 0;\n    for (int right = 0; right < s.length(); right++) {\n      if (isVowel(s.charAt(right))) count++;\n      if (right >= k && isVowel(s.charAt(right - k))) count--;\n      if (right >= k - 1) best = Math.max(best, count);\n    }\n    return best;\n  }\n\n  private boolean isVowel(char ch) {\n    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int maxVowels(String s, int k) {\n    return scan(s, k, 0, 0, 0);\n  }\n\n  private int scan(String s, int k, int right, int count, int best) {\n    if (right == s.length()) return best;\n    int nextCount = count + (isVowel(s.charAt(right)) ? 1 : 0);\n    if (right >= k && isVowel(s.charAt(right - k))) nextCount--;\n    int nextBest = right >= k - 1 ? Math.max(best, nextCount) : best;\n    return scan(s, k, right + 1, nextCount, nextBest);\n  }\n\n  private boolean isVowel(char ch) {\n    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';\n  }\n}",
+      "code": "class Solution {\n  public int maxVowels(String s, int k) {\n    int count = 0;\n    int best = 0;\n    for (int right = 0; right < s.length(); right++) {\n      if (isVowel(s.charAt(right))) count++;\n      if (right >= k && isVowel(s.charAt(right - k))) count--;\n      if (right >= k - 1) best = Math.max(best, count);\n    }\n    return best;\n  }\n\n  private boolean isVowel(char ch) {\n    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Diet Plan Performance",
       "difficulty": "Easy",
       "subpattern": "Fixed-size score window",
-      "question": "Solve the LeetCode-style problem \"Diet Plan Performance\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given calories, k, lower, and upper, score each length-k period: +1 if sum > upper, -1 if sum < lower, else 0. Return total score.",
+      "trigger": "Every period has fixed size k and only its sum matters.",
+      "intuition": "Maintain one rolling k-day calorie sum and score it once the window reaches size k.",
+      "edgeCases": "k = 1, k = calories.length, sum exactly lower, sum exactly upper, all penalties, and all rewards.",
+      "constraints": "1 <= k <= calories.length <= 10^5; 0 <= calories[i] <= 20000; 0 <= lower <= upper.",
       "source": {
         "label": "LeetCode 1176 - Diet Plan Performance",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/diet-plan-performance/"
       },
       "examples": [
         {
           "input": "calories = [1,2,3,4,5], k = 1, lower = 3, upper = 3",
           "output": "0",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "Scores are -1, -1, 0, +1, +1."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "calories = [3,2], k = 2, lower = 0, upper = 1",
+          "output": "1",
+          "explanation": "The only window sum is 5, above upper."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "calories = [6,5,0,0], k = 2, lower = 1, upper = 5",
+          "output": "0",
+          "explanation": "Scores are +1, 0, -1."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n*k), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int dietPlanPerformance(int[] calories, int k, int lower, int upper) {\n    int points = 0;\n    for (int start = 0; start + k <= calories.length; start++) {\n      int sum = 0;\n      for (int i = start; i < start + k; i++) sum += calories[i];\n      if (sum < lower) points--;\n      else if (sum > upper) points++;\n    }\n    return points;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int dietPlanPerformance(int[] calories, int k, int lower, int upper) {\n    int sum = 0;\n    int points = 0;\n    for (int right = 0; right < calories.length; right++) {\n      sum += calories[right];\n      if (right >= k) sum -= calories[right - k];\n      if (right >= k - 1) {\n        if (sum < lower) points--;\n        else if (sum > upper) points++;\n      }\n    }\n    return points;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int dietPlanPerformance(int[] calories, int k, int lower, int upper) {\n    int sum = 0;\n    int points = 0;\n    for (int right = 0; right < calories.length; right++) {\n      sum += calories[right];\n      if (right >= k) sum -= calories[right - k];\n      if (right >= k - 1) {\n        if (sum < lower) points--;\n        else if (sum > upper) points++;\n      }\n    }\n    return points;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int dietPlanPerformance(int[] calories, int k, int lower, int upper) {\n    return scan(calories, k, lower, upper, 0, 0, 0);\n  }\n\n  private int scan(int[] calories, int k, int lower, int upper, int right, int sum, int points) {\n    if (right == calories.length) return points;\n    int nextSum = sum + calories[right];\n    if (right >= k) nextSum -= calories[right - k];\n    int nextPoints = points;\n    if (right >= k - 1) {\n      if (nextSum < lower) nextPoints--;\n      else if (nextSum > upper) nextPoints++;\n    }\n    return scan(calories, k, lower, upper, right + 1, nextSum, nextPoints);\n  }\n}",
+      "code": "class Solution {\n  public int dietPlanPerformance(int[] calories, int k, int lower, int upper) {\n    int sum = 0;\n    int points = 0;\n    for (int right = 0; right < calories.length; right++) {\n      sum += calories[right];\n      if (right >= k) sum -= calories[right - k];\n      if (right >= k - 1) {\n        if (sum < lower) points--;\n        else if (sum > upper) points++;\n      }\n    }\n    return points;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Longest Nice Subarray",
       "difficulty": "Medium",
       "subpattern": "Bitmask conflict window",
-      "question": "Solve the LeetCode-style problem \"Longest Nice Subarray\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given nums, return the length of the longest subarray where every pair of elements has bitwise AND equal to 0.",
+      "trigger": "A window is valid when no bit is set in more than one element; conflicts can be detected with a bitmask.",
+      "intuition": "Keep OR mask of current window. Before adding nums[right], remove from left while it shares a bit with the mask.",
+      "edgeCases": "Single element, repeated same bit, all powers of two, large values up to 10^9, and conflicts that require multiple removals.",
+      "constraints": "1 <= nums.length <= 10^5; 1 <= nums[i] <= 10^9.",
       "source": {
         "label": "LeetCode 2401 - Longest Nice Subarray",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/longest-nice-subarray/"
       },
       "examples": [
         {
           "input": "nums = [1,3,8,48,10]",
           "output": "3",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "The subarray [3,8,48] is nice."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "nums = [3,1,5,11,13]",
+          "output": "1",
+          "explanation": "Every length-2 candidate has a bit conflict."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "nums = [1,2,4,8]",
+          "output": "4",
+          "explanation": "All values use disjoint bits."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack.",
+      "bruteForceCode": "class Solution {\n  public int longestNiceSubarray(int[] nums) {\n    int best = 0;\n    for (int start = 0; start < nums.length; start++) {\n      int mask = 0;\n      for (int end = start; end < nums.length; end++) {\n        if ((mask & nums[end]) != 0) break;\n        mask |= nums[end];\n        best = Math.max(best, end - start + 1);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int longestNiceSubarray(int[] nums) {\n    int left = 0;\n    int mask = 0;\n    int best = 0;\n    for (int right = 0; right < nums.length; right++) {\n      while ((mask & nums[right]) != 0) {\n        mask ^= nums[left];\n        left++;\n      }\n      mask |= nums[right];\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int longestNiceSubarray(int[] nums) {\n    int left = 0;\n    int mask = 0;\n    int best = 0;\n    for (int right = 0; right < nums.length; right++) {\n      while ((mask & nums[right]) != 0) {\n        mask ^= nums[left];\n        left++;\n      }\n      mask |= nums[right];\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int longestNiceSubarray(int[] nums) {\n    return scan(nums, 0, 0, 0, 0);\n  }\n\n  private int scan(int[] nums, int right, int left, int mask, int best) {\n    if (right == nums.length) return best;\n    return shrink(nums, right, left, mask, best);\n  }\n\n  private int shrink(int[] nums, int right, int left, int mask, int best) {\n    if ((mask & nums[right]) != 0) {\n      return shrink(nums, right, left + 1, mask ^ nums[left], best);\n    }\n    int nextMask = mask | nums[right];\n    int nextBest = Math.max(best, right - left + 1);\n    return scan(nums, right + 1, left, nextMask, nextBest);\n  }\n}",
+      "code": "class Solution {\n  public int longestNiceSubarray(int[] nums) {\n    int left = 0;\n    int mask = 0;\n    int best = 0;\n    for (int right = 0; right < nums.length; right++) {\n      while ((mask & nums[right]) != 0) {\n        mask ^= nums[left];\n        left++;\n      }\n      mask |= nums[right];\n      best = Math.max(best, right - left + 1);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Count Complete Subarrays in an Array",
       "difficulty": "Medium",
       "subpattern": "All distinct values window",
-      "question": "Solve the LeetCode-style problem \"Count Complete Subarrays in an Array\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given nums, return the number of subarrays whose number of distinct elements equals the number of distinct elements in the whole array.",
+      "trigger": "A complete window is valid once it contains all globally distinct values; then every extension to the right is also complete.",
+      "intuition": "Know the required distinct count. Expand until the window is complete, then shrink left while adding all right extensions.",
+      "edgeCases": "All elements same, all elements distinct, duplicates clustered, smallest array, and repeated valid windows.",
+      "constraints": "1 <= nums.length <= 1000; 1 <= nums[i] <= 2000.",
       "source": {
         "label": "LeetCode 2799 - Count Complete Subarrays in an Array",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/count-complete-subarrays-in-an-array/"
       },
       "examples": [
         {
           "input": "nums = [1,3,1,2,2]",
           "output": "4",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "The full array has three distinct values; four subarrays contain all three."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "nums = [5,5,5,5]",
+          "output": "10",
+          "explanation": "Every subarray is complete because the global distinct count is one."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "nums = [1,2,3]",
+          "output": "1",
+          "explanation": "Only the full array contains all three distinct values."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(n).",
+      "optimizedComplexity": "Time O(n), Space O(n).",
+      "recursiveComplexity": "Time O(n), Space O(n) map plus O(n) recursion stack.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int countCompleteSubarrays(int[] nums) {\n    Set<Integer> all = new HashSet<>();\n    for (int num : nums) all.add(num);\n    int required = all.size();\n    int count = 0;\n\n    for (int start = 0; start < nums.length; start++) {\n      Set<Integer> seen = new HashSet<>();\n      for (int end = start; end < nums.length; end++) {\n        seen.add(nums[end]);\n        if (seen.size() == required) count++;\n      }\n    }\n    return count;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int countCompleteSubarrays(int[] nums) {\n    Set<Integer> all = new HashSet<>();\n    for (int num : nums) all.add(num);\n    int required = all.size();\n\n    Map<Integer, Integer> freq = new HashMap<>();\n    int left = 0;\n    int count = 0;\n    for (int right = 0; right < nums.length; right++) {\n      freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);\n      while (freq.size() == required) {\n        count += nums.length - right;\n        int value = nums[left++];\n        freq.put(value, freq.get(value) - 1);\n        if (freq.get(value) == 0) freq.remove(value);\n      }\n    }\n    return count;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int countCompleteSubarrays(int[] nums) {\n    Set<Integer> all = new HashSet<>();\n    for (int num : nums) all.add(num);\n    int required = all.size();\n\n    Map<Integer, Integer> freq = new HashMap<>();\n    int left = 0;\n    int count = 0;\n    for (int right = 0; right < nums.length; right++) {\n      freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);\n      while (freq.size() == required) {\n        count += nums.length - right;\n        int value = nums[left++];\n        freq.put(value, freq.get(value) - 1);\n        if (freq.get(value) == 0) freq.remove(value);\n      }\n    }\n    return count;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int countCompleteSubarrays(int[] nums) {\n    Set<Integer> all = new HashSet<>();\n    for (int num : nums) all.add(num);\n    return scan(nums, all.size(), 0, 0, 0, new HashMap<>());\n  }\n\n  private int scan(int[] nums, int required, int right, int left, int count, Map<Integer, Integer> freq) {\n    if (right == nums.length) return count;\n    freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);\n    return shrink(nums, required, right, left, count, freq);\n  }\n\n  private int shrink(int[] nums, int required, int right, int left, int count, Map<Integer, Integer> freq) {\n    if (freq.size() == required) {\n      int value = nums[left];\n      freq.put(value, freq.get(value) - 1);\n      if (freq.get(value) == 0) freq.remove(value);\n      return shrink(nums, required, right, left + 1, count + nums.length - right, freq);\n    }\n    return scan(nums, required, right + 1, left, count, freq);\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int countCompleteSubarrays(int[] nums) {\n    Set<Integer> all = new HashSet<>();\n    for (int num : nums) all.add(num);\n    int required = all.size();\n\n    Map<Integer, Integer> freq = new HashMap<>();\n    int left = 0;\n    int count = 0;\n    for (int right = 0; right < nums.length; right++) {\n      freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);\n      while (freq.size() == required) {\n        count += nums.length - right;\n        int value = nums[left++];\n        freq.put(value, freq.get(value) - 1);\n        if (freq.get(value) == 0) freq.remove(value);\n      }\n    }\n    return count;\n  }\n}"
     },
     {
       "group": "practice",
       "name": "Take K of Each Character From Left and Right",
       "difficulty": "Medium",
       "subpattern": "Complement valid middle window",
-      "question": "Solve the LeetCode-style problem \"Take K of Each Character From Left and Right\" using a sliding window over a contiguous range.",
-      "trigger": "The condition can be maintained while the right boundary expands and the left boundary shrinks.",
-      "intuition": "Maintain only the state needed for the current window and update the answer when the window is valid.",
-      "edgeCases": "Small input, all valid window, no valid window, duplicate values, boundary k/limit values.",
-      "constraints": "See linked LeetCode source for exact constraints.",
+      "question": "Given a string s containing only a, b, c, take characters from the left and/or right so at least k of each character are taken. Return the minimum minutes, or -1 if impossible.",
+      "trigger": "Taking from both ends is equivalent to leaving one middle window. The left middle window is valid if it leaves enough of each char outside.",
+      "intuition": "If total count of each char is at least k, find the longest middle window whose counts do not exceed total[c] - k.",
+      "edgeCases": "k = 0, impossible total counts, all characters taken, longest kept window empty, repeated characters, and shrinking multiple times.",
+      "constraints": "1 <= s.length <= 10^5; s contains only a, b, c; 0 <= k <= s.length.",
       "source": {
         "label": "LeetCode 2516 - Take K of Each Character From Left and Right",
-        "url": "https://leetcode.com/problems/undefined/"
+        "url": "https://leetcode.com/problems/take-k-of-each-character-from-left-and-right/"
       },
       "examples": [
         {
           "input": "s = \"aabaaaacaabc\", k = 2",
           "output": "8",
-          "explanation": "Canonical sliding-window example."
+          "explanation": "The longest keepable middle window has length 4, so 12 - 4 = 8."
         },
         {
-          "input": "Second canonical case",
-          "output": "Valid output",
-          "explanation": "Concrete behavior is shown in the linked reference."
+          "input": "s = \"a\", k = 1",
+          "output": "-1",
+          "explanation": "There are not enough b and c characters."
         },
         {
-          "input": "Edge canonical case",
-          "output": "Boundary output",
-          "explanation": "Boundary behavior is shown in the linked reference."
+          "input": "s = \"abc\", k = 0",
+          "output": "0",
+          "explanation": "No characters need to be taken."
         }
       ],
-      "bruteForceComplexity": "Time O(n^2), Space O(1) or O(window state).",
-      "optimizedComplexity": "Time O(n), Space O(window state).",
-      "recursiveComplexity": "Time O(n), Space O(n) call stack plus window state.",
-      "bruteForceCode": "class Solution { public int bruteForceWindow(int[] nums) { int best = 0; for (int i = 0; i < nums.length; i++) { for (int j = i; j < nums.length; j++) { best = Math.max(best, j - i + 1); } } return best; } }",
-      "iterativeCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "optimizedCode": "class Solution { public int slidingWindow(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }",
-      "recursiveCode": "class Solution { public int recursiveWindow(int[] nums) { return scan(nums, 0, 0, 0); } private int scan(int[] nums, int right, int left, int best) { if (right == nums.length) return best; return scan(nums, right + 1, left, Math.max(best, right - left + 1)); } }",
-      "code": "class Solution { public int slidingWindowTemplate(int[] nums) { int left = 0, best = 0; for (int right = 0; right < nums.length; right++) { while (left <= right && false) left++; best = Math.max(best, right - left + 1); } return best; } }"
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(1).",
+      "recursiveComplexity": "Time O(n), Space O(n) recursion stack; counts use O(1).",
+      "bruteForceCode": "class Solution {\n  public int takeCharacters(String s, int k) {\n    if (k == 0) return 0;\n    int n = s.length();\n    int bestKeep = -1;\n    int[] total = countAll(s);\n    if (total[0] < k || total[1] < k || total[2] < k) return -1;\n\n    for (int start = 0; start < n; start++) {\n      int[] keep = new int[3];\n      for (int end = start; end < n; end++) {\n        keep[s.charAt(end) - 'a']++;\n        if (keep[0] <= total[0] - k && keep[1] <= total[1] - k && keep[2] <= total[2] - k) {\n          bestKeep = Math.max(bestKeep, end - start + 1);\n        }\n      }\n    }\n    return n - Math.max(bestKeep, 0);\n  }\n\n  private int[] countAll(String s) {\n    int[] total = new int[3];\n    for (char c : s.toCharArray()) total[c - 'a']++;\n    return total;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int takeCharacters(String s, int k) {\n    if (k == 0) return 0;\n    int[] total = new int[3];\n    for (char c : s.toCharArray()) total[c - 'a']++;\n    if (total[0] < k || total[1] < k || total[2] < k) return -1;\n\n    int[] keep = new int[3];\n    int left = 0;\n    int bestKeep = 0;\n    for (int right = 0; right < s.length(); right++) {\n      keep[s.charAt(right) - 'a']++;\n      while (keep[0] > total[0] - k || keep[1] > total[1] - k || keep[2] > total[2] - k) {\n        keep[s.charAt(left) - 'a']--;\n        left++;\n      }\n      bestKeep = Math.max(bestKeep, right - left + 1);\n    }\n    return s.length() - bestKeep;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int takeCharacters(String s, int k) {\n    if (k == 0) return 0;\n    int[] total = new int[3];\n    for (char c : s.toCharArray()) total[c - 'a']++;\n    if (total[0] < k || total[1] < k || total[2] < k) return -1;\n\n    int[] keep = new int[3];\n    int left = 0;\n    int bestKeep = 0;\n    for (int right = 0; right < s.length(); right++) {\n      keep[s.charAt(right) - 'a']++;\n      while (keep[0] > total[0] - k || keep[1] > total[1] - k || keep[2] > total[2] - k) {\n        keep[s.charAt(left) - 'a']--;\n        left++;\n      }\n      bestKeep = Math.max(bestKeep, right - left + 1);\n    }\n    return s.length() - bestKeep;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int takeCharacters(String s, int k) {\n    if (k == 0) return 0;\n    int[] total = new int[3];\n    count(s, total, 0);\n    if (total[0] < k || total[1] < k || total[2] < k) return -1;\n    int bestKeep = scan(s, k, total, new int[3], 0, 0, 0);\n    return s.length() - bestKeep;\n  }\n\n  private void count(String s, int[] total, int index) {\n    if (index == s.length()) return;\n    total[s.charAt(index) - 'a']++;\n    count(s, total, index + 1);\n  }\n\n  private int scan(String s, int k, int[] total, int[] keep, int right, int left, int bestKeep) {\n    if (right == s.length()) return bestKeep;\n    keep[s.charAt(right) - 'a']++;\n    return shrink(s, k, total, keep, right, left, bestKeep);\n  }\n\n  private int shrink(String s, int k, int[] total, int[] keep, int right, int left, int bestKeep) {\n    if (keep[0] > total[0] - k || keep[1] > total[1] - k || keep[2] > total[2] - k) {\n      keep[s.charAt(left) - 'a']--;\n      return shrink(s, k, total, keep, right, left + 1, bestKeep);\n    }\n    int nextBest = Math.max(bestKeep, right - left + 1);\n    return scan(s, k, total, keep, right + 1, left, nextBest);\n  }\n}",
+      "code": "class Solution {\n  public int takeCharacters(String s, int k) {\n    if (k == 0) return 0;\n    int[] total = new int[3];\n    for (char c : s.toCharArray()) total[c - 'a']++;\n    if (total[0] < k || total[1] < k || total[2] < k) return -1;\n\n    int[] keep = new int[3];\n    int left = 0;\n    int bestKeep = 0;\n    for (int right = 0; right < s.length(); right++) {\n      keep[s.charAt(right) - 'a']++;\n      while (keep[0] > total[0] - k || keep[1] > total[1] - k || keep[2] > total[2] - k) {\n        keep[s.charAt(left) - 'a']--;\n        left++;\n      }\n      bestKeep = Math.max(bestKeep, right - left + 1);\n    }\n    return s.length() - bestKeep;\n  }\n}"
     }
   ],
   "checklist": [
