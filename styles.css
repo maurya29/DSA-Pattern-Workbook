@@ -448,3 +448,40 @@ nav a:hover,
 .open-link:hover {
   border-color: var(--accent);
 }
+
+.tab-complexity {
+  border-bottom: 1px solid #343a46;
+  background: #17191f;
+  color: #c9d1d9;
+  padding: 10px 18px;
+  font-size: 13px;
+}
+
+.tab-complexity strong {
+  color: #ffc66d;
+}
+
+.examples-block {
+  margin: 14px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfbf8;
+  padding: 14px;
+}
+
+html[data-theme="dark"] .examples-block {
+  background: #151922;
+}
+
+.examples-block > strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.examples-block pre {
+  margin-top: 8px;
+  border-radius: 8px;
+  background: #20242c;
+  color: #d8dee9;
+  padding: 12px 14px;
+}

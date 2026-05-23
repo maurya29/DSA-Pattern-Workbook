@@ -45,6 +45,30 @@ function highlightJava(code) {
   });
 }
 
+function renderTabComplexity(value) {
+  if (!value) return '';
+  return `<div class="tab-complexity"><strong>Time & Space:</strong> ${value}</div>`;
+}
+
+function renderProblemEdgeCases(problem) {
+  if (!problem.edgeCases) return '';
+  return `<div class="complexity-grid"><p class="mini"><strong>Edge cases</strong>${problem.edgeCases}</p></div>`;
+}
+
+function renderExamples(problem) {
+  if (!problem.examples || problem.examples.length === 0) return '';
+  return `
+    <div class="examples-block">
+      <strong>Examples</strong>
+      ${problem.examples.map((example) => `
+        <pre><code>Input: ${escapeHtml(example.input)}
+Output: ${escapeHtml(example.output)}${example.explanation ? `
+Explanation: ${escapeHtml(example.explanation)}` : ''}</code></pre>
+      `).join('')}
+    </div>
+  `;
+}
+
 function renderProblem(problem, number) {
   const bruteForceCode = problem.bruteForceCode || problem.code;
   const iterativeCode = problem.iterativeCode || problem.optimizedCode || problem.code;
@@ -60,11 +84,13 @@ function renderProblem(problem, number) {
         </div>
         <span class="badge ${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
       </div>
+      ${renderExamples(problem)}
       <div class="problem-grid">
         <p class="mini"><strong>Why this pattern applies</strong>${problem.trigger}</p>
         <p class="mini"><strong>Key intuition</strong>${problem.intuition}</p>
         <p class="mini"><strong>Sub-pattern</strong>${problem.subpattern}</p>
       </div>
+      ${renderProblemEdgeCases(problem)}
       <div class="code-tabs" data-tabs>
         <div class="tab-list" role="tablist" aria-label="Java solution type">
           <button class="tab-button active" type="button" role="tab" aria-selected="true" data-tab="brute">Brute Force</button>
@@ -72,12 +98,15 @@ function renderProblem(problem, number) {
           <button class="tab-button" type="button" role="tab" aria-selected="false" data-tab="recursive">Recursive</button>
         </div>
         <div class="tab-panel active" data-panel="brute" role="tabpanel">
+          ${renderTabComplexity(problem.bruteForceComplexity)}
           <pre><code>${highlightJava(bruteForceCode)}</code></pre>
         </div>
         <div class="tab-panel" data-panel="iterative" role="tabpanel" hidden>
+          ${renderTabComplexity(problem.optimizedComplexity)}
           <pre><code>${highlightJava(iterativeCode)}</code></pre>
         </div>
         <div class="tab-panel" data-panel="recursive" role="tabpanel" hidden>
+          ${renderTabComplexity(problem.recursiveComplexity)}
           <pre><code>${highlightJava(recursiveCode)}</code></pre>
         </div>
       </div>

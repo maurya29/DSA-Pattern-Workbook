@@ -32,7 +32,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int[] twoSum(int[] numbers, int target) {\n    int left = 0, right = numbers.length - 1;\n    while (left < right) {\n      int sum = numbers[left] + numbers[right];\n      if (sum == target) return new int[] {left + 1, right + 1};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int[] twoSum(int[] numbers, int target) {\n    int left = 0, right = numbers.length - 1;\n    while (left < right) {\n      int sum = numbers[left] + numbers[right];\n      if (sum == target) return new int[] {left + 1, right + 1};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int[] twoSum(int[] numbers, int target) {\n    int left = 0, right = numbers.length - 1;\n    while (left < right) {\n      int sum = numbers[left] + numbers[right];\n      if (sum == target) return new int[] {left + 1, right + 1};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int[] twoSum(int[] numbers, int target) {\n    int left = 0, right = numbers.length - 1;\n    while (left < right) {\n      int sum = numbers[left] + numbers[right];\n      if (sum == target) return new int[] {left + 1, right + 1};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -46,7 +57,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public boolean isPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      while (left < right && !Character.isLetterOrDigit(s.charAt(left))) left++;\n      while (left < right && !Character.isLetterOrDigit(s.charAt(right))) right--;\n      if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) return false;\n      left++;\n      right--;\n    }\n    return true;\n  }\n\n  public boolean isPalindromeRecursive(String s) {\n    return check(s, 0, s.length() - 1);\n  }\n\n  private boolean check(String s, int left, int right) {\n    if (left >= right) return true;\n    if (!Character.isLetterOrDigit(s.charAt(left))) return check(s, left + 1, right);\n    if (!Character.isLetterOrDigit(s.charAt(right))) return check(s, left, right - 1);\n    return Character.toLowerCase(s.charAt(left)) == Character.toLowerCase(s.charAt(right))\n        && check(s, left + 1, right - 1);\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public boolean isPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      while (left < right && !Character.isLetterOrDigit(s.charAt(left))) left++;\n      while (left < right && !Character.isLetterOrDigit(s.charAt(right))) right--;\n      if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) return false;\n      left++;\n      right--;\n    }\n    return true;\n  }\n\n  public boolean isPalindromeRecursive(String s) {\n    return check(s, 0, s.length() - 1);\n  }\n\n  private boolean check(String s, int left, int right) {\n    if (left >= right) return true;\n    if (!Character.isLetterOrDigit(s.charAt(left))) return check(s, left + 1, right);\n    if (!Character.isLetterOrDigit(s.charAt(right))) return check(s, left, right - 1);\n    return Character.toLowerCase(s.charAt(left)) == Character.toLowerCase(s.charAt(right))\n        && check(s, left + 1, right - 1);\n  }\n}",
-      "optimizedCode": "class Solution {\n  public boolean isPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      while (left < right && !Character.isLetterOrDigit(s.charAt(left))) left++;\n      while (left < right && !Character.isLetterOrDigit(s.charAt(right))) right--;\n      if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) return false;\n      left++;\n      right--;\n    }\n    return true;\n  }\n\n  public boolean isPalindromeRecursive(String s) {\n    return check(s, 0, s.length() - 1);\n  }\n\n  private boolean check(String s, int left, int right) {\n    if (left >= right) return true;\n    if (!Character.isLetterOrDigit(s.charAt(left))) return check(s, left + 1, right);\n    if (!Character.isLetterOrDigit(s.charAt(right))) return check(s, left, right - 1);\n    return Character.toLowerCase(s.charAt(left)) == Character.toLowerCase(s.charAt(right))\n        && check(s, left + 1, right - 1);\n  }\n}"
+      "optimizedCode": "class Solution {\n  public boolean isPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      while (left < right && !Character.isLetterOrDigit(s.charAt(left))) left++;\n      while (left < right && !Character.isLetterOrDigit(s.charAt(right))) right--;\n      if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) return false;\n      left++;\n      right--;\n    }\n    return true;\n  }\n\n  public boolean isPalindromeRecursive(String s) {\n    return check(s, 0, s.length() - 1);\n  }\n\n  private boolean check(String s, int left, int right) {\n    if (left >= right) return true;\n    if (!Character.isLetterOrDigit(s.charAt(left))) return check(s, left + 1, right);\n    if (!Character.isLetterOrDigit(s.charAt(right))) return check(s, left, right - 1);\n    return Character.toLowerCase(s.charAt(left)) == Character.toLowerCase(s.charAt(right))\n        && check(s, left + 1, right - 1);\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -60,7 +82,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    if (nums.length == 0) return 0;\n    int write = 1;\n    for (int read = 1; read < nums.length; read++) {\n      if (nums[read] != nums[write - 1]) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    if (nums.length == 0) return 0;\n    int write = 1;\n    for (int read = 1; read < nums.length; read++) {\n      if (nums[read] != nums[write - 1]) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    if (nums.length == 0) return 0;\n    int write = 1;\n    for (int read = 1; read < nums.length; read++) {\n      if (nums[read] != nums[write - 1]) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    if (nums.length == 0) return 0;\n    int write = 1;\n    for (int read = 1; read < nums.length; read++) {\n      if (nums[read] != nums[write - 1]) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -74,7 +107,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int removeElement(int[] nums, int val) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != val) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int removeElement(int[] nums, int val) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != val) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int removeElement(int[] nums, int val) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != val) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int removeElement(int[] nums, int val) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != val) nums[write++] = nums[read];\n    }\n    return write;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -88,7 +132,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public void moveZeroes(int[] nums) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != 0) nums[write++] = nums[read];\n    }\n    while (write < nums.length) nums[write++] = 0;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public void moveZeroes(int[] nums) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != 0) nums[write++] = nums[read];\n    }\n    while (write < nums.length) nums[write++] = 0;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public void moveZeroes(int[] nums) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != 0) nums[write++] = nums[read];\n    }\n    while (write < nums.length) nums[write++] = 0;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public void moveZeroes(int[] nums) {\n    int write = 0;\n    for (int read = 0; read < nums.length; read++) {\n      if (nums[read] != 0) nums[write++] = nums[read];\n    }\n    while (write < nums.length) nums[write++] = 0;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -102,7 +157,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int[] sortedSquares(int[] nums) {\n    int n = nums.length, left = 0, right = n - 1, write = n - 1;\n    int[] ans = new int[n];\n    while (left <= right) {\n      int a = nums[left] * nums[left];\n      int b = nums[right] * nums[right];\n      if (a > b) {\n        ans[write--] = a;\n        left++;\n      } else {\n        ans[write--] = b;\n        right--;\n      }\n    }\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int[] sortedSquares(int[] nums) {\n    int n = nums.length, left = 0, right = n - 1, write = n - 1;\n    int[] ans = new int[n];\n    while (left <= right) {\n      int a = nums[left] * nums[left];\n      int b = nums[right] * nums[right];\n      if (a > b) {\n        ans[write--] = a;\n        left++;\n      } else {\n        ans[write--] = b;\n        right--;\n      }\n    }\n    return ans;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int[] sortedSquares(int[] nums) {\n    int n = nums.length, left = 0, right = n - 1, write = n - 1;\n    int[] ans = new int[n];\n    while (left <= right) {\n      int a = nums[left] * nums[left];\n      int b = nums[right] * nums[right];\n      if (a > b) {\n        ans[write--] = a;\n        left++;\n      } else {\n        ans[write--] = b;\n        right--;\n      }\n    }\n    return ans;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int[] sortedSquares(int[] nums) {\n    int n = nums.length, left = 0, right = n - 1, write = n - 1;\n    int[] ans = new int[n];\n    while (left <= right) {\n      int a = nums[left] * nums[left];\n      int b = nums[right] * nums[right];\n      if (a > b) {\n        ans[write--] = a;\n        left++;\n      } else {\n        ans[write--] = b;\n        right--;\n      }\n    }\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -116,7 +182,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public void reverseString(char[] s) {\n    int left = 0, right = s.length - 1;\n    while (left < right) {\n      char temp = s[left];\n      s[left++] = s[right];\n      s[right--] = temp;\n    }\n  }\n\n  public void reverseStringRecursive(char[] s) {\n    reverse(s, 0, s.length - 1);\n  }\n\n  private void reverse(char[] s, int left, int right) {\n    if (left >= right) return;\n    char temp = s[left];\n    s[left] = s[right];\n    s[right] = temp;\n    reverse(s, left + 1, right - 1);\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public void reverseString(char[] s) {\n    int left = 0, right = s.length - 1;\n    while (left < right) {\n      char temp = s[left];\n      s[left++] = s[right];\n      s[right--] = temp;\n    }\n  }\n\n  public void reverseStringRecursive(char[] s) {\n    reverse(s, 0, s.length - 1);\n  }\n\n  private void reverse(char[] s, int left, int right) {\n    if (left >= right) return;\n    char temp = s[left];\n    s[left] = s[right];\n    s[right] = temp;\n    reverse(s, left + 1, right - 1);\n  }\n}",
-      "optimizedCode": "class Solution {\n  public void reverseString(char[] s) {\n    int left = 0, right = s.length - 1;\n    while (left < right) {\n      char temp = s[left];\n      s[left++] = s[right];\n      s[right--] = temp;\n    }\n  }\n\n  public void reverseStringRecursive(char[] s) {\n    reverse(s, 0, s.length - 1);\n  }\n\n  private void reverse(char[] s, int left, int right) {\n    if (left >= right) return;\n    char temp = s[left];\n    s[left] = s[right];\n    s[right] = temp;\n    reverse(s, left + 1, right - 1);\n  }\n}"
+      "optimizedCode": "class Solution {\n  public void reverseString(char[] s) {\n    int left = 0, right = s.length - 1;\n    while (left < right) {\n      char temp = s[left];\n      s[left++] = s[right];\n      s[right--] = temp;\n    }\n  }\n\n  public void reverseStringRecursive(char[] s) {\n    reverse(s, 0, s.length - 1);\n  }\n\n  private void reverse(char[] s, int left, int right) {\n    if (left >= right) return;\n    char temp = s[left];\n    s[left] = s[right];\n    s[right] = temp;\n    reverse(s, left + 1, right - 1);\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -130,7 +207,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public void merge(int[] nums1, int m, int[] nums2, int n) {\n    int i = m - 1, j = n - 1, write = m + n - 1;\n    while (j >= 0) {\n      if (i >= 0 && nums1[i] > nums2[j]) nums1[write--] = nums1[i--];\n      else nums1[write--] = nums2[j--];\n    }\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public void merge(int[] nums1, int m, int[] nums2, int n) {\n    int i = m - 1, j = n - 1, write = m + n - 1;\n    while (j >= 0) {\n      if (i >= 0 && nums1[i] > nums2[j]) nums1[write--] = nums1[i--];\n      else nums1[write--] = nums2[j--];\n    }\n  }\n}",
-      "optimizedCode": "class Solution {\n  public void merge(int[] nums1, int m, int[] nums2, int n) {\n    int i = m - 1, j = n - 1, write = m + n - 1;\n    while (j >= 0) {\n      if (i >= 0 && nums1[i] > nums2[j]) nums1[write--] = nums1[i--];\n      else nums1[write--] = nums2[j--];\n    }\n  }\n}"
+      "optimizedCode": "class Solution {\n  public void merge(int[] nums1, int m, int[] nums2, int n) {\n    int i = m - 1, j = n - 1, write = m + n - 1;\n    while (j >= 0) {\n      if (i >= 0 && nums1[i] > nums2[j]) nums1[write--] = nums1[i--];\n      else nums1[write--] = nums2[j--];\n    }\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -144,7 +232,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public boolean hasCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) return true;\n    }\n    return false;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public boolean hasCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public boolean hasCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) return true;\n    }\n    return false;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public boolean hasCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) return true;\n    }\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -158,7 +257,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public ListNode middleNode(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n    }\n    return slow;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public ListNode middleNode(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n    }\n    return slow;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public ListNode middleNode(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n    }\n    return slow;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public ListNode middleNode(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n    }\n    return slow;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -172,7 +282,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int maxArea(int[] height) {\n    int left = 0, right = height.length - 1, best = 0;\n    while (left < right) {\n      int area = Math.min(height[left], height[right]) * (right - left);\n      best = Math.max(best, area);\n      if (height[left] < height[right]) left++;\n      else right--;\n    }\n    return best;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int maxArea(int[] height) {\n    int left = 0, right = height.length - 1, best = 0;\n    while (left < right) {\n      int area = Math.min(height[left], height[right]) * (right - left);\n      best = Math.max(best, area);\n      if (height[left] < height[right]) left++;\n      else right--;\n    }\n    return best;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int maxArea(int[] height) {\n    int left = 0, right = height.length - 1, best = 0;\n    while (left < right) {\n      int area = Math.min(height[left], height[right]) * (right - left);\n      best = Math.max(best, area);\n      if (height[left] < height[right]) left++;\n      else right--;\n    }\n    return best;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int maxArea(int[] height) {\n    int left = 0, right = height.length - 1, best = 0;\n    while (left < right) {\n      int area = Math.min(height[left], height[right]) * (right - left);\n      best = Math.max(best, area);\n      if (height[left] < height[right]) left++;\n      else right--;\n    }\n    return best;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -186,7 +307,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> threeSum(int[] nums) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length - 2; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (sum == 0) {\n          ans.add(Arrays.asList(nums[i], nums[left], nums[right]));\n          left++;\n          right--;\n          while (left < right && nums[left] == nums[left - 1]) left++;\n          while (left < right && nums[right] == nums[right + 1]) right--;\n        } else if (sum < 0) left++;\n        else right--;\n      }\n    }\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> threeSum(int[] nums) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length - 2; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (sum == 0) {\n          ans.add(Arrays.asList(nums[i], nums[left], nums[right]));\n          left++;\n          right--;\n          while (left < right && nums[left] == nums[left - 1]) left++;\n          while (left < right && nums[right] == nums[right + 1]) right--;\n        } else if (sum < 0) left++;\n        else right--;\n      }\n    }\n    return ans;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> threeSum(int[] nums) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length - 2; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (sum == 0) {\n          ans.add(Arrays.asList(nums[i], nums[left], nums[right]));\n          left++;\n          right--;\n          while (left < right && nums[left] == nums[left - 1]) left++;\n          while (left < right && nums[right] == nums[right + 1]) right--;\n        } else if (sum < 0) left++;\n        else right--;\n      }\n    }\n    return ans;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> threeSum(int[] nums) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length - 2; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (sum == 0) {\n          ans.add(Arrays.asList(nums[i], nums[left], nums[right]));\n          left++;\n          right--;\n          while (left < right && nums[left] == nums[left - 1]) left++;\n          while (left < right && nums[right] == nums[right + 1]) right--;\n        } else if (sum < 0) left++;\n        else right--;\n      }\n    }\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -200,7 +332,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int threeSumClosest(int[] nums, int target) {\n    Arrays.sort(nums);\n    int best = nums[0] + nums[1] + nums[2];\n    for (int i = 0; i < nums.length - 2; i++) {\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (Math.abs(target - sum) < Math.abs(target - best)) best = sum;\n        if (sum < target) left++;\n        else if (sum > target) right--;\n        else return target;\n      }\n    }\n    return best;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int threeSumClosest(int[] nums, int target) {\n    Arrays.sort(nums);\n    int best = nums[0] + nums[1] + nums[2];\n    for (int i = 0; i < nums.length - 2; i++) {\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (Math.abs(target - sum) < Math.abs(target - best)) best = sum;\n        if (sum < target) left++;\n        else if (sum > target) right--;\n        else return target;\n      }\n    }\n    return best;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int threeSumClosest(int[] nums, int target) {\n    Arrays.sort(nums);\n    int best = nums[0] + nums[1] + nums[2];\n    for (int i = 0; i < nums.length - 2; i++) {\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (Math.abs(target - sum) < Math.abs(target - best)) best = sum;\n        if (sum < target) left++;\n        else if (sum > target) right--;\n        else return target;\n      }\n    }\n    return best;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int threeSumClosest(int[] nums, int target) {\n    Arrays.sort(nums);\n    int best = nums[0] + nums[1] + nums[2];\n    for (int i = 0; i < nums.length - 2; i++) {\n      int left = i + 1, right = nums.length - 1;\n      while (left < right) {\n        int sum = nums[i] + nums[left] + nums[right];\n        if (Math.abs(target - sum) < Math.abs(target - best)) best = sum;\n        if (sum < target) left++;\n        else if (sum > target) right--;\n        else return target;\n      }\n    }\n    return best;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -214,7 +357,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> fourSum(int[] nums, int target) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    int n = nums.length;\n    for (int i = 0; i < n - 3; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      for (int j = i + 1; j < n - 2; j++) {\n        if (j > i + 1 && nums[j] == nums[j - 1]) continue;\n        int left = j + 1, right = n - 1;\n        while (left < right) {\n          long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];\n          if (sum == target) {\n            ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));\n            left++;\n            right--;\n            while (left < right && nums[left] == nums[left - 1]) left++;\n            while (left < right && nums[right] == nums[right + 1]) right--;\n          } else if (sum < target) left++;\n          else right--;\n        }\n      }\n    }\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> fourSum(int[] nums, int target) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    int n = nums.length;\n    for (int i = 0; i < n - 3; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      for (int j = i + 1; j < n - 2; j++) {\n        if (j > i + 1 && nums[j] == nums[j - 1]) continue;\n        int left = j + 1, right = n - 1;\n        while (left < right) {\n          long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];\n          if (sum == target) {\n            ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));\n            left++;\n            right--;\n            while (left < right && nums[left] == nums[left - 1]) left++;\n            while (left < right && nums[right] == nums[right + 1]) right--;\n          } else if (sum < target) left++;\n          else right--;\n        }\n      }\n    }\n    return ans;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> fourSum(int[] nums, int target) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    int n = nums.length;\n    for (int i = 0; i < n - 3; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      for (int j = i + 1; j < n - 2; j++) {\n        if (j > i + 1 && nums[j] == nums[j - 1]) continue;\n        int left = j + 1, right = n - 1;\n        while (left < right) {\n          long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];\n          if (sum == target) {\n            ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));\n            left++;\n            right--;\n            while (left < right && nums[left] == nums[left - 1]) left++;\n            while (left < right && nums[right] == nums[right + 1]) right--;\n          } else if (sum < target) left++;\n          else right--;\n        }\n      }\n    }\n    return ans;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<List<Integer>> fourSum(int[] nums, int target) {\n    Arrays.sort(nums);\n    List<List<Integer>> ans = new ArrayList<>();\n    int n = nums.length;\n    for (int i = 0; i < n - 3; i++) {\n      if (i > 0 && nums[i] == nums[i - 1]) continue;\n      for (int j = i + 1; j < n - 2; j++) {\n        if (j > i + 1 && nums[j] == nums[j - 1]) continue;\n        int left = j + 1, right = n - 1;\n        while (left < right) {\n          long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];\n          if (sum == target) {\n            ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));\n            left++;\n            right--;\n            while (left < right && nums[left] == nums[left - 1]) left++;\n            while (left < right && nums[right] == nums[right + 1]) right--;\n          } else if (sum < target) left++;\n          else right--;\n        }\n      }\n    }\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -228,7 +382,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public void sortColors(int[] nums) {\n    int low = 0, mid = 0, high = nums.length - 1;\n    while (mid <= high) {\n      if (nums[mid] == 0) swap(nums, low++, mid++);\n      else if (nums[mid] == 1) mid++;\n      else swap(nums, mid, high--);\n    }\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public void sortColors(int[] nums) {\n    int low = 0, mid = 0, high = nums.length - 1;\n    while (mid <= high) {\n      if (nums[mid] == 0) swap(nums, low++, mid++);\n      else if (nums[mid] == 1) mid++;\n      else swap(nums, mid, high--);\n    }\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public void sortColors(int[] nums) {\n    int low = 0, mid = 0, high = nums.length - 1;\n    while (mid <= high) {\n      if (nums[mid] == 0) swap(nums, low++, mid++);\n      else if (nums[mid] == 1) mid++;\n      else swap(nums, mid, high--);\n    }\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public void sortColors(int[] nums) {\n    int low = 0, mid = 0, high = nums.length - 1;\n    while (mid <= high) {\n      if (nums[mid] == 0) swap(nums, low++, mid++);\n      else if (nums[mid] == 1) mid++;\n      else swap(nums, mid, high--);\n    }\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -242,7 +407,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int trap(int[] height) {\n    int left = 0, right = height.length - 1;\n    int leftMax = 0, rightMax = 0, water = 0;\n    while (left < right) {\n      if (height[left] < height[right]) {\n        leftMax = Math.max(leftMax, height[left]);\n        water += leftMax - height[left++];\n      } else {\n        rightMax = Math.max(rightMax, height[right]);\n        water += rightMax - height[right--];\n      }\n    }\n    return water;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int trap(int[] height) {\n    int left = 0, right = height.length - 1;\n    int leftMax = 0, rightMax = 0, water = 0;\n    while (left < right) {\n      if (height[left] < height[right]) {\n        leftMax = Math.max(leftMax, height[left]);\n        water += leftMax - height[left++];\n      } else {\n        rightMax = Math.max(rightMax, height[right]);\n        water += rightMax - height[right--];\n      }\n    }\n    return water;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int trap(int[] height) {\n    int left = 0, right = height.length - 1;\n    int leftMax = 0, rightMax = 0, water = 0;\n    while (left < right) {\n      if (height[left] < height[right]) {\n        leftMax = Math.max(leftMax, height[left]);\n        water += leftMax - height[left++];\n      } else {\n        rightMax = Math.max(rightMax, height[right]);\n        water += rightMax - height[right--];\n      }\n    }\n    return water;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int trap(int[] height) {\n    int left = 0, right = height.length - 1;\n    int leftMax = 0, rightMax = 0, water = 0;\n    while (left < right) {\n      if (height[left] < height[right]) {\n        leftMax = Math.max(leftMax, height[left]);\n        water += leftMax - height[left++];\n      } else {\n        rightMax = Math.max(rightMax, height[right]);\n        water += rightMax - height[right--];\n      }\n    }\n    return water;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -256,7 +432,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public ListNode detectCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) {\n        ListNode entry = head;\n        while (entry != slow) {\n          entry = entry.next;\n          slow = slow.next;\n        }\n        return entry;\n      }\n    }\n    return null;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public ListNode detectCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) {\n        ListNode entry = head;\n        while (entry != slow) {\n          entry = entry.next;\n          slow = slow.next;\n        }\n        return entry;\n      }\n    }\n    return null;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public ListNode detectCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) {\n        ListNode entry = head;\n        while (entry != slow) {\n          entry = entry.next;\n          slow = slow.next;\n        }\n        return entry;\n      }\n    }\n    return null;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public ListNode detectCycle(ListNode head) {\n    ListNode slow = head, fast = head;\n    while (fast != null && fast.next != null) {\n      slow = slow.next;\n      fast = fast.next.next;\n      if (slow == fast) {\n        ListNode entry = head;\n        while (entry != slow) {\n          entry = entry.next;\n          slow = slow.next;\n        }\n        return entry;\n      }\n    }\n    return null;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -270,7 +457,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public ListNode removeNthFromEnd(ListNode head, int n) {\n    ListNode dummy = new ListNode(0, head);\n    ListNode slow = dummy, fast = dummy;\n    for (int i = 0; i < n; i++) fast = fast.next;\n    while (fast.next != null) {\n      slow = slow.next;\n      fast = fast.next;\n    }\n    slow.next = slow.next.next;\n    return dummy.next;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public ListNode removeNthFromEnd(ListNode head, int n) {\n    ListNode dummy = new ListNode(0, head);\n    ListNode slow = dummy, fast = dummy;\n    for (int i = 0; i < n; i++) fast = fast.next;\n    while (fast.next != null) {\n      slow = slow.next;\n      fast = fast.next;\n    }\n    slow.next = slow.next.next;\n    return dummy.next;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public ListNode removeNthFromEnd(ListNode head, int n) {\n    ListNode dummy = new ListNode(0, head);\n    ListNode slow = dummy, fast = dummy;\n    for (int i = 0; i < n; i++) fast = fast.next;\n    while (fast.next != null) {\n      slow = slow.next;\n      fast = fast.next;\n    }\n    slow.next = slow.next.next;\n    return dummy.next;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public ListNode removeNthFromEnd(ListNode head, int n) {\n    ListNode dummy = new ListNode(0, head);\n    ListNode slow = dummy, fast = dummy;\n    for (int i = 0; i < n; i++) fast = fast.next;\n    while (fast.next != null) {\n      slow = slow.next;\n      fast = fast.next;\n    }\n    slow.next = slow.next.next;\n    return dummy.next;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -284,7 +482,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public ListNode partition(ListNode head, int x) {\n    ListNode smallDummy = new ListNode(0), largeDummy = new ListNode(0);\n    ListNode small = smallDummy, large = largeDummy;\n    while (head != null) {\n      if (head.val < x) {\n        small.next = head;\n        small = small.next;\n      } else {\n        large.next = head;\n        large = large.next;\n      }\n      head = head.next;\n    }\n    large.next = null;\n    small.next = largeDummy.next;\n    return smallDummy.next;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public ListNode partition(ListNode head, int x) {\n    ListNode smallDummy = new ListNode(0), largeDummy = new ListNode(0);\n    ListNode small = smallDummy, large = largeDummy;\n    while (head != null) {\n      if (head.val < x) {\n        small.next = head;\n        small = small.next;\n      } else {\n        large.next = head;\n        large = large.next;\n      }\n      head = head.next;\n    }\n    large.next = null;\n    small.next = largeDummy.next;\n    return smallDummy.next;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public ListNode partition(ListNode head, int x) {\n    ListNode smallDummy = new ListNode(0), largeDummy = new ListNode(0);\n    ListNode small = smallDummy, large = largeDummy;\n    while (head != null) {\n      if (head.val < x) {\n        small.next = head;\n        small = small.next;\n      } else {\n        large.next = head;\n        large = large.next;\n      }\n      head = head.next;\n    }\n    large.next = null;\n    small.next = largeDummy.next;\n    return smallDummy.next;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public ListNode partition(ListNode head, int x) {\n    ListNode smallDummy = new ListNode(0), largeDummy = new ListNode(0);\n    ListNode small = smallDummy, large = largeDummy;\n    while (head != null) {\n      if (head.val < x) {\n        small.next = head;\n        small = small.next;\n      } else {\n        large.next = head;\n        large = large.next;\n      }\n      head = head.next;\n    }\n    large.next = null;\n    small.next = largeDummy.next;\n    return smallDummy.next;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -298,7 +507,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int numRescueBoats(int[] people, int limit) {\n    Arrays.sort(people);\n    int left = 0, right = people.length - 1, boats = 0;\n    while (left <= right) {\n      if (people[left] + people[right] <= limit) left++;\n      right--;\n      boats++;\n    }\n    return boats;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int numRescueBoats(int[] people, int limit) {\n    Arrays.sort(people);\n    int left = 0, right = people.length - 1, boats = 0;\n    while (left <= right) {\n      if (people[left] + people[right] <= limit) left++;\n      right--;\n      boats++;\n    }\n    return boats;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int numRescueBoats(int[] people, int limit) {\n    Arrays.sort(people);\n    int left = 0, right = people.length - 1, boats = 0;\n    while (left <= right) {\n      if (people[left] + people[right] <= limit) left++;\n      right--;\n      boats++;\n    }\n    return boats;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int numRescueBoats(int[] people, int limit) {\n    Arrays.sort(people);\n    int left = 0, right = people.length - 1, boats = 0;\n    while (left <= right) {\n      if (people[left] + people[right] <= limit) left++;\n      right--;\n      boats++;\n    }\n    return boats;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -312,7 +532,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public boolean validPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      if (s.charAt(left) == s.charAt(right)) {\n        left++;\n        right--;\n      } else {\n        return isPal(s, left + 1, right) || isPal(s, left, right - 1);\n      }\n    }\n    return true;\n  }\n\n  private boolean isPal(String s, int left, int right) {\n    while (left < right) {\n      if (s.charAt(left++) != s.charAt(right--)) return false;\n    }\n    return true;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public boolean validPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      if (s.charAt(left) == s.charAt(right)) {\n        left++;\n        right--;\n      } else {\n        return isPal(s, left + 1, right) || isPal(s, left, right - 1);\n      }\n    }\n    return true;\n  }\n\n  private boolean isPal(String s, int left, int right) {\n    while (left < right) {\n      if (s.charAt(left++) != s.charAt(right--)) return false;\n    }\n    return true;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public boolean validPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      if (s.charAt(left) == s.charAt(right)) {\n        left++;\n        right--;\n      } else {\n        return isPal(s, left + 1, right) || isPal(s, left, right - 1);\n      }\n    }\n    return true;\n  }\n\n  private boolean isPal(String s, int left, int right) {\n    while (left < right) {\n      if (s.charAt(left++) != s.charAt(right--)) return false;\n    }\n    return true;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public boolean validPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n      if (s.charAt(left) == s.charAt(right)) {\n        left++;\n        right--;\n      } else {\n        return isPal(s, left + 1, right) || isPal(s, left, right - 1);\n      }\n    }\n    return true;\n  }\n\n  private boolean isPal(String s, int left, int right) {\n    while (left < right) {\n      if (s.charAt(left++) != s.charAt(right--)) return false;\n    }\n    return true;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -326,7 +557,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int[] intersect(int[] nums1, int[] nums2) {\n    Arrays.sort(nums1);\n    Arrays.sort(nums2);\n    int i = 0, j = 0, write = 0;\n    int[] temp = new int[Math.min(nums1.length, nums2.length)];\n    while (i < nums1.length && j < nums2.length) {\n      if (nums1[i] == nums2[j]) temp[write++] = nums1[i++];\n      else if (nums1[i] < nums2[j]) i++;\n      else j++;\n    }\n    return Arrays.copyOf(temp, write);\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int[] intersect(int[] nums1, int[] nums2) {\n    Arrays.sort(nums1);\n    Arrays.sort(nums2);\n    int i = 0, j = 0, write = 0;\n    int[] temp = new int[Math.min(nums1.length, nums2.length)];\n    while (i < nums1.length && j < nums2.length) {\n      if (nums1[i] == nums2[j]) temp[write++] = nums1[i++];\n      else if (nums1[i] < nums2[j]) i++;\n      else j++;\n    }\n    return Arrays.copyOf(temp, write);\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int[] intersect(int[] nums1, int[] nums2) {\n    Arrays.sort(nums1);\n    Arrays.sort(nums2);\n    int i = 0, j = 0, write = 0;\n    int[] temp = new int[Math.min(nums1.length, nums2.length)];\n    while (i < nums1.length && j < nums2.length) {\n      if (nums1[i] == nums2[j]) temp[write++] = nums1[i++];\n      else if (nums1[i] < nums2[j]) i++;\n      else j++;\n    }\n    return Arrays.copyOf(temp, write);\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int[] intersect(int[] nums1, int[] nums2) {\n    Arrays.sort(nums1);\n    Arrays.sort(nums2);\n    int i = 0, j = 0, write = 0;\n    int[] temp = new int[Math.min(nums1.length, nums2.length)];\n    while (i < nums1.length && j < nums2.length) {\n      if (nums1[i] == nums2[j]) temp[write++] = nums1[i++];\n      else if (nums1[i] < nums2[j]) i++;\n      else j++;\n    }\n    return Arrays.copyOf(temp, write);\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -340,7 +582,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public boolean backspaceCompare(String s, String t) {\n    return build(s).equals(build(t));\n  }\n\n  private String build(String value) {\n    char[] chars = value.toCharArray();\n    int write = 0;\n    for (char c : chars) {\n      if (c == '#') {\n        if (write > 0) write--;\n      } else {\n        chars[write++] = c;\n      }\n    }\n    return new String(chars, 0, write);\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public boolean backspaceCompare(String s, String t) {\n    return build(s).equals(build(t));\n  }\n\n  private String build(String value) {\n    char[] chars = value.toCharArray();\n    int write = 0;\n    for (char c : chars) {\n      if (c == '#') {\n        if (write > 0) write--;\n      } else {\n        chars[write++] = c;\n      }\n    }\n    return new String(chars, 0, write);\n  }\n}",
-      "optimizedCode": "class Solution {\n  public boolean backspaceCompare(String s, String t) {\n    return build(s).equals(build(t));\n  }\n\n  private String build(String value) {\n    char[] chars = value.toCharArray();\n    int write = 0;\n    for (char c : chars) {\n      if (c == '#') {\n        if (write > 0) write--;\n      } else {\n        chars[write++] = c;\n      }\n    }\n    return new String(chars, 0, write);\n  }\n}"
+      "optimizedCode": "class Solution {\n  public boolean backspaceCompare(String s, String t) {\n    return build(s).equals(build(t));\n  }\n\n  private String build(String value) {\n    char[] chars = value.toCharArray();\n    int write = 0;\n    for (char c : chars) {\n      if (c == '#') {\n        if (write > 0) write--;\n      } else {\n        chars[write++] = c;\n      }\n    }\n    return new String(chars, 0, write);\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -354,7 +607,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int minSubArrayLen(int target, int[] nums) {\n    int left = 0, sum = 0, best = Integer.MAX_VALUE;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum >= target) {\n        best = Math.min(best, right - left + 1);\n        sum -= nums[left++];\n      }\n    }\n    return best == Integer.MAX_VALUE ? 0 : best;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int minSubArrayLen(int target, int[] nums) {\n    int left = 0, sum = 0, best = Integer.MAX_VALUE;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum >= target) {\n        best = Math.min(best, right - left + 1);\n        sum -= nums[left++];\n      }\n    }\n    return best == Integer.MAX_VALUE ? 0 : best;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int minSubArrayLen(int target, int[] nums) {\n    int left = 0, sum = 0, best = Integer.MAX_VALUE;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum >= target) {\n        best = Math.min(best, right - left + 1);\n        sum -= nums[left++];\n      }\n    }\n    return best == Integer.MAX_VALUE ? 0 : best;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int minSubArrayLen(int target, int[] nums) {\n    int left = 0, sum = 0, best = Integer.MAX_VALUE;\n    for (int right = 0; right < nums.length; right++) {\n      sum += nums[right];\n      while (sum >= target) {\n        best = Math.min(best, right - left + 1);\n        sum -= nums[left++];\n      }\n    }\n    return best == Integer.MAX_VALUE ? 0 : best;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -368,7 +632,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int[] pairWithTargetSum(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left < right) {\n      int sum = nums[left] + nums[right];\n      if (sum == target) return new int[] {left, right};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int[] pairWithTargetSum(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left < right) {\n      int sum = nums[left] + nums[right];\n      if (sum == target) return new int[] {left, right};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int[] pairWithTargetSum(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left < right) {\n      int sum = nums[left] + nums[right];\n      if (sum == target) return new int[] {left, right};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int[] pairWithTargetSum(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left < right) {\n      int sum = nums[left] + nums[right];\n      if (sum == target) return new int[] {left, right};\n      if (sum < target) left++;\n      else right--;\n    }\n    return new int[] {-1, -1};\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -382,7 +657,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    int write = 0;\n    for (int num : nums) {\n      if (write < 2 || num != nums[write - 2]) nums[write++] = num;\n    }\n    return write;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    int write = 0;\n    for (int num : nums) {\n      if (write < 2 || num != nums[write - 2]) nums[write++] = num;\n    }\n    return write;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    int write = 0;\n    for (int num : nums) {\n      if (write < 2 || num != nums[write - 2]) nums[write++] = num;\n    }\n    return write;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int removeDuplicates(int[] nums) {\n    int write = 0;\n    for (int num : nums) {\n      if (write < 2 || num != nums[write - 2]) nums[write++] = num;\n    }\n    return write;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -396,7 +682,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    int left = 0, count = 0;\n    long product = 1;\n    for (int right = 0; right < nums.length; right++) {\n      product *= nums[right];\n      while (product >= k) product /= nums[left++];\n      count += right - left + 1;\n    }\n    return count;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    int left = 0, count = 0;\n    long product = 1;\n    for (int right = 0; right < nums.length; right++) {\n      product *= nums[right];\n      while (product >= k) product /= nums[left++];\n      count += right - left + 1;\n    }\n    return count;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    int left = 0, count = 0;\n    long product = 1;\n    for (int right = 0; right < nums.length; right++) {\n      product *= nums[right];\n      while (product >= k) product /= nums[left++];\n      count += right - left + 1;\n    }\n    return count;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int numSubarrayProductLessThanK(int[] nums, int k) {\n    if (k <= 1) return 0;\n    int left = 0, count = 0;\n    long product = 1;\n    for (int right = 0; right < nums.length; right++) {\n      product *= nums[right];\n      while (product >= k) product /= nums[left++];\n      count += right - left + 1;\n    }\n    return count;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -410,7 +707,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int findDuplicate(int[] nums) {\n    int slow = nums[0], fast = nums[0];\n    do {\n      slow = nums[slow];\n      fast = nums[nums[fast]];\n    } while (slow != fast);\n    slow = nums[0];\n    while (slow != fast) {\n      slow = nums[slow];\n      fast = nums[fast];\n    }\n    return slow;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int findDuplicate(int[] nums) {\n    int slow = nums[0], fast = nums[0];\n    do {\n      slow = nums[slow];\n      fast = nums[nums[fast]];\n    } while (slow != fast);\n    slow = nums[0];\n    while (slow != fast) {\n      slow = nums[slow];\n      fast = nums[fast];\n    }\n    return slow;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int findDuplicate(int[] nums) {\n    int slow = nums[0], fast = nums[0];\n    do {\n      slow = nums[slow];\n      fast = nums[nums[fast]];\n    } while (slow != fast);\n    slow = nums[0];\n    while (slow != fast) {\n      slow = nums[slow];\n      fast = nums[fast];\n    }\n    return slow;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int findDuplicate(int[] nums) {\n    int slow = nums[0], fast = nums[0];\n    do {\n      slow = nums[slow];\n      fast = nums[nums[fast]];\n    } while (slow != fast);\n    slow = nums[0];\n    while (slow != fast) {\n      slow = nums[slow];\n      fast = nums[fast];\n    }\n    return slow;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -424,7 +732,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int[] rearrangeArray(int[] nums) {\n    int[] ans = new int[nums.length];\n    int positive = 0, negative = 1;\n    for (int num : nums) {\n      if (num > 0) {\n        ans[positive] = num;\n        positive += 2;\n      } else {\n        ans[negative] = num;\n        negative += 2;\n      }\n    }\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int[] rearrangeArray(int[] nums) {\n    int[] ans = new int[nums.length];\n    int positive = 0, negative = 1;\n    for (int num : nums) {\n      if (num > 0) {\n        ans[positive] = num;\n        positive += 2;\n      } else {\n        ans[negative] = num;\n        negative += 2;\n      }\n    }\n    return ans;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int[] rearrangeArray(int[] nums) {\n    int[] ans = new int[nums.length];\n    int positive = 0, negative = 1;\n    for (int num : nums) {\n      if (num > 0) {\n        ans[positive] = num;\n        positive += 2;\n      } else {\n        ans[negative] = num;\n        negative += 2;\n      }\n    }\n    return ans;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int[] rearrangeArray(int[] nums) {\n    int[] ans = new int[nums.length];\n    int positive = 0, negative = 1;\n    for (int num : nums) {\n      if (num > 0) {\n        ans[positive] = num;\n        positive += 2;\n      } else {\n        ans[negative] = num;\n        negative += 2;\n      }\n    }\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -438,7 +757,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public void nextPermutation(int[] nums) {\n    int i = nums.length - 2;\n    while (i >= 0 && nums[i] >= nums[i + 1]) i--;\n    if (i >= 0) {\n      int j = nums.length - 1;\n      while (nums[j] <= nums[i]) j--;\n      swap(nums, i, j);\n    }\n    reverse(nums, i + 1, nums.length - 1);\n  }\n\n  private void reverse(int[] nums, int left, int right) {\n    while (left < right) swap(nums, left++, right--);\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public void nextPermutation(int[] nums) {\n    int i = nums.length - 2;\n    while (i >= 0 && nums[i] >= nums[i + 1]) i--;\n    if (i >= 0) {\n      int j = nums.length - 1;\n      while (nums[j] <= nums[i]) j--;\n      swap(nums, i, j);\n    }\n    reverse(nums, i + 1, nums.length - 1);\n  }\n\n  private void reverse(int[] nums, int left, int right) {\n    while (left < right) swap(nums, left++, right--);\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public void nextPermutation(int[] nums) {\n    int i = nums.length - 2;\n    while (i >= 0 && nums[i] >= nums[i + 1]) i--;\n    if (i >= 0) {\n      int j = nums.length - 1;\n      while (nums[j] <= nums[i]) j--;\n      swap(nums, i, j);\n    }\n    reverse(nums, i + 1, nums.length - 1);\n  }\n\n  private void reverse(int[] nums, int left, int right) {\n    while (left < right) swap(nums, left++, right--);\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public void nextPermutation(int[] nums) {\n    int i = nums.length - 2;\n    while (i >= 0 && nums[i] >= nums[i + 1]) i--;\n    if (i >= 0) {\n      int j = nums.length - 1;\n      while (nums[j] <= nums[i]) j--;\n      swap(nums, i, j);\n    }\n    reverse(nums, i + 1, nums.length - 1);\n  }\n\n  private void reverse(int[] nums, int left, int right) {\n    while (left < right) swap(nums, left++, right--);\n  }\n\n  private void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     }
   ],
   "checklist": [

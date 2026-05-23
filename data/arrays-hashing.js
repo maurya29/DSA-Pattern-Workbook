@@ -25,31 +25,70 @@ const CURRENT_PATTERN = {
       "name": "Two Sum",
       "difficulty": "Easy",
       "subpattern": "Hash map complement lookup",
-      "question": "Given an integer array nums and an integer target, return the indexes of the two distinct numbers whose sum equals target. Return {-1, -1} if no valid pair exists.",
-      "trigger": "You repeatedly need to know whether target - currentValue appeared earlier.",
-      "intuition": "Brute force checks every pair; optimized stores previous values so each complement check is O(1).",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> indexByValue = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n      int complement = target - nums[i];\n      if (indexByValue.containsKey(complement)) {\n        return new int[] {indexByValue.get(complement), i};\n      }\n      indexByValue.put(nums[i], i);\n    }\n    return new int[] {-1, -1};\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> indexByValue = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n      int complement = target - nums[i];\n      if (indexByValue.containsKey(complement)) {\n        return new int[] {indexByValue.get(complement), i};\n      }\n      indexByValue.put(nums[i], i);\n    }\n    return new int[] {-1, -1};\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    return search(nums, target, 0, new HashMap<>());\n  }\n\n  private int[] search(int[] nums, int target, int index, Map<Integer, Integer> indexByValue) {\n    if (index == nums.length) {\n      return new int[] {-1, -1};\n    }\n\n    int complement = target - nums[index];\n    if (indexByValue.containsKey(complement)) {\n      return new int[] {indexByValue.get(complement), index};\n    }\n\n    indexByValue.put(nums[index], index);\n    return search(nums, target, index + 1, indexByValue);\n  }\n}",
+      "question": "Given an integer array nums and an integer target, return the indexes of two distinct elements whose values add up to target. If no pair exists, return {-1, -1}.",
+      "trigger": "For each number, the missing partner is target - nums[i], and you need to know whether that partner was seen earlier.",
+      "intuition": "Brute force checks all pairs. The optimized version stores earlier values in a map so each complement lookup is constant time.",
+      "edgeCases": "Duplicate values like [3,3], negative numbers, zero target, no valid pair, and never using the same index twice.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(n).",
+      "recursiveComplexity": "Time O(n), Space O(n) for the map plus O(n) call stack.",
       "bruteForceCode": "class Solution {\n  public int[] twoSum(int[] nums, int target) {\n    for (int i = 0; i < nums.length - 1; i++) {\n      for (int j = i + 1; j < nums.length; j++) {\n        if (nums[i] + nums[j] == target) {\n          return new int[] {i, j};\n        }\n      }\n    }\n    return new int[] {-1, -1};\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> indexByValue = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n      int complement = target - nums[i];\n      if (indexByValue.containsKey(complement)) {\n        return new int[] {indexByValue.get(complement), i};\n      }\n      indexByValue.put(nums[i], i);\n    }\n    return new int[] {-1, -1};\n  }\n}",
-      "bruteForceComplexity": "Time O(n^2), Space O(1)",
-      "optimizedComplexity": "Time O(n), Space O(n)",
-      "recursiveComplexity": "Time O(n), Space O(n) for the map and O(n) call stack"
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> indexByValue = new HashMap<>();\n\n    for (int i = 0; i < nums.length; i++) {\n      int complement = target - nums[i];\n      if (indexByValue.containsKey(complement)) {\n        return new int[] {indexByValue.get(complement), i};\n      }\n      indexByValue.put(nums[i], i);\n    }\n\n    return new int[] {-1, -1};\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> indexByValue = new HashMap<>();\n\n    for (int i = 0; i < nums.length; i++) {\n      int complement = target - nums[i];\n      if (indexByValue.containsKey(complement)) {\n        return new int[] {indexByValue.get(complement), i};\n      }\n      indexByValue.put(nums[i], i);\n    }\n\n    return new int[] {-1, -1};\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    return search(nums, target, 0, new HashMap<>());\n  }\n\n  private int[] search(int[] nums, int target, int index, Map<Integer, Integer> indexByValue) {\n    if (index == nums.length) {\n      return new int[] {-1, -1};\n    }\n\n    int complement = target - nums[index];\n    if (indexByValue.containsKey(complement)) {\n      return new int[] {indexByValue.get(complement), index};\n    }\n\n    indexByValue.put(nums[index], index);\n    return search(nums, target, index + 1, indexByValue);\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> indexByValue = new HashMap<>();\n\n    for (int i = 0; i < nums.length; i++) {\n      int complement = target - nums[i];\n      if (indexByValue.containsKey(complement)) {\n        return new int[] {indexByValue.get(complement), i};\n      }\n      indexByValue.put(nums[i], i);\n    }\n\n    return new int[] {-1, -1};\n  }\n}",
+      "examples": [
+        {
+          "input": "nums = [2,7,11,15], target = 9",
+          "output": "[0,1]",
+          "explanation": "nums[0] + nums[1] = 2 + 7 = 9."
+        },
+        {
+          "input": "nums = [3,2,4], target = 6",
+          "output": "[1,2]",
+          "explanation": "nums[1] + nums[2] = 2 + 4 = 6."
+        },
+        {
+          "input": "nums = [3,3], target = 6",
+          "output": "[0,1]",
+          "explanation": "The same value can be used twice only when it appears at two different indexes."
+        }
+      ]
     },
     {
       "group": "core",
       "name": "Contains Duplicate",
       "difficulty": "Easy",
       "subpattern": "Hash set existence",
-      "question": "Return true if any value appears at least twice.",
-      "trigger": "Duplicate detection needs membership history.",
-      "intuition": "A set fails to add the second copy.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}"
+      "question": "Given an integer array nums, return true if any value appears at least twice. Return false if every element is distinct.",
+      "trigger": "The question asks whether a value has appeared before, which is direct membership checking.",
+      "intuition": "Brute force compares every pair. The optimized version stores seen values in a HashSet and stops on the first repeated value.",
+      "edgeCases": "Single element array, all values distinct, duplicate at the beginning, duplicate at the end, negative numbers, zero, and very large integer values.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time O(n), Space O(n).",
+      "recursiveComplexity": "Time O(n), Space O(n) for the set plus O(n) call stack.",
+      "bruteForceCode": "class Solution {\n  public boolean containsDuplicate(int[] nums) {\n    for (int i = 0; i < nums.length - 1; i++) {\n      for (int j = i + 1; j < nums.length; j++) {\n        if (nums[i] == nums[j]) {\n          return true;\n        }\n      }\n    }\n    return false;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean containsDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n\n    for (int num : nums) {\n      if (seen.contains(num)) {\n        return true;\n      }\n      seen.add(num);\n    }\n\n    return false;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean containsDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n\n    for (int num : nums) {\n      if (seen.contains(num)) {\n        return true;\n      }\n      seen.add(num);\n    }\n\n    return false;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public boolean containsDuplicate(int[] nums) {\n    return hasDuplicate(nums, 0, new HashSet<>());\n  }\n\n  private boolean hasDuplicate(int[] nums, int index, Set<Integer> seen) {\n    if (index == nums.length) {\n      return false;\n    }\n    if (seen.contains(nums[index])) {\n      return true;\n    }\n\n    seen.add(nums[index]);\n    return hasDuplicate(nums, index + 1, seen);\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public boolean containsDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n\n    for (int num : nums) {\n      if (seen.contains(num)) {\n        return true;\n      }\n      seen.add(num);\n    }\n\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "nums = [1,2,3,1]",
+          "output": "true",
+          "explanation": "The value 1 appears at indexes 0 and 3."
+        },
+        {
+          "input": "nums = [1,2,3,4]",
+          "output": "false",
+          "explanation": "Every value appears exactly once."
+        },
+        {
+          "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
+          "output": "true",
+          "explanation": "Multiple values appear more than once."
+        }
+      ]
     },
     {
       "group": "core",
@@ -63,7 +102,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public boolean isAnagram(String s, String t) {\n    if (s.length() != t.length()) return false;\n    int[] count = new int[26];\n    for (int i = 0; i < s.length(); i++) {\n      count[s.charAt(i) - 'a']++;\n      count[t.charAt(i) - 'a']--;\n    }\n    for (int value : count) if (value != 0) return false;\n    return true;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public boolean isAnagram(String s, String t) {\n    if (s.length() != t.length()) return false;\n    int[] count = new int[26];\n    for (int i = 0; i < s.length(); i++) {\n      count[s.charAt(i) - 'a']++;\n      count[t.charAt(i) - 'a']--;\n    }\n    for (int value : count) if (value != 0) return false;\n    return true;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public boolean isAnagram(String s, String t) {\n    if (s.length() != t.length()) return false;\n    int[] count = new int[26];\n    for (int i = 0; i < s.length(); i++) {\n      count[s.charAt(i) - 'a']++;\n      count[t.charAt(i) - 'a']--;\n    }\n    for (int value : count) if (value != 0) return false;\n    return true;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public boolean isAnagram(String s, String t) {\n    if (s.length() != t.length()) return false;\n    int[] count = new int[26];\n    for (int i = 0; i < s.length(); i++) {\n      count[s.charAt(i) - 'a']++;\n      count[t.charAt(i) - 'a']--;\n    }\n    for (int value : count) if (value != 0) return false;\n    return true;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -77,7 +127,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public List<List<String>> groupAnagrams(String[] strs) {\n    Map<String, List<String>> groups = new HashMap<>();\n    for (String word : strs) {\n      int[] count = new int[26];\n      for (char c : word.toCharArray()) count[c - 'a']++;\n      String key = Arrays.toString(count);\n      groups.computeIfAbsent(key, k -> new ArrayList<>()).add(word);\n    }\n    return new ArrayList<>(groups.values());\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public List<List<String>> groupAnagrams(String[] strs) {\n    Map<String, List<String>> groups = new HashMap<>();\n    for (String word : strs) {\n      int[] count = new int[26];\n      for (char c : word.toCharArray()) count[c - 'a']++;\n      String key = Arrays.toString(count);\n      groups.computeIfAbsent(key, k -> new ArrayList<>()).add(word);\n    }\n    return new ArrayList<>(groups.values());\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<List<String>> groupAnagrams(String[] strs) {\n    Map<String, List<String>> groups = new HashMap<>();\n    for (String word : strs) {\n      int[] count = new int[26];\n      for (char c : word.toCharArray()) count[c - 'a']++;\n      String key = Arrays.toString(count);\n      groups.computeIfAbsent(key, k -> new ArrayList<>()).add(word);\n    }\n    return new ArrayList<>(groups.values());\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<List<String>> groupAnagrams(String[] strs) {\n    Map<String, List<String>> groups = new HashMap<>();\n    for (String word : strs) {\n      int[] count = new int[26];\n      for (char c : word.toCharArray()) count[c - 'a']++;\n      String key = Arrays.toString(count);\n      groups.computeIfAbsent(key, k -> new ArrayList<>()).add(word);\n    }\n    return new ArrayList<>(groups.values());\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -91,7 +152,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int[] topKFrequent(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    for (int num : nums) freq.put(num, freq.getOrDefault(num, 0) + 1);\n    PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> freq.get(a) - freq.get(b));\n    for (int num : freq.keySet()) {\n      heap.offer(num);\n      if (heap.size() > k) heap.poll();\n    }\n    int[] ans = new int[k];\n    for (int i = k - 1; i >= 0; i--) ans[i] = heap.poll();\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int[] topKFrequent(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    for (int num : nums) freq.put(num, freq.getOrDefault(num, 0) + 1);\n    PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> freq.get(a) - freq.get(b));\n    for (int num : freq.keySet()) {\n      heap.offer(num);\n      if (heap.size() > k) heap.poll();\n    }\n    int[] ans = new int[k];\n    for (int i = k - 1; i >= 0; i--) ans[i] = heap.poll();\n    return ans;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int[] topKFrequent(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    for (int num : nums) freq.put(num, freq.getOrDefault(num, 0) + 1);\n    PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> freq.get(a) - freq.get(b));\n    for (int num : freq.keySet()) {\n      heap.offer(num);\n      if (heap.size() > k) heap.poll();\n    }\n    int[] ans = new int[k];\n    for (int i = k - 1; i >= 0; i--) ans[i] = heap.poll();\n    return ans;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int[] topKFrequent(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    for (int num : nums) freq.put(num, freq.getOrDefault(num, 0) + 1);\n    PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> freq.get(a) - freq.get(b));\n    for (int num : freq.keySet()) {\n      heap.offer(num);\n      if (heap.size() > k) heap.poll();\n    }\n    int[] ans = new int[k];\n    for (int i = k - 1; i >= 0; i--) ans[i] = heap.poll();\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -105,7 +177,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int[] productExceptSelf(int[] nums) {\n    int[] ans = new int[nums.length];\n    int prefix = 1;\n    for (int i = 0; i < nums.length; i++) {\n      ans[i] = prefix;\n      prefix *= nums[i];\n    }\n    int suffix = 1;\n    for (int i = nums.length - 1; i >= 0; i--) {\n      ans[i] *= suffix;\n      suffix *= nums[i];\n    }\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int[] productExceptSelf(int[] nums) {\n    int[] ans = new int[nums.length];\n    int prefix = 1;\n    for (int i = 0; i < nums.length; i++) {\n      ans[i] = prefix;\n      prefix *= nums[i];\n    }\n    int suffix = 1;\n    for (int i = nums.length - 1; i >= 0; i--) {\n      ans[i] *= suffix;\n      suffix *= nums[i];\n    }\n    return ans;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int[] productExceptSelf(int[] nums) {\n    int[] ans = new int[nums.length];\n    int prefix = 1;\n    for (int i = 0; i < nums.length; i++) {\n      ans[i] = prefix;\n      prefix *= nums[i];\n    }\n    int suffix = 1;\n    for (int i = nums.length - 1; i >= 0; i--) {\n      ans[i] *= suffix;\n      suffix *= nums[i];\n    }\n    return ans;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int[] productExceptSelf(int[] nums) {\n    int[] ans = new int[nums.length];\n    int prefix = 1;\n    for (int i = 0; i < nums.length; i++) {\n      ans[i] = prefix;\n      prefix *= nums[i];\n    }\n    int suffix = 1;\n    for (int i = nums.length - 1; i >= 0; i--) {\n      ans[i] *= suffix;\n      suffix *= nums[i];\n    }\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -119,7 +202,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -133,7 +227,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int longestConsecutive(int[] nums) {\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) set.add(num);\n    int best = 0;\n    for (int num : set) {\n      if (set.contains(num - 1)) continue;\n      int current = num;\n      while (set.contains(current)) current++;\n      best = Math.max(best, current - num);\n    }\n    return best;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int longestConsecutive(int[] nums) {\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) set.add(num);\n    int best = 0;\n    for (int num : set) {\n      if (set.contains(num - 1)) continue;\n      int current = num;\n      while (set.contains(current)) current++;\n      best = Math.max(best, current - num);\n    }\n    return best;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int longestConsecutive(int[] nums) {\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) set.add(num);\n    int best = 0;\n    for (int num : set) {\n      if (set.contains(num - 1)) continue;\n      int current = num;\n      while (set.contains(current)) current++;\n      best = Math.max(best, current - num);\n    }\n    return best;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int longestConsecutive(int[] nums) {\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) set.add(num);\n    int best = 0;\n    for (int num : set) {\n      if (set.contains(num - 1)) continue;\n      int current = num;\n      while (set.contains(current)) current++;\n      best = Math.max(best, current - num);\n    }\n    return best;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -147,7 +252,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "class Solution {\n  public int majorityElement(int[] nums) {\n    int candidate = 0, votes = 0;\n    for (int num : nums) {\n      if (votes == 0) candidate = num;\n      votes += num == candidate ? 1 : -1;\n    }\n    return candidate;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "class Solution {\n  public int majorityElement(int[] nums) {\n    int candidate = 0, votes = 0;\n    for (int num : nums) {\n      if (votes == 0) candidate = num;\n      votes += num == candidate ? 1 : -1;\n    }\n    return candidate;\n  }\n}",
-      "optimizedCode": "class Solution {\n  public int majorityElement(int[] nums) {\n    int candidate = 0, votes = 0;\n    for (int num : nums) {\n      if (votes == 0) candidate = num;\n      votes += num == candidate ? 1 : -1;\n    }\n    return candidate;\n  }\n}"
+      "optimizedCode": "class Solution {\n  public int majorityElement(int[] nums) {\n    int candidate = 0, votes = 0;\n    for (int num : nums) {\n      if (votes == 0) candidate = num;\n      votes += num == candidate ? 1 : -1;\n    }\n    return candidate;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -161,7 +277,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public List<Integer> findDisappearedNumbers(int[] nums) {\n    for (int num : nums) {\n      int index = Math.abs(num) - 1;\n      if (nums[index] > 0) nums[index] = -nums[index];\n    }\n    List<Integer> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length; i++) if (nums[i] > 0) ans.add(i + 1);\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public List<Integer> findDisappearedNumbers(int[] nums) {\n    for (int num : nums) {\n      int index = Math.abs(num) - 1;\n      if (nums[index] > 0) nums[index] = -nums[index];\n    }\n    List<Integer> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length; i++) if (nums[i] > 0) ans.add(i + 1);\n    return ans;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<Integer> findDisappearedNumbers(int[] nums) {\n    for (int num : nums) {\n      int index = Math.abs(num) - 1;\n      if (nums[index] > 0) nums[index] = -nums[index];\n    }\n    List<Integer> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length; i++) if (nums[i] > 0) ans.add(i + 1);\n    return ans;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public List<Integer> findDisappearedNumbers(int[] nums) {\n    for (int num : nums) {\n      int index = Math.abs(num) - 1;\n      if (nums[index] > 0) nums[index] = -nums[index];\n    }\n    List<Integer> ans = new ArrayList<>();\n    for (int i = 0; i < nums.length; i++) if (nums[i] > 0) ans.add(i + 1);\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -175,7 +302,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "core",
@@ -189,7 +327,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -203,7 +352,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Codec {\n  public String encode(List<String> strs) {\n    StringBuilder sb = new StringBuilder();\n    for (String s : strs) sb.append(s.length()).append('#').append(s);\n    return sb.toString();\n  }\n\n  public List<String> decode(String s) {\n    List<String> ans = new ArrayList<>();\n    int i = 0;\n    while (i < s.length()) {\n      int j = i;\n      while (s.charAt(j) != '#') j++;\n      int len = Integer.parseInt(s.substring(i, j));\n      ans.add(s.substring(j + 1, j + 1 + len));\n      i = j + 1 + len;\n    }\n    return ans;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Codec {\n  public String encode(List<String> strs) {\n    StringBuilder sb = new StringBuilder();\n    for (String s : strs) sb.append(s.length()).append('#').append(s);\n    return sb.toString();\n  }\n\n  public List<String> decode(String s) {\n    List<String> ans = new ArrayList<>();\n    int i = 0;\n    while (i < s.length()) {\n      int j = i;\n      while (s.charAt(j) != '#') j++;\n      int len = Integer.parseInt(s.substring(i, j));\n      ans.add(s.substring(j + 1, j + 1 + len));\n      i = j + 1 + len;\n    }\n    return ans;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Codec {\n  public String encode(List<String> strs) {\n    StringBuilder sb = new StringBuilder();\n    for (String s : strs) sb.append(s.length()).append('#').append(s);\n    return sb.toString();\n  }\n\n  public List<String> decode(String s) {\n    List<String> ans = new ArrayList<>();\n    int i = 0;\n    while (i < s.length()) {\n      int j = i;\n      while (s.charAt(j) != '#') j++;\n      int len = Integer.parseInt(s.substring(i, j));\n      ans.add(s.substring(j + 1, j + 1 + len));\n      i = j + 1 + len;\n    }\n    return ans;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Codec {\n  public String encode(List<String> strs) {\n    StringBuilder sb = new StringBuilder();\n    for (String s : strs) sb.append(s.length()).append('#').append(s);\n    return sb.toString();\n  }\n\n  public List<String> decode(String s) {\n    List<String> ans = new ArrayList<>();\n    int i = 0;\n    while (i < s.length()) {\n      int j = i;\n      while (s.charAt(j) != '#') j++;\n      int len = Integer.parseInt(s.substring(i, j));\n      ans.add(s.substring(j + 1, j + 1 + len));\n      i = j + 1 + len;\n    }\n    return ans;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -217,7 +377,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -231,7 +402,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -245,7 +427,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -259,7 +452,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -273,7 +477,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -287,7 +502,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int countSubarrays(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    freq.put(0, 1);\n    int prefix = 0, count = 0;\n    for (int num : nums) {\n      prefix += num;\n      count += freq.getOrDefault(prefix - k, 0);\n      freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);\n    }\n    return count;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "advanced",
@@ -301,7 +527,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums, int target) {\n    Map<Integer, Integer> seen = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n      int need = target - nums[i];\n      if (seen.containsKey(need)) return i;\n      seen.put(nums[i], i);\n    }\n    return -1;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums, int target) {\n    Map<Integer, Integer> seen = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n      int need = target - nums[i];\n      if (seen.containsKey(need)) return i;\n      seen.put(nums[i], i);\n    }\n    return -1;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums, int target) {\n    Map<Integer, Integer> seen = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n      int need = target - nums[i];\n      if (seen.containsKey(need)) return i;\n      seen.put(nums[i], i);\n    }\n    return -1;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums, int target) {\n    Map<Integer, Integer> seen = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n      int need = target - nums[i];\n      if (seen.containsKey(need)) return i;\n      seen.put(nums[i], i);\n    }\n    return -1;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -315,7 +552,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -329,7 +577,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -343,7 +602,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -357,7 +627,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -371,7 +652,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -385,7 +677,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -399,7 +702,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -413,7 +727,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -427,7 +752,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    int answer = 0;\n    for (int num : nums) {\n      int count = freq.getOrDefault(num, 0) + 1;\n      freq.put(num, count);\n      answer = Math.max(answer, count);\n    }\n    return answer;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     },
     {
       "group": "practice",
@@ -441,7 +777,18 @@ const CURRENT_PATTERN = {
       "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
       "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
       "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}"
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public boolean hasDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int num : nums) {\n      if (!seen.add(num)) return true;\n    }\n    return false;\n  }\n}",
+      "examples": [
+        {
+          "input": "Use the sample input from this LeetCode-style problem.",
+          "output": "Expected result based on the problem requirement.",
+          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+        }
+      ],
+      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
+      "bruteForceComplexity": "Time O(n^2), Space O(1).",
+      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
     }
   ],
   "checklist": [
