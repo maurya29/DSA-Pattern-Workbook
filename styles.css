@@ -485,3 +485,45 @@ html[data-theme="dark"] .examples-block {
   color: #d8dee9;
   padding: 12px 14px;
 }
+
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.facts-grid a {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.facts-grid a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .facts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Readability polish for generated Java snippets */
+pre {
+  white-space: pre;
+  min-height: 120px;
+}
+
+.tab-panel pre {
+  border-top: 1px solid #2b3038;
+}
+
+.code-tabs code {
+  display: block;
+  min-width: max-content;
+}
+
+.problem .tab-list {
+  scrollbar-width: thin;
+}

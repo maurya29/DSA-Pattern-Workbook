@@ -8,7 +8,7 @@ const patternHeading = document.querySelector('#patternHeading');
 const patternSummary = document.querySelector('#patternSummary');
 const patternDetail = document.querySelector('#patternDetail');
 
-document.title = pattern.name + ' | DSA Pattern Lab';
+document.title = pattern.name + ' | DSA Pattern Workbook';
 patternTitle.textContent = pattern.name;
 patternHeading.textContent = pattern.name;
 patternSummary.textContent = pattern.summary;
@@ -24,8 +24,32 @@ function titleCase(value) {
   return String(value || '').replace(/^./, (char) => char.toUpperCase());
 }
 
+function formatJava(code) {
+  const source = String(code || '').trim();
+  if (source.includes('\n')) return source;
+
+  let formatted = source
+    .replace(/\s+/g, ' ')
+    .replace(/\s*{\s*/g, ' {\n')
+    .replace(/\s*}\s*/g, '\n}\n')
+    .replace(/\s*;\s*/g, ';\n')
+    .replace(/\s*(else)\s*/g, ' else ')
+    .replace(/\s*(for|while|if)\s*\(/g, '\n$1 (')
+    .replace(/\)\s*(?=(for|while|if)\s*\()/g, ')\n')
+    .replace(/\n{2,}/g, '\n');
+
+  const lines = formatted.split('\n').map((line) => line.trim()).filter(Boolean);
+  let depth = 0;
+  return lines.map((line) => {
+    if (line.startsWith('}')) depth = Math.max(0, depth - 1);
+    const indented = `${'  '.repeat(depth)}${line}`;
+    if (line.endsWith('{')) depth++;
+    return indented;
+  }).join('\n');
+}
+
 function highlightJava(code) {
-  const escaped = escapeHtml(code);
+  const escaped = escapeHtml(formatJava(code));
   const tokens = [];
   let marked = escaped.replace(/(&quot;.*?&quot;|'.*?'|\/\/.*?$|\/\*[\s\S]*?\*\/)/gm, (match) => {
     const index = tokens.push(match) - 1;
@@ -69,6 +93,16 @@ Explanation: ${escapeHtml(example.explanation)}` : ''}</code></pre>
   `;
 }
 
+function renderProblemFacts(problem) {
+  if (!problem.constraints && !problem.source) return '';
+  return `
+    <div class="facts-grid">
+      ${problem.constraints ? `<p class="mini"><strong>Constraints</strong>${problem.constraints}</p>` : ''}
+      ${problem.source ? `<p class="mini"><strong>Reference</strong><a href="${problem.source.url}" target="_blank" rel="noreferrer">${problem.source.label}</a></p>` : ''}
+    </div>
+  `;
+}
+
 function renderProblem(problem, number) {
   const bruteForceCode = problem.bruteForceCode || problem.code;
   const iterativeCode = problem.iterativeCode || problem.optimizedCode || problem.code;
@@ -85,6 +119,7 @@ function renderProblem(problem, number) {
         <span class="badge ${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
       </div>
       ${renderExamples(problem)}
+      ${renderProblemFacts(problem)}
       <div class="problem-grid">
         <p class="mini"><strong>Why this pattern applies</strong>${problem.trigger}</p>
         <p class="mini"><strong>Key intuition</strong>${problem.intuition}</p>

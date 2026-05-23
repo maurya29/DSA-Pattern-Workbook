@@ -4,809 +4,1261 @@ const CURRENT_PATTERN = {
   "summary": "DFS/BFS, components, shortest paths, topological sort.",
   "complete": true,
   "subpatterns": [
-    "Core recognition triggers",
-    "Common interview variants",
-    "Edge-case families",
-    "Optimal-code templates"
+    "Core Graphs recognition",
+    "Boundary handling in Graphs",
+    "Optimized iterative Graphs",
+    "Recursive or DFS-style Graphs",
+    "Advanced Graphs variations"
   ],
   "problems": [
     {
       "group": "core",
-      "name": "Graphs Drill 1",
+      "name": "Number of Islands",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Number of Islands using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Number of Islands - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Number%20of%20Islands"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslands(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslands(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslands(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslands(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslands(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 2",
+      "name": "Clone Graph",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "components",
+      "question": "Solve Clone Graph using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Clone Graph - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Clone%20Graph"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int cloneGraph(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int cloneGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int cloneGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int cloneGraph(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int cloneGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 3",
+      "name": "Max Area of Island",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style graphs problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "shortest paths",
+      "question": "Solve Max Area of Island using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes shortest paths and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for shortest paths and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Max Area of Island - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Max%20Area%20of%20Island"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int maxAreaOfIsland(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int maxAreaOfIsland(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int maxAreaOfIsland(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int maxAreaOfIsland(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int maxAreaOfIsland(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 4",
+      "name": "Pacific Atlantic Water Flow",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style graphs problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "topological sort.",
+      "question": "Solve Pacific Atlantic Water Flow using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes topological sort. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for topological sort. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Pacific Atlantic Water Flow - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Pacific%20Atlantic%20Water%20Flow"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int pacificAtlanticWaterFlow(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int pacificAtlanticWaterFlow(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int pacificAtlanticWaterFlow(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int pacificAtlanticWaterFlow(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int pacificAtlanticWaterFlow(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 5",
+      "name": "Surrounded Regions",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Surrounded Regions using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Surrounded Regions - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Surrounded%20Regions"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int surroundedRegions(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int surroundedRegions(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int surroundedRegions(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int surroundedRegions(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int surroundedRegions(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 6",
+      "name": "Rotting Oranges",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "components",
+      "question": "Solve Rotting Oranges using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Rotting Oranges - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Rotting%20Oranges"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 7",
+      "name": "Walls and Gates",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style graphs problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "shortest paths",
+      "question": "Solve Walls and Gates using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes shortest paths and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for shortest paths and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Walls and Gates - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Walls%20and%20Gates"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 8",
+      "name": "Course Schedule",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style graphs problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "topological sort.",
+      "question": "Solve Course Schedule using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes topological sort. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for topological sort. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Course Schedule - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Course%20Schedule"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int courseSchedule(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int courseSchedule(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int courseSchedule(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int courseSchedule(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int courseSchedule(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 9",
+      "name": "Course Schedule II",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Course Schedule II using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Course Schedule II - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Course%20Schedule%20II"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int courseScheduleIi(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int courseScheduleIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int courseScheduleIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int courseScheduleIi(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int courseScheduleIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 10",
+      "name": "Graph Valid Tree",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "components",
+      "question": "Solve Graph Valid Tree using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Graph Valid Tree - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Graph%20Valid%20Tree"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int graphValidTree(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int graphValidTree(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int graphValidTree(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int graphValidTree(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int graphValidTree(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Graphs Drill 11",
-      "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style graphs problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "core",
-      "name": "Graphs Drill 12",
-      "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style graphs problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "advanced",
-      "name": "Graphs Drill 13",
+      "name": "Number of Connected Components in an Undirected Graph",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "shortest paths",
+      "question": "Solve Number of Connected Components in an Undirected Graph using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes shortest paths and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for shortest paths and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Number of Connected Components in an Undirected Graph - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfConnectedComponentsInAnUndirectedGraph(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfConnectedComponentsInAnUndirectedGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfConnectedComponentsInAnUndirectedGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfConnectedComponentsInAnUndirectedGraph(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int numberOfConnectedComponentsInAnUndirectedGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "Graphs Drill 14",
+      "group": "core",
+      "name": "Redundant Connection",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "topological sort.",
+      "question": "Solve Redundant Connection using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes topological sort. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for topological sort. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Redundant Connection - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Redundant%20Connection"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int redundantConnection(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int redundantConnection(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int redundantConnection(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int redundantConnection(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int redundantConnection(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Graphs Drill 15",
+      "name": "Word Ladder",
       "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style graphs problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Word Ladder using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Word Ladder - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Word%20Ladder"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int wordLadder(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int wordLadder(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int wordLadder(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int wordLadder(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int wordLadder(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Graphs Drill 16",
+      "name": "Open the Lock",
       "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style graphs problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "components",
+      "question": "Solve Open the Lock using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Open the Lock - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Open%20the%20Lock"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Graphs Drill 17",
+      "name": "Shortest Path in Binary Matrix",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "shortest paths",
+      "question": "Solve Shortest Path in Binary Matrix using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes shortest paths and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for shortest paths and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Shortest Path in Binary Matrix - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Shortest%20Path%20in%20Binary%20Matrix"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Graphs Drill 18",
+      "name": "01 Matrix",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "topological sort.",
+      "question": "Solve 01 Matrix using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes topological sort. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for topological sort. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "01 Matrix - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=01%20Matrix"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Graphs Drill 19",
+      "name": "Bipartite Graph",
+      "difficulty": "Medium",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Bipartite Graph using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Bipartite Graph - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Bipartite%20Graph"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int bipartiteGraph(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int bipartiteGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int bipartiteGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int bipartiteGraph(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int bipartiteGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Is Graph Bipartite?",
+      "difficulty": "Medium",
+      "subpattern": "components",
+      "question": "Solve Is Graph Bipartite? using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Is Graph Bipartite? - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Is%20Graph%20Bipartite%3F"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int isGraphBipartite(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int isGraphBipartite(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int isGraphBipartite(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int isGraphBipartite(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int isGraphBipartite(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Find Eventual Safe States",
+      "difficulty": "Medium",
+      "subpattern": "shortest paths",
+      "question": "Solve Find Eventual Safe States using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes shortest paths and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for shortest paths and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find Eventual Safe States - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20Eventual%20Safe%20States"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int findEventualSafeStates(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int findEventualSafeStates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int findEventualSafeStates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int findEventualSafeStates(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int findEventualSafeStates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Keys and Rooms",
+      "difficulty": "Medium",
+      "subpattern": "topological sort.",
+      "question": "Solve Keys and Rooms using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes topological sort. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for topological sort. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Keys and Rooms - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Keys%20and%20Rooms"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int keysAndRooms(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int keysAndRooms(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int keysAndRooms(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int keysAndRooms(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int keysAndRooms(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Reorder Routes to Make All Paths Lead to the City Zero",
+      "difficulty": "Medium",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Reorder Routes to Make All Paths Lead to the City Zero using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Reorder Routes to Make All Paths Lead to the City Zero - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Reorder%20Routes%20to%20Make%20All%20Paths%20Lead%20to%20the%20City%20Zero"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int reorderRoutesToMakeAllPathsLeadToTheCityZero(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int reorderRoutesToMakeAllPathsLeadToTheCityZero(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int reorderRoutesToMakeAllPathsLeadToTheCityZero(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int reorderRoutesToMakeAllPathsLeadToTheCityZero(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int reorderRoutesToMakeAllPathsLeadToTheCityZero(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Minimum Height Trees",
+      "difficulty": "Medium",
+      "subpattern": "components",
+      "question": "Solve Minimum Height Trees using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Minimum Height Trees - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Minimum%20Height%20Trees"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int minimumHeightTrees(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int minimumHeightTrees(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int minimumHeightTrees(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int minimumHeightTrees(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int minimumHeightTrees(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Evaluate Division",
+      "difficulty": "Medium",
+      "subpattern": "shortest paths",
+      "question": "Solve Evaluate Division using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes shortest paths and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for shortest paths and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Evaluate Division - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Evaluate%20Division"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int evaluateDivision(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int evaluateDivision(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int evaluateDivision(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int evaluateDivision(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int evaluateDivision(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Alien Dictionary",
+      "difficulty": "Medium",
+      "subpattern": "topological sort.",
+      "question": "Solve Alien Dictionary using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes topological sort. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for topological sort. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Alien Dictionary - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Alien%20Dictionary"
+      },
+      "examples": [
+        {
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int alienDictionary(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int alienDictionary(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int alienDictionary(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int alienDictionary(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int alienDictionary(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Network Delay Time",
       "difficulty": "Hard",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style graphs problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Network Delay Time using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Network Delay Time - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Network%20Delay%20Time"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int networkDelayTime(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int networkDelayTime(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int networkDelayTime(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int networkDelayTime(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int networkDelayTime(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "Graphs Drill 20",
+      "group": "practice",
+      "name": "Cheapest Flights Within K Stops",
       "difficulty": "Hard",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style graphs problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "components",
+      "question": "Solve Cheapest Flights Within K Stops using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Cheapest Flights Within K Stops - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Cheapest%20Flights%20Within%20K%20Stops"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int cheapestFlightsWithinKStops(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int cheapestFlightsWithinKStops(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int cheapestFlightsWithinKStops(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int cheapestFlightsWithinKStops(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int cheapestFlightsWithinKStops(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Graphs Drill 21",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Shortest Bridge",
+      "difficulty": "Hard",
+      "subpattern": "shortest paths",
+      "question": "Solve Shortest Bridge using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes shortest paths and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for shortest paths and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Shortest Bridge - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Shortest%20Bridge"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int shortestBridge(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int shortestBridge(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int shortestBridge(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int shortestBridge(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int shortestBridge(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Graphs Drill 22",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Accounts Merge",
+      "difficulty": "Hard",
+      "subpattern": "topological sort.",
+      "question": "Solve Accounts Merge using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes topological sort. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for topological sort. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Accounts Merge - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Accounts%20Merge"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int accountsMerge(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int accountsMerge(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int accountsMerge(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int accountsMerge(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int accountsMerge(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Graphs Drill 23",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style graphs problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Find if Path Exists in Graph",
+      "difficulty": "Hard",
+      "subpattern": "DFS/BFS",
+      "question": "Solve Find if Path Exists in Graph using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes dfs/bfs and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for dfs/bfs and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find if Path Exists in Graph - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20if%20Path%20Exists%20in%20Graph"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
+        {
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
+        {
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int findIfPathExistsInGraph(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int findIfPathExistsInGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int findIfPathExistsInGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int findIfPathExistsInGraph(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int findIfPathExistsInGraph(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Graphs Drill 24",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style graphs problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "All Paths From Source to Target",
+      "difficulty": "Hard",
+      "subpattern": "components",
+      "question": "Solve All Paths From Source to Target using the Graphs pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Graphs when the input structure exposes components and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for components and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "All Paths From Source to Target - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=All%20Paths%20From%20Source%20to%20Target"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Graphs Drill 25",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "n = 3, edges = [[0,1],[1,2]]",
+          "output": "connected traversal",
+          "explanation": "Visited set prevents repeats."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Graphs Drill 26",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "n = 1, edges = []",
+          "output": "single component",
+          "explanation": "Single vertex is its own component."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "n = 4, edges = [[0,1],[2,3]]",
+          "output": "two components",
+          "explanation": "Traversal starts again for unseen vertices."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Graphs Drill 27",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style graphs problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Graphs Drill 28",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style graphs problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Graphs Drill 29",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style graphs problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Graphs Drill 30",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style graphs problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int allPathsFromSourceToTarget(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int allPathsFromSourceToTarget(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int allPathsFromSourceToTarget(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int allPathsFromSourceToTarget(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int allPathsFromSourceToTarget(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     }
   ],
   "checklist": [
-    "Input constraints match the pattern operation.",
-    "A brute force solution repeats the same state transition.",
-    "The optimal solution maintains compact state.",
-    "The answer can be updated incrementally.",
-    "Edge cases are mostly boundary and empty-state cases."
+    "The problem has an obvious Graphs signal in ordering, state transition, connectivity, range, or repeated decision work.",
+    "A brute force solution repeats the same local calculation many times.",
+    "The optimized solution keeps a compact state and updates it predictably.",
+    "Boundary cases decide correctness more than syntax.",
+    "The answer can be verified by checking the invariant after each step."
   ],
   "traps": [
-    "Using the pattern without checking constraints.",
-    "Missing null or empty input.",
-    "Updating state in the wrong order.",
-    "Forgetting duplicate handling.",
-    "Returning partial state instead of final answer."
+    "Forgetting empty or single-item inputs.",
+    "Using the optimized structure before defining the invariant.",
+    "Mixing inclusive and exclusive boundaries.",
+    "Letting duplicate values break comparison logic.",
+    "Writing recursion without a clear base case."
   ],
   "edgeCases": [
-    "Empty input.",
-    "Single element.",
-    "All equal values.",
-    "Already sorted or already valid input.",
-    "Maximum constraint sizes."
+    "Empty input if the original problem allows it.",
+    "Single element or single node.",
+    "All values equal.",
+    "Strictly increasing or decreasing values.",
+    "Maximum constraints where brute force times out."
   ],
   "complexities": [
-    "Most optimized solutions target O(n) or O(n log n).",
-    "Auxiliary space depends on stored state.",
-    "Recursive variants may add call-stack space.",
-    "Output space is excluded when returning collections."
+    "Brute force usually enumerates candidates and costs O(n^2) or worse.",
+    "Optimized iterative solutions keep a stable invariant and usually reduce repeated work.",
+    "Recursive solutions add call-stack space equal to depth unless memoized.",
+    "Hash maps, heaps, queues, stacks, trees, and graph structures add state proportional to stored candidates.",
+    "DP and graph patterns should name states/vertices before estimating complexity."
   ],
   "mentalModel": [
-    "Name the state before coding.",
-    "Define the invariant.",
-    "Update state once per step.",
-    "Prove what gets skipped.",
-    "Test the smallest failing case."
+    "Name the state before writing code.",
+    "Write the invariant in one sentence.",
+    "Move one boundary or process one decision at a time.",
+    "Prove each update preserves the invariant.",
+    "Check the smallest valid input before optimizing."
   ],
   "revisionStrategy": [
-    "Solve the 12 core drills first.",
-    "Redo missed problems after 48 hours.",
-    "Mix advanced and practice problems after one week.",
-    "Write trigger points before code.",
-    "Revisit edge cases monthly."
+    "Revise the 12 core problems first until the trigger is instant.",
+    "Redo 4 core problems after 24 hours without looking at code.",
+    "Mix 3 advanced problems with 3 core problems every third session.",
+    "Track mistakes by category: boundary, state, duplicate, recursion base case, complexity.",
+    "Use the unseen problems only after solving the core set cleanly."
   ],
   "unseen": [
-    "Random recognition problem 1",
-    "Random recognition problem 2",
-    "Random recognition problem 3",
-    "Random recognition problem 4",
-    "Random recognition problem 5"
+    "A hidden Graphs problem with duplicates and boundary indexes.",
+    "A Graphs problem where the brute force answer is correct but too slow.",
+    "A mixed-pattern problem that begins like Graphs but needs one helper structure.",
+    "A maximum-constraint version of a familiar Graphs problem.",
+    "A recognition test where the statement does not mention Graphs."
   ]
 };

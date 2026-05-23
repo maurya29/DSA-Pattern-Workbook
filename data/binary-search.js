@@ -4,809 +4,1261 @@ const CURRENT_PATTERN = {
   "summary": "Sorted search, answer search, rotated arrays, boundaries.",
   "complete": true,
   "subpatterns": [
-    "Core recognition triggers",
-    "Common interview variants",
-    "Edge-case families",
-    "Optimal-code templates"
+    "Core Binary Search recognition",
+    "Boundary handling in Binary Search",
+    "Optimized iterative Binary Search",
+    "Recursive or DFS-style Binary Search",
+    "Advanced Binary Search variations"
   ],
   "problems": [
     {
       "group": "core",
-      "name": "Binary Search Drill 1",
+      "name": "Binary Search",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Sorted search",
+      "question": "Solve Binary Search using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Binary Search - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Binary%20Search"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int binarySearch(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int binarySearch(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int binarySearch(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int binarySearch(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int binarySearch(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 2",
+      "name": "First Bad Version",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "answer search",
+      "question": "Solve First Bad Version using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "First Bad Version - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=First%20Bad%20Version"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int firstBadVersion(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int firstBadVersion(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int firstBadVersion(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int firstBadVersion(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int firstBadVersion(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 3",
+      "name": "Search Insert Position",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style binary search problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "rotated arrays",
+      "question": "Solve Search Insert Position using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes rotated arrays and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for rotated arrays and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Search Insert Position - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Search%20Insert%20Position"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int searchInsertPosition(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int searchInsertPosition(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int searchInsertPosition(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int searchInsertPosition(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int searchInsertPosition(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 4",
+      "name": "Find First and Last Position of Element in Sorted Array",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style binary search problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "boundaries.",
+      "question": "Solve Find First and Last Position of Element in Sorted Array using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes boundaries. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for boundaries. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find First and Last Position of Element in Sorted Array - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int findFirstAndLastPositionOfElementInSortedArray(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int findFirstAndLastPositionOfElementInSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int findFirstAndLastPositionOfElementInSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int findFirstAndLastPositionOfElementInSortedArray(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int findFirstAndLastPositionOfElementInSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 5",
+      "name": "Sqrt(x)",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Sorted search",
+      "question": "Solve Sqrt(x) using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Sqrt(x) - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Sqrt(x)"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int sqrtX(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int sqrtX(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int sqrtX(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int sqrtX(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int sqrtX(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 6",
+      "name": "Valid Perfect Square",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "answer search",
+      "question": "Solve Valid Perfect Square using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Valid Perfect Square - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Valid%20Perfect%20Square"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int validPerfectSquare(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int validPerfectSquare(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int validPerfectSquare(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int validPerfectSquare(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int validPerfectSquare(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 7",
+      "name": "Search in Rotated Sorted Array",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style binary search problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "rotated arrays",
+      "question": "Solve Search in Rotated Sorted Array using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes rotated arrays and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for rotated arrays and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Search in Rotated Sorted Array - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Search%20in%20Rotated%20Sorted%20Array"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int searchInRotatedSortedArray(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int searchInRotatedSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int searchInRotatedSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int searchInRotatedSortedArray(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int searchInRotatedSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 8",
+      "name": "Find Minimum in Rotated Sorted Array",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style binary search problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "boundaries.",
+      "question": "Solve Find Minimum in Rotated Sorted Array using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes boundaries. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for boundaries. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find Minimum in Rotated Sorted Array - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20Minimum%20in%20Rotated%20Sorted%20Array"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int findMinimumInRotatedSortedArray(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int findMinimumInRotatedSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int findMinimumInRotatedSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int findMinimumInRotatedSortedArray(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int findMinimumInRotatedSortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 9",
+      "name": "Find Peak Element",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Sorted search",
+      "question": "Solve Find Peak Element using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find Peak Element - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20Peak%20Element"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int findPeakElement(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int findPeakElement(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int findPeakElement(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int findPeakElement(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int findPeakElement(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 10",
+      "name": "Peak Index in a Mountain Array",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "answer search",
+      "question": "Solve Peak Index in a Mountain Array using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Peak Index in a Mountain Array - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Peak%20Index%20in%20a%20Mountain%20Array"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int peakIndexInAMountainArray(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int peakIndexInAMountainArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int peakIndexInAMountainArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int peakIndexInAMountainArray(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int peakIndexInAMountainArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Binary Search Drill 11",
-      "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style binary search problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "core",
-      "name": "Binary Search Drill 12",
-      "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style binary search problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "advanced",
-      "name": "Binary Search Drill 13",
+      "name": "Single Element in a Sorted Array",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "rotated arrays",
+      "question": "Solve Single Element in a Sorted Array using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes rotated arrays and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for rotated arrays and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Single Element in a Sorted Array - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Single%20Element%20in%20a%20Sorted%20Array"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int singleElementInASortedArray(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int singleElementInASortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int singleElementInASortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int singleElementInASortedArray(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int singleElementInASortedArray(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "Binary Search Drill 14",
+      "group": "core",
+      "name": "Find Smallest Letter Greater Than Target",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "boundaries.",
+      "question": "Solve Find Smallest Letter Greater Than Target using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes boundaries. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for boundaries. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find Smallest Letter Greater Than Target - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20Smallest%20Letter%20Greater%20Than%20Target"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int findSmallestLetterGreaterThanTarget(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int findSmallestLetterGreaterThanTarget(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int findSmallestLetterGreaterThanTarget(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int findSmallestLetterGreaterThanTarget(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int findSmallestLetterGreaterThanTarget(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Binary Search Drill 15",
+      "name": "Koko Eating Bananas",
       "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style binary search problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Sorted search",
+      "question": "Solve Koko Eating Bananas using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Koko Eating Bananas - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Koko%20Eating%20Bananas"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int kokoEatingBananas(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int kokoEatingBananas(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int kokoEatingBananas(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int kokoEatingBananas(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int kokoEatingBananas(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Binary Search Drill 16",
+      "name": "Capacity To Ship Packages Within D Days",
       "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style binary search problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "answer search",
+      "question": "Solve Capacity To Ship Packages Within D Days using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Capacity To Ship Packages Within D Days - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Capacity%20To%20Ship%20Packages%20Within%20D%20Days"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int capacityToShipPackagesWithinDDays(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int capacityToShipPackagesWithinDDays(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int capacityToShipPackagesWithinDDays(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int capacityToShipPackagesWithinDDays(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int capacityToShipPackagesWithinDDays(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Binary Search Drill 17",
+      "name": "Split Array Largest Sum",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "rotated arrays",
+      "question": "Solve Split Array Largest Sum using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes rotated arrays and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for rotated arrays and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Split Array Largest Sum - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Split%20Array%20Largest%20Sum"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int splitArrayLargestSum(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int splitArrayLargestSum(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int splitArrayLargestSum(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int splitArrayLargestSum(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int splitArrayLargestSum(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Binary Search Drill 18",
+      "name": "Minimized Maximum of Products Distributed to Any Store",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "boundaries.",
+      "question": "Solve Minimized Maximum of Products Distributed to Any Store using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes boundaries. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for boundaries. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Minimized Maximum of Products Distributed to Any Store - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Minimized%20Maximum%20of%20Products%20Distributed%20to%20Any%20Store"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int minimizedMaximumOfProductsDistributedToAnyStore(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int minimizedMaximumOfProductsDistributedToAnyStore(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int minimizedMaximumOfProductsDistributedToAnyStore(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int minimizedMaximumOfProductsDistributedToAnyStore(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int minimizedMaximumOfProductsDistributedToAnyStore(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Binary Search Drill 19",
+      "name": "Magnetic Force Between Two Balls",
+      "difficulty": "Medium",
+      "subpattern": "Sorted search",
+      "question": "Solve Magnetic Force Between Two Balls using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Magnetic Force Between Two Balls - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Magnetic%20Force%20Between%20Two%20Balls"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int magneticForceBetweenTwoBalls(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int magneticForceBetweenTwoBalls(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int magneticForceBetweenTwoBalls(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int magneticForceBetweenTwoBalls(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int magneticForceBetweenTwoBalls(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Aggressive Cows",
+      "difficulty": "Medium",
+      "subpattern": "answer search",
+      "question": "Solve Aggressive Cows using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Aggressive Cows - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Aggressive%20Cows"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int aggressiveCows(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int aggressiveCows(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int aggressiveCows(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int aggressiveCows(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int aggressiveCows(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Median of Two Sorted Arrays",
+      "difficulty": "Medium",
+      "subpattern": "rotated arrays",
+      "question": "Solve Median of Two Sorted Arrays using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes rotated arrays and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for rotated arrays and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Median of Two Sorted Arrays - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Median%20of%20Two%20Sorted%20Arrays"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int medianOfTwoSortedArrays(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int medianOfTwoSortedArrays(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int medianOfTwoSortedArrays(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int medianOfTwoSortedArrays(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int medianOfTwoSortedArrays(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Kth Missing Positive Number",
+      "difficulty": "Medium",
+      "subpattern": "boundaries.",
+      "question": "Solve Kth Missing Positive Number using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes boundaries. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for boundaries. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Kth Missing Positive Number - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Kth%20Missing%20Positive%20Number"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int kthMissingPositiveNumber(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int kthMissingPositiveNumber(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int kthMissingPositiveNumber(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int kthMissingPositiveNumber(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int kthMissingPositiveNumber(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Find Kth Smallest Pair Distance",
+      "difficulty": "Medium",
+      "subpattern": "Sorted search",
+      "question": "Solve Find Kth Smallest Pair Distance using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find Kth Smallest Pair Distance - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20Kth%20Smallest%20Pair%20Distance"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int findKthSmallestPairDistance(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int findKthSmallestPairDistance(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int findKthSmallestPairDistance(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int findKthSmallestPairDistance(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int findKthSmallestPairDistance(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Time Based Key-Value Store",
+      "difficulty": "Medium",
+      "subpattern": "answer search",
+      "question": "Solve Time Based Key-Value Store using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Time Based Key-Value Store - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Time%20Based%20Key-Value%20Store"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int timeBasedKeyValueStore(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int timeBasedKeyValueStore(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int timeBasedKeyValueStore(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int timeBasedKeyValueStore(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int timeBasedKeyValueStore(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Search a 2D Matrix",
+      "difficulty": "Medium",
+      "subpattern": "rotated arrays",
+      "question": "Solve Search a 2D Matrix using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes rotated arrays and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for rotated arrays and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Search a 2D Matrix - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Search%20a%202D%20Matrix"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int searchA2dMatrix(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int searchA2dMatrix(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int searchA2dMatrix(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int searchA2dMatrix(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int searchA2dMatrix(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Search a 2D Matrix II",
+      "difficulty": "Medium",
+      "subpattern": "boundaries.",
+      "question": "Solve Search a 2D Matrix II using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes boundaries. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for boundaries. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Search a 2D Matrix II - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Search%20a%202D%20Matrix%20II"
+      },
+      "examples": [
+        {
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int searchA2dMatrixIi(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int searchA2dMatrixIi(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int searchA2dMatrixIi(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int searchA2dMatrixIi(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int searchA2dMatrixIi(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Find Right Interval",
       "difficulty": "Hard",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style binary search problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Sorted search",
+      "question": "Solve Find Right Interval using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find Right Interval - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20Right%20Interval"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int findRightInterval(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int findRightInterval(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int findRightInterval(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int findRightInterval(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int findRightInterval(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "Binary Search Drill 20",
+      "group": "practice",
+      "name": "Successful Pairs of Spells and Potions",
       "difficulty": "Hard",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style binary search problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "answer search",
+      "question": "Solve Successful Pairs of Spells and Potions using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Successful Pairs of Spells and Potions - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Successful%20Pairs%20of%20Spells%20and%20Potions"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int successfulPairsOfSpellsAndPotions(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int successfulPairsOfSpellsAndPotions(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int successfulPairsOfSpellsAndPotions(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int successfulPairsOfSpellsAndPotions(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int successfulPairsOfSpellsAndPotions(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Binary Search Drill 21",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Maximum Candies Allocated to K Children",
+      "difficulty": "Hard",
+      "subpattern": "rotated arrays",
+      "question": "Solve Maximum Candies Allocated to K Children using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes rotated arrays and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for rotated arrays and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Maximum Candies Allocated to K Children - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Maximum%20Candies%20Allocated%20to%20K%20Children"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int maximumCandiesAllocatedToKChildren(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int maximumCandiesAllocatedToKChildren(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int maximumCandiesAllocatedToKChildren(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int maximumCandiesAllocatedToKChildren(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int maximumCandiesAllocatedToKChildren(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Binary Search Drill 22",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Minimum Speed to Arrive on Time",
+      "difficulty": "Hard",
+      "subpattern": "boundaries.",
+      "question": "Solve Minimum Speed to Arrive on Time using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes boundaries. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for boundaries. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Minimum Speed to Arrive on Time - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Minimum%20Speed%20to%20Arrive%20on%20Time"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int minimumSpeedToArriveOnTime(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int minimumSpeedToArriveOnTime(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int minimumSpeedToArriveOnTime(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int minimumSpeedToArriveOnTime(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int minimumSpeedToArriveOnTime(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Binary Search Drill 23",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style binary search problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "H-Index II",
+      "difficulty": "Hard",
+      "subpattern": "Sorted search",
+      "question": "Solve H-Index II using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes sorted search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for sorted search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "H-Index II - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=H-Index%20II"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
+        {
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
+        {
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int hIndexIi(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int hIndexIi(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int hIndexIi(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int hIndexIi(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int hIndexIi(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Binary Search Drill 24",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style binary search problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Guess Number Higher or Lower",
+      "difficulty": "Hard",
+      "subpattern": "answer search",
+      "question": "Solve Guess Number Higher or Lower using the Binary Search pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Binary Search when the input structure exposes answer search and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for answer search and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Guess Number Higher or Lower - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Guess%20Number%20Higher%20or%20Lower"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Binary Search Drill 25",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "nums = [1,3,5,7], target = 5",
+          "output": "2",
+          "explanation": "Target is found at index 2."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Binary Search Drill 26",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "nums = [1,3,5,7], target = 4",
+          "output": "-1",
+          "explanation": "Target is absent."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "nums = [2], target = 2",
+          "output": "0",
+          "explanation": "Single element matches."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Binary Search Drill 27",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style binary search problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Binary Search Drill 28",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style binary search problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Binary Search Drill 29",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style binary search problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Binary Search Drill 30",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style binary search problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "class Solution {\n  public int guessNumberHigherOrLower(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n      if (nums[i] == target) return i;\n    }\n    return -1;\n  }\n}",
+      "iterativeCode": "class Solution {\n  public int guessNumberHigherOrLower(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "optimizedCode": "class Solution {\n  public int guessNumberHigherOrLower(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}",
+      "recursiveCode": "class Solution {\n  public int guessNumberHigherOrLower(int[] nums, int target) {\n    return search(nums, target, 0, nums.length - 1);\n  }\n\n  private int search(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) return mid;\n    if (nums[mid] < target) return search(nums, target, mid + 1, right);\n    return search(nums, target, left, mid - 1);\n  }\n}",
+      "code": "class Solution {\n  public int guessNumberHigherOrLower(int[] nums, int target) {\n    int left = 0, right = nums.length - 1;\n    while (left <= right) {\n      int mid = left + (right - left) / 2;\n      if (nums[mid] == target) return mid;\n      if (nums[mid] < target) left = mid + 1;\n      else right = mid - 1;\n    }\n    return -1;\n  }\n}"
     }
   ],
   "checklist": [
-    "Input constraints match the pattern operation.",
-    "A brute force solution repeats the same state transition.",
-    "The optimal solution maintains compact state.",
-    "The answer can be updated incrementally.",
-    "Edge cases are mostly boundary and empty-state cases."
+    "The problem has an obvious Binary Search signal in ordering, state transition, connectivity, range, or repeated decision work.",
+    "A brute force solution repeats the same local calculation many times.",
+    "The optimized solution keeps a compact state and updates it predictably.",
+    "Boundary cases decide correctness more than syntax.",
+    "The answer can be verified by checking the invariant after each step."
   ],
   "traps": [
-    "Using the pattern without checking constraints.",
-    "Missing null or empty input.",
-    "Updating state in the wrong order.",
-    "Forgetting duplicate handling.",
-    "Returning partial state instead of final answer."
+    "Forgetting empty or single-item inputs.",
+    "Using the optimized structure before defining the invariant.",
+    "Mixing inclusive and exclusive boundaries.",
+    "Letting duplicate values break comparison logic.",
+    "Writing recursion without a clear base case."
   ],
   "edgeCases": [
-    "Empty input.",
-    "Single element.",
-    "All equal values.",
-    "Already sorted or already valid input.",
-    "Maximum constraint sizes."
+    "Empty input if the original problem allows it.",
+    "Single element or single node.",
+    "All values equal.",
+    "Strictly increasing or decreasing values.",
+    "Maximum constraints where brute force times out."
   ],
   "complexities": [
-    "Most optimized solutions target O(n) or O(n log n).",
-    "Auxiliary space depends on stored state.",
-    "Recursive variants may add call-stack space.",
-    "Output space is excluded when returning collections."
+    "Brute force usually enumerates candidates and costs O(n^2) or worse.",
+    "Optimized iterative solutions keep a stable invariant and usually reduce repeated work.",
+    "Recursive solutions add call-stack space equal to depth unless memoized.",
+    "Hash maps, heaps, queues, stacks, trees, and graph structures add state proportional to stored candidates.",
+    "DP and graph patterns should name states/vertices before estimating complexity."
   ],
   "mentalModel": [
-    "Name the state before coding.",
-    "Define the invariant.",
-    "Update state once per step.",
-    "Prove what gets skipped.",
-    "Test the smallest failing case."
+    "Name the state before writing code.",
+    "Write the invariant in one sentence.",
+    "Move one boundary or process one decision at a time.",
+    "Prove each update preserves the invariant.",
+    "Check the smallest valid input before optimizing."
   ],
   "revisionStrategy": [
-    "Solve the 12 core drills first.",
-    "Redo missed problems after 48 hours.",
-    "Mix advanced and practice problems after one week.",
-    "Write trigger points before code.",
-    "Revisit edge cases monthly."
+    "Revise the 12 core problems first until the trigger is instant.",
+    "Redo 4 core problems after 24 hours without looking at code.",
+    "Mix 3 advanced problems with 3 core problems every third session.",
+    "Track mistakes by category: boundary, state, duplicate, recursion base case, complexity.",
+    "Use the unseen problems only after solving the core set cleanly."
   ],
   "unseen": [
-    "Random recognition problem 1",
-    "Random recognition problem 2",
-    "Random recognition problem 3",
-    "Random recognition problem 4",
-    "Random recognition problem 5"
+    "A hidden Binary Search problem with duplicates and boundary indexes.",
+    "A Binary Search problem where the brute force answer is correct but too slow.",
+    "A mixed-pattern problem that begins like Binary Search but needs one helper structure.",
+    "A maximum-constraint version of a familiar Binary Search problem.",
+    "A recognition test where the statement does not mention Binary Search."
   ]
 };

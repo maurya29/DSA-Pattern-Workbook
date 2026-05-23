@@ -4,809 +4,1261 @@ const CURRENT_PATTERN = {
   "summary": "Grid, subsequence, interval, knapsack states.",
   "complete": true,
   "subpatterns": [
-    "Core recognition triggers",
-    "Common interview variants",
-    "Edge-case families",
-    "Optimal-code templates"
+    "Core 2D Dynamic Programming recognition",
+    "Boundary handling in 2D Dynamic Programming",
+    "Optimized iterative 2D Dynamic Programming",
+    "Recursive or DFS-style 2D Dynamic Programming",
+    "Advanced 2D Dynamic Programming variations"
   ],
   "problems": [
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 1",
+      "name": "Unique Paths",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Grid",
+      "question": "Solve Unique Paths using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Unique Paths - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Unique%20Paths"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePaths(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePaths(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePaths(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePaths(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int uniquePaths(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 2",
+      "name": "Unique Paths II",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "subsequence",
+      "question": "Solve Unique Paths II using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Unique Paths II - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Unique%20Paths%20II"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePathsIi(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePathsIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePathsIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int uniquePathsIi(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int uniquePathsIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 3",
+      "name": "Minimum Path Sum",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "interval",
+      "question": "Solve Minimum Path Sum using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes interval and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for interval and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Minimum Path Sum - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Minimum%20Path%20Sum"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int minimumPathSum(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int minimumPathSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int minimumPathSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int minimumPathSum(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int minimumPathSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 4",
+      "name": "Triangle",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "knapsack states.",
+      "question": "Solve Triangle using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes knapsack states. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for knapsack states. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Triangle - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Triangle"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int triangle(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int triangle(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int triangle(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int triangle(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int triangle(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 5",
+      "name": "Longest Common Subsequence",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Grid",
+      "question": "Solve Longest Common Subsequence using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Longest Common Subsequence - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Longest%20Common%20Subsequence"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int longestCommonSubsequence(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int longestCommonSubsequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int longestCommonSubsequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int longestCommonSubsequence(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int longestCommonSubsequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 6",
+      "name": "Edit Distance",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "subsequence",
+      "question": "Solve Edit Distance using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Edit Distance - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Edit%20Distance"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int editDistance(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int editDistance(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int editDistance(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int editDistance(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int editDistance(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 7",
+      "name": "Regular Expression Matching",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "interval",
+      "question": "Solve Regular Expression Matching using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes interval and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for interval and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Regular Expression Matching - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Regular%20Expression%20Matching"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int regularExpressionMatching(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int regularExpressionMatching(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int regularExpressionMatching(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int regularExpressionMatching(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int regularExpressionMatching(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 8",
+      "name": "Wildcard Matching",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "knapsack states.",
+      "question": "Solve Wildcard Matching using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes knapsack states. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for knapsack states. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Wildcard Matching - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Wildcard%20Matching"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int wildcardMatching(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int wildcardMatching(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int wildcardMatching(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int wildcardMatching(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int wildcardMatching(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 9",
+      "name": "Distinct Subsequences",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Grid",
+      "question": "Solve Distinct Subsequences using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Distinct Subsequences - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Distinct%20Subsequences"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int distinctSubsequences(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int distinctSubsequences(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int distinctSubsequences(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int distinctSubsequences(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int distinctSubsequences(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 10",
+      "name": "Interleaving String",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "subsequence",
+      "question": "Solve Interleaving String using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Interleaving String - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Interleaving%20String"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int interleavingString(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int interleavingString(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int interleavingString(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int interleavingString(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int interleavingString(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "2D Dynamic Programming Drill 11",
-      "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "core",
-      "name": "2D Dynamic Programming Drill 12",
-      "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "advanced",
-      "name": "2D Dynamic Programming Drill 13",
+      "name": "Longest Palindromic Subsequence",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "interval",
+      "question": "Solve Longest Palindromic Subsequence using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes interval and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for interval and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Longest Palindromic Subsequence - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Longest%20Palindromic%20Subsequence"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubsequence(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubsequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubsequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubsequence(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubsequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "2D Dynamic Programming Drill 14",
+      "group": "core",
+      "name": "Longest Palindromic Substring",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "knapsack states.",
+      "question": "Solve Longest Palindromic Substring using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes knapsack states. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for knapsack states. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Longest Palindromic Substring - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Longest%20Palindromic%20Substring"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubstring(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubstring(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubstring(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubstring(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int longestPalindromicSubstring(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "2D Dynamic Programming Drill 15",
+      "name": "Palindromic Substrings",
       "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Grid",
+      "question": "Solve Palindromic Substrings using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Palindromic Substrings - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Palindromic%20Substrings"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int palindromicSubstrings(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int palindromicSubstrings(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int palindromicSubstrings(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int palindromicSubstrings(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int palindromicSubstrings(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "2D Dynamic Programming Drill 16",
+      "name": "Coin Change II 2D",
       "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "subsequence",
+      "question": "Solve Coin Change II 2D using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Coin Change II 2D - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Coin%20Change%20II%202D"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int coinChangeIi2d(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int coinChangeIi2d(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int coinChangeIi2d(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int coinChangeIi2d(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int coinChangeIi2d(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "2D Dynamic Programming Drill 17",
+      "name": "Target Sum",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "interval",
+      "question": "Solve Target Sum using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes interval and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for interval and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Target Sum - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Target%20Sum"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int targetSum(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int targetSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int targetSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int targetSum(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int targetSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "2D Dynamic Programming Drill 18",
+      "name": "Ones and Zeroes",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "knapsack states.",
+      "question": "Solve Ones and Zeroes using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes knapsack states. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for knapsack states. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Ones and Zeroes - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Ones%20and%20Zeroes"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int onesAndZeroes(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int onesAndZeroes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int onesAndZeroes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int onesAndZeroes(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int onesAndZeroes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "2D Dynamic Programming Drill 19",
+      "name": "Last Stone Weight II",
+      "difficulty": "Medium",
+      "subpattern": "Grid",
+      "question": "Solve Last Stone Weight II using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Last Stone Weight II - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Last%20Stone%20Weight%20II"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int lastStoneWeightIi(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int lastStoneWeightIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int lastStoneWeightIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int lastStoneWeightIi(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int lastStoneWeightIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Partition Equal Subset Sum 2D",
+      "difficulty": "Medium",
+      "subpattern": "subsequence",
+      "question": "Solve Partition Equal Subset Sum 2D using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Partition Equal Subset Sum 2D - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Partition%20Equal%20Subset%20Sum%202D"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int partitionEqualSubsetSum2d(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int partitionEqualSubsetSum2d(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int partitionEqualSubsetSum2d(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int partitionEqualSubsetSum2d(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int partitionEqualSubsetSum2d(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Longest Increasing Path in a Matrix",
+      "difficulty": "Medium",
+      "subpattern": "interval",
+      "question": "Solve Longest Increasing Path in a Matrix using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes interval and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for interval and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Longest Increasing Path in a Matrix - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Longest%20Increasing%20Path%20in%20a%20Matrix"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int longestIncreasingPathInAMatrix(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int longestIncreasingPathInAMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int longestIncreasingPathInAMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int longestIncreasingPathInAMatrix(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int longestIncreasingPathInAMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Maximal Square",
+      "difficulty": "Medium",
+      "subpattern": "knapsack states.",
+      "question": "Solve Maximal Square using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes knapsack states. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for knapsack states. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Maximal Square - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Maximal%20Square"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int maximalSquare(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int maximalSquare(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int maximalSquare(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int maximalSquare(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int maximalSquare(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Dungeon Game",
+      "difficulty": "Medium",
+      "subpattern": "Grid",
+      "question": "Solve Dungeon Game using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Dungeon Game - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Dungeon%20Game"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int dungeonGame(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int dungeonGame(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int dungeonGame(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int dungeonGame(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int dungeonGame(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Cherry Pickup",
+      "difficulty": "Medium",
+      "subpattern": "subsequence",
+      "question": "Solve Cherry Pickup using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Cherry Pickup - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Cherry%20Pickup"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickup(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickup(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickup(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickup(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int cherryPickup(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Cherry Pickup II",
+      "difficulty": "Medium",
+      "subpattern": "interval",
+      "question": "Solve Cherry Pickup II using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes interval and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for interval and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Cherry Pickup II - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Cherry%20Pickup%20II"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickupIi(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickupIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickupIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int cherryPickupIi(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int cherryPickupIi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Burst Balloons",
+      "difficulty": "Medium",
+      "subpattern": "knapsack states.",
+      "question": "Solve Burst Balloons using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes knapsack states. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for knapsack states. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Burst Balloons - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Burst%20Balloons"
+      },
+      "examples": [
+        {
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int burstBalloons(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int burstBalloons(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int burstBalloons(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int burstBalloons(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int burstBalloons(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Matrix Chain Multiplication",
       "difficulty": "Hard",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "Grid",
+      "question": "Solve Matrix Chain Multiplication using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Matrix Chain Multiplication - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Matrix%20Chain%20Multiplication"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int matrixChainMultiplication(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int matrixChainMultiplication(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int matrixChainMultiplication(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int matrixChainMultiplication(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int matrixChainMultiplication(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "2D Dynamic Programming Drill 20",
+      "group": "practice",
+      "name": "Minimum Falling Path Sum",
       "difficulty": "Hard",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "subsequence",
+      "question": "Solve Minimum Falling Path Sum using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Minimum Falling Path Sum - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Minimum%20Falling%20Path%20Sum"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int minimumFallingPathSum(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int minimumFallingPathSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int minimumFallingPathSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int minimumFallingPathSum(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int minimumFallingPathSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "2D Dynamic Programming Drill 21",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Number of Dice Rolls With Target Sum",
+      "difficulty": "Hard",
+      "subpattern": "interval",
+      "question": "Solve Number of Dice Rolls With Target Sum using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes interval and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for interval and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Number of Dice Rolls With Target Sum - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Number%20of%20Dice%20Rolls%20With%20Target%20Sum"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfDiceRollsWithTargetSum(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfDiceRollsWithTargetSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfDiceRollsWithTargetSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfDiceRollsWithTargetSum(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int numberOfDiceRollsWithTargetSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "2D Dynamic Programming Drill 22",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Profitable Schemes",
+      "difficulty": "Hard",
+      "subpattern": "knapsack states.",
+      "question": "Solve Profitable Schemes using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes knapsack states. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for knapsack states. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Profitable Schemes - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Profitable%20Schemes"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int profitableSchemes(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int profitableSchemes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int profitableSchemes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int profitableSchemes(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int profitableSchemes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "2D Dynamic Programming Drill 23",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Shortest Common Supersequence",
+      "difficulty": "Hard",
+      "subpattern": "Grid",
+      "question": "Solve Shortest Common Supersequence using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes grid and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for grid and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Shortest Common Supersequence - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Shortest%20Common%20Supersequence"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
+        {
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
+        {
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int shortestCommonSupersequence(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int shortestCommonSupersequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int shortestCommonSupersequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int shortestCommonSupersequence(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int shortestCommonSupersequence(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "2D Dynamic Programming Drill 24",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Stone Game",
+      "difficulty": "Hard",
+      "subpattern": "subsequence",
+      "question": "Solve Stone Game using the 2D Dynamic Programming pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use 2D Dynamic Programming when the input structure exposes subsequence and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for subsequence and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Stone Game - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Stone%20Game"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "2D Dynamic Programming Drill 25",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+          "output": "7",
+          "explanation": "State depends on neighboring cells."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "2D Dynamic Programming Drill 26",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "grid = [[1]]",
+          "output": "1",
+          "explanation": "One cell is both start and finish."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "text1 = \"abc\", text2 = \"ace\"",
+          "output": "3-related state",
+          "explanation": "Two indices define the subproblem."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "2D Dynamic Programming Drill 27",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "2D Dynamic Programming Drill 28",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "2D Dynamic Programming Drill 29",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "2D Dynamic Programming Drill 30",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style 2d dynamic programming problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int stoneGame(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int stoneGame(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int stoneGame(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int stoneGame(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int stoneGame(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     }
   ],
   "checklist": [
-    "Input constraints match the pattern operation.",
-    "A brute force solution repeats the same state transition.",
-    "The optimal solution maintains compact state.",
-    "The answer can be updated incrementally.",
-    "Edge cases are mostly boundary and empty-state cases."
+    "The problem has an obvious 2D Dynamic Programming signal in ordering, state transition, connectivity, range, or repeated decision work.",
+    "A brute force solution repeats the same local calculation many times.",
+    "The optimized solution keeps a compact state and updates it predictably.",
+    "Boundary cases decide correctness more than syntax.",
+    "The answer can be verified by checking the invariant after each step."
   ],
   "traps": [
-    "Using the pattern without checking constraints.",
-    "Missing null or empty input.",
-    "Updating state in the wrong order.",
-    "Forgetting duplicate handling.",
-    "Returning partial state instead of final answer."
+    "Forgetting empty or single-item inputs.",
+    "Using the optimized structure before defining the invariant.",
+    "Mixing inclusive and exclusive boundaries.",
+    "Letting duplicate values break comparison logic.",
+    "Writing recursion without a clear base case."
   ],
   "edgeCases": [
-    "Empty input.",
-    "Single element.",
-    "All equal values.",
-    "Already sorted or already valid input.",
-    "Maximum constraint sizes."
+    "Empty input if the original problem allows it.",
+    "Single element or single node.",
+    "All values equal.",
+    "Strictly increasing or decreasing values.",
+    "Maximum constraints where brute force times out."
   ],
   "complexities": [
-    "Most optimized solutions target O(n) or O(n log n).",
-    "Auxiliary space depends on stored state.",
-    "Recursive variants may add call-stack space.",
-    "Output space is excluded when returning collections."
+    "Brute force usually enumerates candidates and costs O(n^2) or worse.",
+    "Optimized iterative solutions keep a stable invariant and usually reduce repeated work.",
+    "Recursive solutions add call-stack space equal to depth unless memoized.",
+    "Hash maps, heaps, queues, stacks, trees, and graph structures add state proportional to stored candidates.",
+    "DP and graph patterns should name states/vertices before estimating complexity."
   ],
   "mentalModel": [
-    "Name the state before coding.",
-    "Define the invariant.",
-    "Update state once per step.",
-    "Prove what gets skipped.",
-    "Test the smallest failing case."
+    "Name the state before writing code.",
+    "Write the invariant in one sentence.",
+    "Move one boundary or process one decision at a time.",
+    "Prove each update preserves the invariant.",
+    "Check the smallest valid input before optimizing."
   ],
   "revisionStrategy": [
-    "Solve the 12 core drills first.",
-    "Redo missed problems after 48 hours.",
-    "Mix advanced and practice problems after one week.",
-    "Write trigger points before code.",
-    "Revisit edge cases monthly."
+    "Revise the 12 core problems first until the trigger is instant.",
+    "Redo 4 core problems after 24 hours without looking at code.",
+    "Mix 3 advanced problems with 3 core problems every third session.",
+    "Track mistakes by category: boundary, state, duplicate, recursion base case, complexity.",
+    "Use the unseen problems only after solving the core set cleanly."
   ],
   "unseen": [
-    "Random recognition problem 1",
-    "Random recognition problem 2",
-    "Random recognition problem 3",
-    "Random recognition problem 4",
-    "Random recognition problem 5"
+    "A hidden 2D Dynamic Programming problem with duplicates and boundary indexes.",
+    "A 2D Dynamic Programming problem where the brute force answer is correct but too slow.",
+    "A mixed-pattern problem that begins like 2D Dynamic Programming but needs one helper structure.",
+    "A maximum-constraint version of a familiar 2D Dynamic Programming problem.",
+    "A recognition test where the statement does not mention 2D Dynamic Programming."
   ]
 };

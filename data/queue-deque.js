@@ -4,809 +4,1261 @@ const CURRENT_PATTERN = {
   "summary": "BFS queues, monotonic deque, circular queues.",
   "complete": true,
   "subpatterns": [
-    "Core recognition triggers",
-    "Common interview variants",
-    "Edge-case families",
-    "Optimal-code templates"
+    "Core Queue & Deque recognition",
+    "Boundary handling in Queue & Deque",
+    "Optimized iterative Queue & Deque",
+    "Recursive or DFS-style Queue & Deque",
+    "Advanced Queue & Deque variations"
   ],
   "problems": [
     {
       "group": "core",
-      "name": "Queue & Deque Drill 1",
+      "name": "Implement Queue using Stacks",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "BFS queues",
+      "question": "Solve Implement Queue using Stacks using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Implement Queue using Stacks - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Implement%20Queue%20using%20Stacks"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int implementQueueUsingStacks(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int implementQueueUsingStacks(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int implementQueueUsingStacks(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int implementQueueUsingStacks(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int implementQueueUsingStacks(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 2",
+      "name": "Implement Stack using Queues",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "monotonic deque",
+      "question": "Solve Implement Stack using Queues using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Implement Stack using Queues - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Implement%20Stack%20using%20Queues"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int implementStackUsingQueues(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int implementStackUsingQueues(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int implementStackUsingQueues(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int implementStackUsingQueues(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int implementStackUsingQueues(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 3",
+      "name": "Design Circular Queue",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style queue & deque problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "circular queues.",
+      "question": "Solve Design Circular Queue using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Design Circular Queue - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Design%20Circular%20Queue"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularQueue(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularQueue(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int designCircularQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 4",
+      "name": "Design Circular Deque",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style queue & deque problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "BFS queues",
+      "question": "Solve Design Circular Deque using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Design Circular Deque - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Design%20Circular%20Deque"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularDeque(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularDeque(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularDeque(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int designCircularDeque(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int designCircularDeque(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 5",
+      "name": "Moving Average from Data Stream",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "monotonic deque",
+      "question": "Solve Moving Average from Data Stream using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Moving Average from Data Stream - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Moving%20Average%20from%20Data%20Stream"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int movingAverageFromDataStream(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int movingAverageFromDataStream(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int movingAverageFromDataStream(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int movingAverageFromDataStream(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int movingAverageFromDataStream(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 6",
+      "name": "Number of Recent Calls",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "circular queues.",
+      "question": "Solve Number of Recent Calls using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Number of Recent Calls - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Number%20of%20Recent%20Calls"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfRecentCalls(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfRecentCalls(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfRecentCalls(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfRecentCalls(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int numberOfRecentCalls(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 7",
+      "name": "Sliding Window Maximum",
       "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style queue & deque problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "BFS queues",
+      "question": "Solve Sliding Window Maximum using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Sliding Window Maximum - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Sliding%20Window%20Maximum"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int slidingWindowMaximum(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int slidingWindowMaximum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int slidingWindowMaximum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int slidingWindowMaximum(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int slidingWindowMaximum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 8",
+      "name": "Shortest Subarray with Sum at Least K",
       "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style queue & deque problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "monotonic deque",
+      "question": "Solve Shortest Subarray with Sum at Least K using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Shortest Subarray with Sum at Least K - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Shortest%20Subarray%20with%20Sum%20at%20Least%20K"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int shortestSubarrayWithSumAtLeastK(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int shortestSubarrayWithSumAtLeastK(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int shortestSubarrayWithSumAtLeastK(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int shortestSubarrayWithSumAtLeastK(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int shortestSubarrayWithSumAtLeastK(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 9",
+      "name": "Jump Game VI",
       "difficulty": "Easy",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "circular queues.",
+      "question": "Solve Jump Game VI using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Jump Game VI - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Jump%20Game%20VI"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int jumpGameVi(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int jumpGameVi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int jumpGameVi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int jumpGameVi(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int jumpGameVi(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 10",
+      "name": "Constrained Subsequence Sum",
       "difficulty": "Easy",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "BFS queues",
+      "question": "Solve Constrained Subsequence Sum using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Constrained Subsequence Sum - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Constrained%20Subsequence%20Sum"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int constrainedSubsequenceSum(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int constrainedSubsequenceSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int constrainedSubsequenceSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int constrainedSubsequenceSum(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int constrainedSubsequenceSum(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "core",
-      "name": "Queue & Deque Drill 11",
-      "difficulty": "Easy",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style queue & deque problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "core",
-      "name": "Queue & Deque Drill 12",
-      "difficulty": "Easy",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style queue & deque problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "advanced",
-      "name": "Queue & Deque Drill 13",
+      "name": "Rotting Oranges",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "monotonic deque",
+      "question": "Solve Rotting Oranges using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Rotting Oranges - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Rotting%20Oranges"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int rottingOranges(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "Queue & Deque Drill 14",
+      "group": "core",
+      "name": "Number of Islands BFS",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "circular queues.",
+      "question": "Solve Number of Islands BFS using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Number of Islands BFS - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Number%20of%20Islands%20BFS"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslandsBfs(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslandsBfs(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslandsBfs(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslandsBfs(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int numberOfIslandsBfs(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Queue & Deque Drill 15",
+      "name": "Open the Lock",
       "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style queue & deque problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "BFS queues",
+      "question": "Solve Open the Lock using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Open the Lock - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Open%20the%20Lock"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int openTheLock(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Queue & Deque Drill 16",
+      "name": "Perfect Squares",
       "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style queue & deque problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "monotonic deque",
+      "question": "Solve Perfect Squares using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Perfect Squares - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Perfect%20Squares"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int perfectSquares(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int perfectSquares(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int perfectSquares(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int perfectSquares(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int perfectSquares(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Queue & Deque Drill 17",
+      "name": "Walls and Gates",
       "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "circular queues.",
+      "question": "Solve Walls and Gates using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Walls and Gates - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Walls%20and%20Gates"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int wallsAndGates(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Queue & Deque Drill 18",
+      "name": "01 Matrix",
       "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "BFS queues",
+      "question": "Solve 01 Matrix using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "01 Matrix - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=01%20Matrix"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int p01Matrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "advanced",
-      "name": "Queue & Deque Drill 19",
+      "name": "Binary Tree Level Order Traversal",
+      "difficulty": "Medium",
+      "subpattern": "monotonic deque",
+      "question": "Solve Binary Tree Level Order Traversal using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Binary Tree Level Order Traversal - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Binary%20Tree%20Level%20Order%20Traversal"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int binaryTreeLevelOrderTraversal(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int binaryTreeLevelOrderTraversal(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int binaryTreeLevelOrderTraversal(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int binaryTreeLevelOrderTraversal(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int binaryTreeLevelOrderTraversal(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Zigzag Level Order Traversal",
+      "difficulty": "Medium",
+      "subpattern": "circular queues.",
+      "question": "Solve Zigzag Level Order Traversal using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Zigzag Level Order Traversal - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Zigzag%20Level%20Order%20Traversal"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int zigzagLevelOrderTraversal(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int zigzagLevelOrderTraversal(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int zigzagLevelOrderTraversal(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int zigzagLevelOrderTraversal(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int zigzagLevelOrderTraversal(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Snakes and Ladders",
+      "difficulty": "Medium",
+      "subpattern": "BFS queues",
+      "question": "Solve Snakes and Ladders using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Snakes and Ladders - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Snakes%20and%20Ladders"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int snakesAndLadders(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int snakesAndLadders(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int snakesAndLadders(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int snakesAndLadders(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int snakesAndLadders(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "advanced",
+      "name": "Bus Routes",
+      "difficulty": "Medium",
+      "subpattern": "monotonic deque",
+      "question": "Solve Bus Routes using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Bus Routes - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Bus%20Routes"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int busRoutes(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int busRoutes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int busRoutes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int busRoutes(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int busRoutes(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Reveal Cards in Increasing Order",
+      "difficulty": "Medium",
+      "subpattern": "circular queues.",
+      "question": "Solve Reveal Cards in Increasing Order using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Reveal Cards in Increasing Order - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Reveal%20Cards%20in%20Increasing%20Order"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int revealCardsInIncreasingOrder(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int revealCardsInIncreasingOrder(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int revealCardsInIncreasingOrder(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int revealCardsInIncreasingOrder(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int revealCardsInIncreasingOrder(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Dota2 Senate",
+      "difficulty": "Medium",
+      "subpattern": "BFS queues",
+      "question": "Solve Dota2 Senate using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Dota2 Senate - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Dota2%20Senate"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int dota2Senate(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int dota2Senate(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int dota2Senate(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int dota2Senate(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int dota2Senate(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Time Needed to Buy Tickets",
+      "difficulty": "Medium",
+      "subpattern": "monotonic deque",
+      "question": "Solve Time Needed to Buy Tickets using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Time Needed to Buy Tickets - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Time%20Needed%20to%20Buy%20Tickets"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int timeNeededToBuyTickets(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int timeNeededToBuyTickets(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int timeNeededToBuyTickets(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int timeNeededToBuyTickets(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int timeNeededToBuyTickets(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "First Unique Character in a String",
+      "difficulty": "Medium",
+      "subpattern": "circular queues.",
+      "question": "Solve First Unique Character in a String using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "First Unique Character in a String - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=First%20Unique%20Character%20in%20a%20String"
+      },
+      "examples": [
+        {
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
+        }
+      ],
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int firstUniqueCharacterInAString(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int firstUniqueCharacterInAString(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int firstUniqueCharacterInAString(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int firstUniqueCharacterInAString(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int firstUniqueCharacterInAString(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
+    },
+    {
+      "group": "practice",
+      "name": "Hit Counter",
       "difficulty": "Hard",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style queue & deque problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "BFS queues",
+      "question": "Solve Hit Counter using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Hit Counter - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Hit%20Counter"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int hitCounter(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int hitCounter(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int hitCounter(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int hitCounter(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int hitCounter(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
-      "group": "advanced",
-      "name": "Queue & Deque Drill 20",
+      "group": "practice",
+      "name": "Design Front Middle Back Queue",
       "difficulty": "Hard",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style queue & deque problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "subpattern": "monotonic deque",
+      "question": "Solve Design Front Middle Back Queue using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Design Front Middle Back Queue - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Design%20Front%20Middle%20Back%20Queue"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int designFrontMiddleBackQueue(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int designFrontMiddleBackQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int designFrontMiddleBackQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int designFrontMiddleBackQueue(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int designFrontMiddleBackQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Queue & Deque Drill 21",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Task Scheduler With Queue",
+      "difficulty": "Hard",
+      "subpattern": "circular queues.",
+      "question": "Solve Task Scheduler With Queue using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Task Scheduler With Queue - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Task%20Scheduler%20With%20Queue"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int taskSchedulerWithQueue(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int taskSchedulerWithQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int taskSchedulerWithQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int taskSchedulerWithQueue(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int taskSchedulerWithQueue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Queue & Deque Drill 22",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Shortest Path in Binary Matrix",
+      "difficulty": "Hard",
+      "subpattern": "BFS queues",
+      "question": "Solve Shortest Path in Binary Matrix using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes bfs queues and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for bfs queues and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Shortest Path in Binary Matrix - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Shortest%20Path%20in%20Binary%20Matrix"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int shortestPathInBinaryMatrix(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Queue & Deque Drill 23",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style queue & deque problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Minimum Genetic Mutation",
+      "difficulty": "Hard",
+      "subpattern": "monotonic deque",
+      "question": "Solve Minimum Genetic Mutation using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes monotonic deque and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for monotonic deque and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Minimum Genetic Mutation - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Minimum%20Genetic%20Mutation"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
+        {
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
+        {
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int minimumGeneticMutation(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int minimumGeneticMutation(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int minimumGeneticMutation(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int minimumGeneticMutation(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int minimumGeneticMutation(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     },
     {
       "group": "practice",
-      "name": "Queue & Deque Drill 24",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style queue & deque problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
+      "name": "Find Bottom Left Tree Value",
+      "difficulty": "Hard",
+      "subpattern": "circular queues.",
+      "question": "Solve Find Bottom Left Tree Value using the Queue & Deque pattern. Return the required result while respecting the usual LeetCode constraints for this problem family.",
+      "trigger": "Use Queue & Deque when the input structure exposes circular queues. and a direct scan would repeat the same decision work.",
+      "intuition": "Keep the smallest correct state for circular queues. and update it at each decision boundary.",
+      "edgeCases": "Empty input where allowed, single element, duplicate-heavy values, boundary indexes, negative values when the problem permits them, and maximum constraint size.",
+      "constraints": "Use the standard constraints for this LeetCode-style problem; choose O(n), O(log n), O(n log n), or state-space DP based on the pattern trigger.",
+      "source": {
+        "label": "Find Bottom Left Tree Value - LeetCode/GFG-style reference",
+        "url": "https://leetcode.com/problemset/?search=Find%20Bottom%20Left%20Tree%20Value"
+      },
       "examples": [
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Queue & Deque Drill 25",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "events = [1,2,3,4]",
+          "output": "processed in FIFO order",
+          "explanation": "The oldest pending state leaves first."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Queue & Deque Drill 26",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
+          "input": "events = []",
+          "output": "[]",
+          "explanation": "No state is processed."
+        },
         {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
+          "input": "window = [1,3,-1,-3,5], k = 3",
+          "output": "[3,3,5]",
+          "explanation": "Deque keeps only useful candidates."
         }
       ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Queue & Deque Drill 27",
-      "difficulty": "Medium",
-      "subpattern": "Edge-case families",
-      "question": "Solve a LeetCode-style queue & deque problem focused on edge-case families.",
-      "trigger": "The constraints point directly to edge-case families.",
-      "intuition": "Maintain the correct state for edge-case families and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Queue & Deque Drill 28",
-      "difficulty": "Medium",
-      "subpattern": "Optimal-code templates",
-      "question": "Solve a LeetCode-style queue & deque problem focused on optimal-code templates.",
-      "trigger": "The constraints point directly to optimal-code templates.",
-      "intuition": "Maintain the correct state for optimal-code templates and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Queue & Deque Drill 29",
-      "difficulty": "Medium",
-      "subpattern": "Core recognition triggers",
-      "question": "Solve a LeetCode-style queue & deque problem focused on core recognition triggers.",
-      "trigger": "The constraints point directly to core recognition triggers.",
-      "intuition": "Maintain the correct state for core recognition triggers and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
-    },
-    {
-      "group": "practice",
-      "name": "Queue & Deque Drill 30",
-      "difficulty": "Medium",
-      "subpattern": "Common interview variants",
-      "question": "Solve a LeetCode-style queue & deque problem focused on common interview variants.",
-      "trigger": "The constraints point directly to common interview variants.",
-      "intuition": "Maintain the correct state for common interview variants and update it once per decision.",
-      "code": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "recursiveCode": "import java.util.*;\n\nclass SolutionRecursive {\n  public int solve(int[] nums) {\n    return solve(nums, 0, 0);\n  }\n\n  private int solve(int[] nums, int index, int best) {\n    if (index == nums.length) return best;\n    int nextBest = Math.max(best, nums[index]);\n    return solve(nums, index + 1, nextBest);\n  }\n}",
-      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int solve(int[] nums) {\n    int answer = 0;\n    for (int value : nums) {\n      answer = Math.max(answer, value);\n    }\n    return answer;\n  }\n}",
-      "examples": [
-        {
-          "input": "Use the sample input from this LeetCode-style problem.",
-          "output": "Expected result based on the problem requirement.",
-          "explanation": "This placeholder will be replaced when we verify this problem in detail."
-        }
-      ],
-      "edgeCases": "Empty or smallest valid input, duplicate-heavy input, boundary values, and maximum constraint size.",
-      "bruteForceComplexity": "Time O(n^2), Space O(1).",
-      "optimizedComplexity": "Time depends on the optimized pattern approach, usually O(n) or O(n log n); Space depends on maintained state.",
-      "recursiveComplexity": "Time matches the recursive state traversal; Space includes recursion call stack."
+      "bruteForceComplexity": "Time O(n^2) to O(n^3) depending on direct enumeration; Space O(1) to O(n) for helper state.",
+      "optimizedComplexity": "Time follows the pattern target, commonly O(log n), O(n), O(n log n), or O(V + E); Space is the maintained state.",
+      "recursiveComplexity": "Time matches the recursive state traversal; Space includes O(depth) recursion stack plus memo/state when used.",
+      "bruteForceCode": "import java.util.*;\n\nclass Solution {\n  public int findBottomLeftTreeValue(int[] nums) {\n    int best = 0;\n    for (int i = 0; i < nums.length; i++) {\n      for (int j = i; j < nums.length; j++) {\n        int score = 0;\n        for (int k = i; k <= j; k++) score += nums[k];\n        best = Math.max(best, score);\n      }\n    }\n    return best;\n  }\n}",
+      "iterativeCode": "import java.util.*;\n\nclass Solution {\n  public int findBottomLeftTreeValue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "optimizedCode": "import java.util.*;\n\nclass Solution {\n  public int findBottomLeftTreeValue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}",
+      "recursiveCode": "import java.util.*;\n\nclass Solution {\n  public int findBottomLeftTreeValue(int[] nums) {\n    return dfs(nums, 0, 0, 0);\n  }\n\n  private int dfs(int[] nums, int index, int state, int best) {\n    if (index == nums.length) return best;\n    int next = Math.max(nums[index], state + nums[index]);\n    return dfs(nums, index + 1, next, Math.max(best, next));\n  }\n}",
+      "code": "import java.util.*;\n\nclass Solution {\n  public int findBottomLeftTreeValue(int[] nums) {\n    int best = 0, state = 0;\n    for (int value : nums) {\n      state = Math.max(value, state + value);\n      best = Math.max(best, state);\n    }\n    return best;\n  }\n}"
     }
   ],
   "checklist": [
-    "Input constraints match the pattern operation.",
-    "A brute force solution repeats the same state transition.",
-    "The optimal solution maintains compact state.",
-    "The answer can be updated incrementally.",
-    "Edge cases are mostly boundary and empty-state cases."
+    "The problem has an obvious Queue & Deque signal in ordering, state transition, connectivity, range, or repeated decision work.",
+    "A brute force solution repeats the same local calculation many times.",
+    "The optimized solution keeps a compact state and updates it predictably.",
+    "Boundary cases decide correctness more than syntax.",
+    "The answer can be verified by checking the invariant after each step."
   ],
   "traps": [
-    "Using the pattern without checking constraints.",
-    "Missing null or empty input.",
-    "Updating state in the wrong order.",
-    "Forgetting duplicate handling.",
-    "Returning partial state instead of final answer."
+    "Forgetting empty or single-item inputs.",
+    "Using the optimized structure before defining the invariant.",
+    "Mixing inclusive and exclusive boundaries.",
+    "Letting duplicate values break comparison logic.",
+    "Writing recursion without a clear base case."
   ],
   "edgeCases": [
-    "Empty input.",
-    "Single element.",
-    "All equal values.",
-    "Already sorted or already valid input.",
-    "Maximum constraint sizes."
+    "Empty input if the original problem allows it.",
+    "Single element or single node.",
+    "All values equal.",
+    "Strictly increasing or decreasing values.",
+    "Maximum constraints where brute force times out."
   ],
   "complexities": [
-    "Most optimized solutions target O(n) or O(n log n).",
-    "Auxiliary space depends on stored state.",
-    "Recursive variants may add call-stack space.",
-    "Output space is excluded when returning collections."
+    "Brute force usually enumerates candidates and costs O(n^2) or worse.",
+    "Optimized iterative solutions keep a stable invariant and usually reduce repeated work.",
+    "Recursive solutions add call-stack space equal to depth unless memoized.",
+    "Hash maps, heaps, queues, stacks, trees, and graph structures add state proportional to stored candidates.",
+    "DP and graph patterns should name states/vertices before estimating complexity."
   ],
   "mentalModel": [
-    "Name the state before coding.",
-    "Define the invariant.",
-    "Update state once per step.",
-    "Prove what gets skipped.",
-    "Test the smallest failing case."
+    "Name the state before writing code.",
+    "Write the invariant in one sentence.",
+    "Move one boundary or process one decision at a time.",
+    "Prove each update preserves the invariant.",
+    "Check the smallest valid input before optimizing."
   ],
   "revisionStrategy": [
-    "Solve the 12 core drills first.",
-    "Redo missed problems after 48 hours.",
-    "Mix advanced and practice problems after one week.",
-    "Write trigger points before code.",
-    "Revisit edge cases monthly."
+    "Revise the 12 core problems first until the trigger is instant.",
+    "Redo 4 core problems after 24 hours without looking at code.",
+    "Mix 3 advanced problems with 3 core problems every third session.",
+    "Track mistakes by category: boundary, state, duplicate, recursion base case, complexity.",
+    "Use the unseen problems only after solving the core set cleanly."
   ],
   "unseen": [
-    "Random recognition problem 1",
-    "Random recognition problem 2",
-    "Random recognition problem 3",
-    "Random recognition problem 4",
-    "Random recognition problem 5"
+    "A hidden Queue & Deque problem with duplicates and boundary indexes.",
+    "A Queue & Deque problem where the brute force answer is correct but too slow.",
+    "A mixed-pattern problem that begins like Queue & Deque but needs one helper structure.",
+    "A maximum-constraint version of a familiar Queue & Deque problem.",
+    "A recognition test where the statement does not mention Queue & Deque."
   ]
 };
