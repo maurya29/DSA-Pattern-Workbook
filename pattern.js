@@ -8,7 +8,7 @@ const patternHeading = document.querySelector('#patternHeading');
 const patternSummary = document.querySelector('#patternSummary');
 const patternDetail = document.querySelector('#patternDetail');
 
-document.title = pattern.name + ' | DSA Pattern Problems';
+document.title = pattern.name + ' | DSA Pattern Lab';
 patternTitle.textContent = pattern.name;
 patternHeading.textContent = pattern.name;
 patternSummary.textContent = pattern.summary;
