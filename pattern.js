@@ -21,7 +21,9 @@ function escapeHtml(value) {
 }
 
 function titleCase(value) {
-  return String(value || '').replace(/^./, (char) => char.toUpperCase());
+  return String(value || '')
+    .replaceAll('-', ' ')
+    .replace(/^./, (char) => char.toUpperCase());
 }
 
 function formatJava(code) {
@@ -161,7 +163,7 @@ function listBlock(title, items) {
 const groups = [
   ['12 Core Problems', pattern.problems.filter((p) => p.group === 'core')],
   ['8 Advanced / Variation Problems', pattern.problems.filter((p) => p.group === 'advanced')],
-  ['10 More Practice Problems', pattern.problems.filter((p) => p.group === 'practice')]
+  ['10 More Practice Problems', pattern.problems.filter((p) => ['practice', 'more', 'more-practice'].includes(p.group))]
 ];
 
 patternDetail.innerHTML = `
