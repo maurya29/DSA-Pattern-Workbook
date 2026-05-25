@@ -170,7 +170,7 @@ const DSA_PATTERNS = [
   {
     "id": "sorting",
     "name": "Sorting",
-    "summary": "Custom ordering, partitioning, counting/radix sort.",
+    "summary": "Ordering, partitioning, buckets, comparators, merge-sort counting.",
     "complete": true,
     "problemCount": 30
   },
