@@ -177,14 +177,14 @@ const DSA_PATTERNS = [
   {
     "id": "design",
     "name": "Design",
-    "summary": "Caches, iterators, rate limits, object modeling.",
+    "summary": "Stateful APIs, caches, heaps, maps, tries, iterators, calendars.",
     "complete": true,
     "problemCount": 30
   },
   {
     "id": "segment-tree",
     "name": "Segment Tree / Fenwick",
-    "summary": "Range query and update data structures.",
+    "summary": "Fenwick trees, segment trees, lazy propagation, dynamic nodes, and ordered interval queries.",
     "complete": true,
     "problemCount": 30
   },
