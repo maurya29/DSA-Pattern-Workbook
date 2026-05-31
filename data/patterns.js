@@ -191,7 +191,7 @@ const DSA_PATTERNS = [
   {
     "id": "advanced-graphs",
     "name": "Advanced Graphs",
-    "summary": "MST, Dijkstra, Bellman-Ford, Floyd, SCC.",
+    "summary": "Dijkstra, MST, topological sort, SCC, bridges, matching, flow, and graph DP.",
     "complete": true,
     "problemCount": 30
   },
