@@ -35,6 +35,12 @@ body {
   border-bottom: 1px solid var(--line);
   background: rgba(247, 247, 244, 0.94);
   backdrop-filter: blur(16px);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  will-change: transform;
+}
+
+.topbar.is-hidden {
+  transform: translateY(calc(-100% - 2px));
 }
 
 h1,

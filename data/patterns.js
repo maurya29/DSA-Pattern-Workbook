@@ -198,14 +198,14 @@ const DSA_PATTERNS = [
   {
     "id": "geometry",
     "name": "Geometry",
-    "summary": "Coordinates, sweep, orientation, distance.",
+    "summary": "Coordinates, orientation, distance, sweep-line, rectangles, circles, hulls, and simulations.",
     "complete": true,
     "problemCount": 30
   },
   {
     "id": "concurrency",
     "name": "Concurrency Basics",
-    "summary": "Locks, ordering, producer-consumer style problems.",
+    "summary": "Thread ordering, semaphores, locks, conditions, producer-consumer queues, barriers, and safe shared state.",
     "complete": true,
     "problemCount": 30
   }
