@@ -228,6 +228,8 @@ pre {
 
 code {
   font-family: "Cascadia Code", Consolas, monospace;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
 }
 
 ul {
@@ -377,6 +379,8 @@ pre {
 
 code {
   font-family: "Cascadia Code", "Fira Code", Consolas, "Courier New", monospace;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
 }
 
 .problem pre code {
