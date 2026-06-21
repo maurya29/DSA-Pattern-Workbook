@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DSA Pattern Workbook</title>
-    <meta name="description" content="Learn DSA patterns with Java examples and practice problems" />
-    <link rel="stylesheet" href="styles.css?v=20260610-symbols" />
+    <title>Learning Topics | DSA Pattern Workbook</title>
+    <meta name="description" content="Choose a learning topic and open DSA, Java lambda, and stream interview practice tracks" />
+    <link rel="stylesheet" href="styles.css?v=20260621-java-streams" />
       <script src="theme.js?v=20260608-scroll"></script>
 
     <!-- Google tag (gtag.js) -->
@@ -21,11 +21,11 @@
   <body>
     <header class="topbar">
       <div>
-        <p class="eyebrow">DSA Pattern Workbook</p>
-        <h1>DSA Pattern Workbook</h1>
+        <p class="eyebrow">Learning Hub</p>
+        <h1>Learning Topics</h1>
       </div>
       <nav>
-        <a href="index.html">Patterns</a>
+        <a href="index.html">Home</a>
       <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">Dark Mode</button>
       </nav>
     </header>
@@ -33,22 +33,43 @@
     <main>
       <section class="hero-section">
         <div>
-          <h2>Pattern-first DSA practice</h2>
-          <p>Pick a pattern, study its sub-patterns, then solve 30 curated Java problems with trigger points, intuition, and clean code.</p>
+          <h2>Choose a topic</h2>
+          <p>Open the DSA workbook, DSA revision, or Java lambda and stream interview practice.</p>
         </div>
       </section>
 
       <section class="section">
         <div class="section-head">
-          <h2>All Pattern Pages</h2>
-          <p>Every pattern opens as a dedicated problem page.</p>
+          <h2>All Topics</h2>
+          <p>One place for every learning track.</p>
         </div>
-        <div id="patternGrid" class="pattern-grid"></div>
+        <div class="pattern-grid">
+          <a class="pattern-card complete" href="dsa.html">
+            <div>
+              <p class="status">DSA</p>
+              <h3>DSA Pattern Workbook</h3>
+              <p class="muted">30 core DSA patterns with curated Java problems, examples, trigger points, and solutions.</p>
+            </div>
+            <span class="open-link">Open DSA workbook</span>
+          </a>
+          <a class="pattern-card complete" href="dsa-revision.html">
+            <div>
+              <p class="status">Revision</p>
+              <h3>DSA Revision</h3>
+              <p class="muted">A focused revision checklist for arrays, trees, graphs, DP, greedy, tries, bit manipulation, and more.</p>
+            </div>
+            <span class="open-link">Open revision page</span>
+          </a>
+          <a class="pattern-card complete" href="java-lambda-streams.html">
+            <div>
+              <p class="status">Java</p>
+              <h3>Java Lambda and Streams</h3>
+              <p class="muted">Lambda basics, functional interfaces, collectors, grouping, Optional, flatMap, parallel streams, and top interview questions with Java solutions.</p>
+            </div>
+            <span class="open-link">Open Java track</span>
+          </a>
+        </div>
       </section>
     </main>
-
-    <script src="data/patterns.js"></script>
-    <script src="home.js"></script>
   </body>
 </html>
-
