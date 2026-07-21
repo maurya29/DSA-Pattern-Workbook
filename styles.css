@@ -255,6 +255,10 @@ main {
   scroll-margin-top: 100px;
 }
 
+.basics-topic-section {
+  scroll-margin-top: 100px;
+}
+
 .lambda-problem-links {
   margin-bottom: 16px;
 }
@@ -279,6 +283,73 @@ main {
 .core-question-list {
   display: grid;
   gap: 16px;
+}
+
+.basics-card-list {
+  display: grid;
+  gap: 16px;
+}
+
+.basics-template-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.basics-card-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px 18px 12px;
+}
+
+.basics-card-head h3 {
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.basics-card-head p {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+.basics-index {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fbfbf8;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.basics-card-steps {
+  margin: 0 18px 14px;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  padding-left: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.basics-card-steps strong {
+  display: block;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.basics-code {
+  min-height: auto;
+  border-radius: 0;
+  border-top: 1px solid #2b3038;
+  box-shadow: none;
+  white-space: pre;
 }
 
 .core-answer-grid {
@@ -704,6 +775,14 @@ html[data-theme="dark"] .problem {
 html[data-theme="dark"] .core-answer,
 html[data-theme="dark"] .core-traps {
   background: #151922;
+}
+
+html[data-theme="dark"] .basics-template-card {
+  background: #181b22;
+}
+
+html[data-theme="dark"] .basics-index {
+  background: #20242c;
 }
 
 .theme-toggle {
